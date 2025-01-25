@@ -1,0 +1,92 @@
+HELP.md
+target/
+.m2/
+!.mvn/wrapper/maven-wrapper.jar
+!**/src/main/**/target/
+!**/src/test/**/target/
+
+### STS ###
+.apt_generated
+.classpath
+.factorypath
+.project
+.settings
+.springBeans
+.sts4-cache
+
+### IntelliJ IDEA ###
+.idea
+*.iws
+*.iml
+*.ipr
+
+### NetBeans ###
+/nbproject/private/
+/nbbuild/
+/dist/
+/nbdist/
+/.nb-gradle/
+build/
+!**/src/main/**/build/
+!**/src/test/**/build/
+
+### VS Code ###
+.vscode/
+
+# MacOS
+.DS_Store
+
+# Windows
+Thumbs.db
+
+# Java
+*.class
+*.log
+*.jar
+*.war
+*.ear
+
+# Spring Boot build artifacts
+/target/
+!/target/classes/
+/target/*.jar
+/target/*.war
+/target/*.ear
+
+# IDEs
+.idea/
+*.iml
+.vscode/
+
+# Maven
+/.mvn/
+mvnw
+mvnw.cmd
+
+# Gradle
+.gradle/
+gradle-wrapper.jar
+gradle-wrapper.properties
+/build/
+
+# IntelliJ IDEA
+*.iws
+*.iml
+*.ipr
+out/
+
+# Eclipse
+.project
+.classpath
+.settings/
+
+# Logs
+logs/
+*.log
+
+# Dependency directories
+/node_modules/
+/bower_components/
+
+# Prettier config files
+.prettierignore

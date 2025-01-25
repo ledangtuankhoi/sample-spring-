@@ -1,0 +1,193 @@
+
+@hostname = 127.0.0.1
+@port = 8082
+@host = {{hostname}}:{{port}}
+
+# ------------------------NOTE-------------------------
+###
+GET http://{{host}}/api/v1/books/all
+
+###
+GET http://{{host}}/api/v1/books/all2
+###
+GET http://{{host}}/api/v1/employees/all
+###
+GET http://{{host}}/api/v1/borrowing/all
+# ------------------------END NOTE--------------------- 
+
+###
+# ------------------------------------------------------------
+# i.	Book Service API
+##  
+#==================
+# Get book details	GET	/api /v1/books/{bookId}
+#==================
+###
+@bookId = 1
+GET http://{{host}}/api/v1/books/{{bookId}} HTTP/1.1
+###
+#==================
+
+
+## 
+#==================
+# Add book	POST	/api/v1/books
+#==================
+###
+POST http://{{host}}/api/v1/books HTTP/1.1
+Content-Type: application/json
+
+{ 
+    "name": "fake content 1234",
+    "author" : "fake content 1234"
+}
+
+###
+#==================
+    
+
+#==================
+# Update book	PUT	/api/v1/books/{bookId}
+#==================
+###
+@bookId = 7a131517-4415-475f-a6e9-8f0d3ca21746
+PUT  http://{{host}}/api/v1/books/{{bookId}} HTTP/1.1
+Content-Type: application/json
+
+{ 
+    "name": "update content",
+    "author" : "update content"
+}
+###
+#==================
+
+
+#==================
+# Delete book	DELETE	/api/v1/books/{bookId}
+#==================
+###
+DELETE http://{{host}}/api/v1/books/{{bookId}} HTTP/1.1
+
+###
+#==================
+
+# ii.	Book Borrowing Service API 
+#================== 
+#==================
+# Get book borrowing by employee	GET	/api/v1/borrowing/{employeeId}
+#==================
+###
+@employeeId = 2
+GET http://{{host}}/api/v1/borrowing/{employeeId} HTTP/1.1
+###
+#==================
+
+
+#==================
+# Add a new borrowing	POST	/api/v1/borrowing
+    # not logic duplical book
+#==================
+###
+POST http://{{host}}/api/v1/borrowing HTTP/1.1
+Content-Type: application/json
+
+{ 
+     "book": {
+      "id": "1",
+      "name": "Búp sen xanh",
+      "author": "son tung",
+      "isReady": false
+     },
+    "employee": {
+        "id":"1",
+        "firstName":"A",
+        "lastName":"Le van",
+        "isDiscipilined":false
+    }
+}
+
+###
+#==================
+
+
+
+###
+#------------------
+# Update a book return	PUT	/api/v1/borrowing/{employeeId}/{bookId}
+#------------------
+
+GET http://{{host}}/api/v1/employees/all HTTP/1.1
+###
+@employeeId = 1
+GET http://{{host}}/api/v1/employees/{{employeeId}} HTTP/1.1
+###
+@bookId = 2
+GET http://{{host}}/api/v1/books/{{bookId}} HTTP/1.1
+###
+PUT  http://{{host}}/api/v1/borrowing/{{employeeId}}/{{bookId}} HTTP/1.1
+#------------------
+
+
+# iii.	Employee Service API
+#==================
+# Get employee details	GET	/api /v1/employees/{employeeId}
+#==================
+###
+@employeeId = 2
+GET http://{{host}}/api/v1/employees/{{employeeId}} HTTP/1.1
+###
+#==================   
+###
+GET  http://{{host}}/api/v1/borrowing/all HTTP/1.1
+###
+#==================
+# Get borrowed books for employee	GET	/api /v1/employees/{employeeId}/books
+#==================
+###
+GET http://{{host}}/api/v1/employees/{{employeeId}}/books HTTP/1.1
+###
+#==================
+
+
+###
+GET http://{{host}}/api/v1/employees/all HTTP/1.1
+###
+#==================
+# Add new employee	POST	/api/v1/employees
+#==================
+###
+POST http://{{host}}/api/v1/employees HTTP/1.1
+Content-Type: application/json
+
+{ 
+    "firstName" : "firstName",
+    "lastName" : "lastName",
+    "KIN" : "KIN",
+    "isDiscipilined" : false
+}
+###
+#==================
+
+
+#==================
+# Get borrowed books for employee	GET	/api /v1/employees/{employeeId}/books
+#==================
+###
+DELETE http://{{host}}/api/v1/employees/6cff6cd6-8afc-4a07-93bf-f79daafe41fc HTTP/1.1
+###
+#==================
+
+
+
+
+#==================
+# 
+#==================
+###
+
+###
+#==================
+
+
+
+GET http://localhost:8080/api/v1/borrowing/all2 HTTP/1.1 

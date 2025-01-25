@@ -1,0 +1,83 @@
+// import com.drools.sample.model.Participant;
+import com.example.employee.Model.BookEntity;
+// global com.drools.sample.model.Rate rate;
+
+// dialect "mvel"
+
+
+
+global com.example.employee.Model.BookEntity bookVar;
+dialect  "mvel"
+
+rule "warring notifi book fake"
+    when
+        bookVar(name == "fake")
+    then
+      	bookVar.setName("fake - update fake");
+end
+
+// global com.baeldung.spring.drools.model.Fare rideFare;
+// dialect  "mvel"
+
+// rule "Calculate Taxi Fare - Scenario 1"
+//     when
+//         taxiRideInstance:TaxiRide(isNightSurcharge == false && distanceInMile < 10);
+//     then
+//       	rideFare.setNightSurcharge(0);
+//        	rideFare.setRideFare(70);
+// end
+// rule "remove book fake"
+//  when 
+//   Participant(loanAmount > (2 * existingDebt))
+//  then
+//   rate.setLoanStatus("Rejected - Too Much Debt");
+//   rate.setLoanRate(999);
+// end
+
+// rule "Checking Existing Debt Against Loan Amount"
+//  when 
+//   Participant(loanAmount > (2 * existingDebt))
+//  then
+//   rate.setLoanStatus("Rejected - Too Much Debt");
+//   rate.setLoanRate(999);
+// end
+
+// rule "Checking Annual Salary is greater than 50000"
+//  when
+//   Participant(annualSalary <= 50000)
+//  then
+//   rate.setLoanStatus("Rejected - Too low salary");
+//   rate.setLoanRate(999);
+// end
+
+// rule "Checking Credit Score less than 550"
+//  when
+//   Participant(creditScore < 550 , annualSalary > 50000,  loanAmount < (2 * existingDebt))
+//  then
+//   rate.setLoanStatus("Rejected");
+//   rate.setLoanRate(999);
+// end
+
+// rule "Checking Credit Score less than 650"
+//  when
+//   Participant((creditScore < 650 && creditScore >= 550), annualSalary > 50000,  loanAmount < (2 * existingDebt))
+//  then
+//   rate.setLoanStatus("Approved");
+//   rate.setLoanRate(7.25);
+// end
+
+// rule "Checking Credit Score less than 750"
+//  when
+//   Participant((creditScore < 750 && creditScore >= 650), annualSalary > 50000,  loanAmount < (2 * existingDebt))
+//  then
+//   rate.setLoanStatus("Approved");
+//   rate.setLoanRate(6.25);
+// end
+
+// rule "Checking Credit Score greater than 750"
+//  when
+//   Participant(creditScore >= 750, annualSalary > 50000,  loanAmount < (2 * existingDebt))
+//  then
+//   rate.setLoanStatus("Approved");
+//   rate.setLoanRate(5.25);
+// end

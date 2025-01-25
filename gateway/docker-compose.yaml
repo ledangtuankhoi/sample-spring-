@@ -1,0 +1,23 @@
+# version: '3.7'
+services:
+  gateway-api:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: always
+    ports:
+      - 8080:8080
+    networks:
+      - share-network
+    environment:
+      - SPRING_PROFILES_ACTIVE=docker 
+      - SPRING_DEVTOOLS_REMOTE_DEBUG=true
+      - JAVA_OPTS=-Dspring.devtools.restart.enabled=true 
+      # - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
+    volumes:
+      - .m2:/root/.m2
+      - ./src:/app/src
+      - ./target:/app/target
+networks:
+  share-network:
+    external: true

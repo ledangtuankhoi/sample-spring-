@@ -1,0 +1,271 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>3.3.2</version>
+		<relativePath />
+		<!-- lookup parent from repository -->
+	</parent>
+	<groupId>com.example</groupId>
+	<artifactId>employee</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>employee</name>
+	<description>Demo project for Spring Boot</description>
+	<url />
+	<licenses>
+		<license />
+	</licenses>
+	<developers>
+		<developer />
+	</developers>
+	<scm>
+		<connection />
+		<developerConnection />
+		<tag />
+		<url />
+	</scm>
+	<properties>
+		<java.version>17</java.version>
+		<spring-cloud.version>2023.0.3</spring-cloud.version>
+	</properties>
+	<dependencies>
+
+
+		<!-- Kafka -->
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<!-- <version>3.1.2</version> -->
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.testcontainers</groupId>
+			<artifactId>kafka</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- END Kafka -->
+
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-loadbalancer</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.cloud</groupId>
+			<artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-devtools</artifactId>
+			<version>3.4.1</version>
+			<optional>true</optional>
+			<scope>runtime</scope>
+
+
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-rest</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-hateoas</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.mysql</groupId>
+			<artifactId>mysql-connector-j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+		<!-- Testing Dependencies -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.mockito</groupId>
+			<artifactId>mockito-core</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<!-- <dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+
+		</dependency> -->
+
+		<!-- <dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-simple</artifactId>
+			<version>2.1.0-alpha1</version>
+		</dependency> -->
+
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>2.0.13</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.data</groupId>
+			<artifactId>spring-data-rest-webmvc</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-starter-webmvc-ui</artifactId>
+			<version>2.2.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct</artifactId>
+			<version>1.6.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct</groupId>
+			<artifactId>mapstruct-processor</artifactId>
+			<version>1.6.3</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.mapstruct.extensions.spring</groupId>
+			<artifactId>mapstruct-spring-extensions</artifactId>
+			<version>1.1.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.36</version>
+			<scope>provided</scope>
+		</dependency>
+
+
+		<!-- AZURE MYSQL  -->
+		<!-- <dependency>
+			<groupId>com.azure.spring</groupId>
+			<artifactId>spring-cloud-azure-dependencies</artifactId>
+			<version>6.0.0-beta.4</version>
+			<type>pom</type> 
+		</dependency>
+		<dependency>
+			<groupId>com.azure.spring</groupId>
+			<artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
+			<version>6.0.0-beta.4</version>
+		</dependency> -->
+		<!-- END AZURE MYSQL  -->
+
+
+		<!-- Drools  -->
+		<!-- https://mvnrepository.com/artifact/org.kie/kie-spring-boot -->
+		<!-- kie-spring cung cấp các lớp hỗ trợ tích hợp Drools vào ứng dụng Spring. Đây là một phần của bộ công cụ Drools dành riêng cho Spring, giúp dễ dàng quản lý các đối tượng liên quan đến Drools như KieSession, KieContainer thông qua Spring IoC container.
+		Lý do sử dụng: Giúp giảm thiểu công việc cấu hình Drools bằng cách tận dụng các tính năng Spring để tự động quản lý vòng đời của các đối tượng này. Nó giúp đơn giản hóa việc tạo và cấu hình các session và container của Drools trong Spring Boot. -->
+		<!-- <dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-spring</artifactId>
+			<version>7.74.1.Final</version>
+			<type>bundle</type>
+		</dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.kie/kie-api -->
+		<!-- kie-api cung cấp các API cơ bản của Drools, bao gồm các lớp chính để tương tác với hệ thống quy tắc của Drools như KieSession, KieContainer, và KieServices.
+		Lý do sử dụng: Cung cấp các API cần thiết để tương tác với các đối tượng như KieSession, KieContainer và các đối tượng khác trong Drools mà không cần phụ thuộc vào framework cụ thể như Spring. Đây là thư viện cốt lõi giúp thực thi và quản lý các quy tắc. -->
+		<!-- <dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-api</artifactId>
+			<version>10.0.0</version>
+		</dependency> -->
+		<!-- drools-core là thư viện chính của Drools, cung cấp các tính năng xử lý quy tắc, bao gồm các công cụ để biên dịch và thực thi các quy tắc (tệp .drl).
+		Lý do sử dụng: Đây là thư viện cốt lõi giúp Drools có thể hoạt động, bao gồm khả năng xử lý các quy tắc kinh doanh và thực thi các quyết định dựa trên các tệp quy tắc được tải vào KieSession. -->
+		<!-- <dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-core</artifactId>
+			<version>10.0.0</version>
+		</dependency> -->
+		<!-- drools-compiler cung cấp khả năng biên dịch các tệp quy tắc .drl thành các tệp bytecode để thực thi.
+		Lý do sử dụng: Cung cấp bộ biên dịch để Drools có thể chuyển đổi các tệp .drl thành các biểu diễn mà Drools có thể thực thi, giúp quy tắc của bạn có thể chạy hiệu quả và tối ưu. -->
+		<!-- <dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-compiler</artifactId>
+			<version>10.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-mvel</artifactId>
+			<version>10.0.0</version>
+		</dependency> -->
+		<!-- END Drools  -->
+	</dependencies>
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.springframework.cloud</groupId>
+				<artifactId>spring-cloud-dependencies</artifactId>
+				<version>${spring-cloud.version}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<configuration>
+					<mainClass>com.example.employee.DemoApplication</mainClass>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version>
+				<configuration>
+					<annotationProcessorPaths>
+						<path>
+							<groupId>org.mapstruct</groupId>
+							<artifactId>mapstruct-processor</artifactId>
+							<version>1.6.3</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok</artifactId>
+							<version>1.18.36</version>
+						</path>
+						<path>
+							<groupId>org.projectlombok</groupId>
+							<artifactId>lombok-mapstruct-binding</artifactId>
+							<version>0.2.0</version>
+						</path>
+					</annotationProcessorPaths>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+
+
+</project>

@@ -1,0 +1,91 @@
+server:
+  port: 8080
+spring:
+  main:
+    web-application-type: reactive
+  application:
+    name: api-gateway
+  output:
+    ansi:
+      enabled: always
+  cloud:
+    compatibility-verifier:
+      enabled: false
+    gateway:
+      discovery:
+        locator:
+          enabled: true
+      routes:
+        - id: book-service-route
+          # uri: http://localhost:8081
+          uri: lb://book-service
+          predicates:
+            - Path=/book/**
+          # filters:
+          #   - RewritePath=/book/(?<segment>.*), /${segment}
+
+        - id: employee-service-route
+          uri: lb://employee-service
+          predicates:
+            - Path=/employee/**
+
+        - id: borrowing-service-route
+          uri: lb://borrowing-service
+          predicates:
+            - Path=/borrowing/**
+
+        # - id: book-service-route1
+        #   uri: localhost:8081
+        #   predicates:
+        #     - Path=/book/**
+        # filters:
+        #   - RewritePath=/book/(?<segment>.*), /${segment}
+
+  # Cấu hình Eureka Client
+eureka:
+  client:
+    service-url:
+      # defaultZone: http://localhost:8761/eureka
+      defaultZone: http://eureka:8761/eureka
+    register-with-eureka: true
+    fetch-registry: true
+    instance:
+      hostname: localhost
+      prefer-ip-address: false
+  # instance:
+  #   preferIpAddress: true
+
+# Cấu hình SpringDoc cho Swagger UI
+springdoc:
+  api-docs:
+    enabled: true
+    path: /v3/api-docs
+  swagger-ui:
+    enabled: true
+    path: /swagger-ui.html
+    config-url: /v3/api-docs/swagger-config
+    urls:
+      # - name: gateway-service
+      #   url: /v3/api-docs
+
+      - name: BOOK service
+        url: /book/v3/api-docs
+
+      - name: BORROWING service
+        url: /borrowing/v3/api-docs
+
+      - name: EMPLOYEE service
+        url: /employee/v3/api-docs
+
+  # Cấu hình logging
+logging:
+  level:
+    # # Log toàn bộ request qua Spring Cloud Gateway
+    # org.springframework.cloud.gateway: DEBUG
+    # # Log các phản hồi HTTP trong WebFlux
+    # org.springframework.http.server.reactive: DEBUG
+    # Log các hoạt động mạng Netty
+    # reactor.netty: DEBUG
+    # Ghi thêm thông tin về DispatcherHandler
+    # org.springframework.web.reactive.DispatcherHandler: DEBUG
+    reactor.netty.http.client.HttpClientConnect: DEBUG
