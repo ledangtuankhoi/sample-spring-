@@ -16,9 +16,7 @@ public class BookService {
     public BookService(
         RestTemplate restTemplate,
         // @Value("${employee.service.url}") String emplyeeServiceUrl,
-        @Value(
-            "${api-gateway.book.service.url}"
-        ) String bookServiceUrl
+        @Value("${api-gateway.book.service.url}") String bookServiceUrl
     ) {
         this.restTemplate = restTemplate;
         // this.emplyeeServiceUrl = emplyeeServiceUrl;
@@ -40,8 +38,7 @@ public class BookService {
     //     return restTemplate.getForObject(url, EmployeeEntity.class);
     // }
 
-    public BookEntity getBookById(String id){
-
+    public BookEntity getBookById(String id) {
         String url = bookServiceUrl + "/api/v1/" + id;
         return restTemplate.getForObject(url, BookEntity.class);
     }

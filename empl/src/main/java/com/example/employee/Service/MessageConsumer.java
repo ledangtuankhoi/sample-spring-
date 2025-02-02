@@ -11,4 +11,3 @@ public class MessageConsumer {
         System.out.println("Received message: " + message);
     }
 }
-    

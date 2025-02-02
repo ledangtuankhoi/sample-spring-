@@ -14,6 +14,8 @@ import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import java.util.List;
 import java.util.stream.Collectors;
+import org.apache.commons.collections4.Get;
+import org.hibernate.sql.Delete;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -76,6 +78,30 @@ public class BookController {
 
     // -=======================
 
+    // i. Book Service API
+    // Functionality Method Path
+    // Get book details GET /api /v1/books/{bookId}
+    // Add book POST /api/v1/books
+    // Update book PUT /api/v1/books/{bookId}
+    // Delete book DELETE /api/v1/books/{bookId}
+
+    // ii. Book Borrowing Service API
+    // Functionality Method Path
+    // Get book borrowing by employee GET /api /v1/borrowing/{employeeId}
+    // Add a new borrowing POST /api/v1/borrowing
+    // Update a book return PUT /api/v1/borrowing/{employeeId}/{bookId}
+
+    // iii. Employee Service API
+    // Functionality Method Path
+    // Get employee details GET /api /v1/employees/{employeeId}
+    // Get borrowed books for employee GET /api /v1/employees/{employeeId}/books
+    // Add new employee POST /api/v1/employees
+    // Remove employee DELETE /api/v1/employees/{employeeId}
+
+    // -=======================
+
+    // -=======================
+
     @Operation(
         summary = "lay thong tin sach",
         description = "lay thong tin sach theo id",
@@ -105,6 +131,7 @@ public class BookController {
         return employeeService.getEmployeeDetailsWithApigetway(id);
     }
 
+    @Operation(tags = { "Books-homework" })
     @GetMapping("/all")
     public List<BookDTO> all() {
         return repository
@@ -140,6 +167,7 @@ public class BookController {
     }
 
     // Get book details GET /api /v1/books/{bookId}
+    @Operation(tags = { "Books-homework" })
     @GetMapping("/{id}")
     public BookEntity get(@PathVariable String id) {
         // }
@@ -150,6 +178,7 @@ public class BookController {
     }
 
     // Add book POST /api/v1/books
+    @Operation(tags = { "Books-homework" })
     @PostMapping("")
     BookEntity newEntity(@RequestBody BookEntity entity) {
         // return entity.getName();
@@ -157,6 +186,7 @@ public class BookController {
     }
 
     // Update book PUT /api/v1/books/{bookId}
+    @Operation(tags = { "Books-homework" })
     @PutMapping("/{id}")
     BookEntity editEntity(
         @RequestBody BookEntity request,
@@ -175,6 +205,7 @@ public class BookController {
     }
 
     // Delete book DELETE /api/v1/books/{bookId}
+    @Operation(tags = { "Books-homework" })
     @DeleteMapping("/{id}")
     void deleteEntity(@PathVariable String id) {
         repository.deleteById(id);

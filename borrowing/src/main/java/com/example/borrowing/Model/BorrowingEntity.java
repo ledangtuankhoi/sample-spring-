@@ -79,12 +79,12 @@ public class BorrowingEntity {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    public BorrowingEntity( 
+    public BorrowingEntity(
         Instant returnBorrowing,
         Status status,
         String bookId,
         String employeeId
-    ) { 
+    ) {
         this.returnBorrowing = returnBorrowing;
         this.status = status;
         this.bookId = bookId;

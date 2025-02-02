@@ -9,9 +9,7 @@
         "java.format.settings.url": ".vscode/java-formatter.xml",
         "java.compile.nullAnalysis.mode": "automatic",
         "java.configuration.updateBuildConfiguration": "automatic",
-        "java.completion.importOrder": [
-            "#"
-        ],
+        "java.completion.importOrder": ["#"],
         "workbench.colorCustomizations": {
             "activityBar.background": "#4d2300",
             "activityBar.activeBackground": "#be6319",
@@ -54,11 +52,11 @@
         "java.configuration.runtimeSs": [
             {
                 "path": "/usr/lib/jvm/java-17-openjdk-amd64",
-                "default": true
-            }
+                "default": true,
+            },
         ],
         "yaml.schemas": {
-            "https://json.schemastore.org/liquibase-3.2.json": "file:///home/lg/java/sample-spring-/book/db.changelog-master.yaml"
-        }
+            "https://json.schemastore.org/liquibase-3.2.json": "file:///home/lg/java/sample-spring-/book/db.changelog-master.yaml",
+        },
     },
 }

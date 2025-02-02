@@ -15,7 +15,6 @@ public class WebConfig implements WebMvcConfigurer {
             .addMapping("/**")
             // .allowedOrigins("http://api-gateway") // Cho phép Swagger UI (localhost:8080) gọi tới
             .allowedOrigins("http://localhost:8080") // Cho phép Swagger UI (localhost:8080) gọi tới
-
             .allowedMethods("GET", "POST", "PUT", "DELETE")
             .allowedHeaders("*")
             .allowCredentials(true); // Cho phép cookie trong yêu cầu

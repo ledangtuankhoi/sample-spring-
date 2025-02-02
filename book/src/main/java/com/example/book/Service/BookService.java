@@ -57,7 +57,6 @@ public class BookService {
             .peek(System.out::println)
             .toList();
     }
-
     // public void sendMessage(String message) {
     //     CompletableFuture<SendResult<String, String>> future =
     //         kafkaTemplate.send("first_topic", message);

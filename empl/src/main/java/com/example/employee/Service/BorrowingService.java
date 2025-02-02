@@ -45,12 +45,13 @@ public class BorrowingService {
     // }
 
     public List<BorrowingEntity> getBorrowingByEmplId(String id) {
-    
         // http://localhost:8080/borrowing/api/v1/employee/{employeeId}?employeeId=
         String url = serviceUrl + "api/v1/employee/" + id;
         // return restTemplate.getForEntity(url, BorrowingEntity[].class);
- 
-        System.out.println("Working Directory = " + System.getProperty("user.dir"));
+
+        System.out.println(
+            "Working Directory = " + System.getProperty("user.dir")
+        );
         System.out.println("url: " + url);
 
         ResponseEntity<BorrowingEntity[]> response = restTemplate.getForEntity(
@@ -62,5 +63,4 @@ public class BorrowingService {
         BorrowingEntity[] listEntities = response.getBody();
         return Arrays.asList(listEntities);
     }
-
 }

@@ -49,7 +49,6 @@ public class EmployeeEntity {
 
     @Column(name = "isDiscipilined")
     private Boolean isDiscipilined;
- 
 
     @Column(name = "createdAt")
     @CreationTimestamp

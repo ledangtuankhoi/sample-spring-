@@ -1,16 +1,17 @@
 {
-  "name": "sample-spring-",
-  "version": "1.0.0",
-  "description": "Project Overview: Microservices Architecture with Spring Boot, Kafka, Zookeeper, and Eureka",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "author": "",
-  "license": "ISC",
-  "devDependencies": {
-    "@prettier/plugin-xml": "^3.4.1",
-    "prettier": "^3.4.2",
-    "prettier-plugin-sql": "^0.18.1"
-  }
+    "name": "sample-spring-",
+    "version": "1.0.0",
+    "description": "Project Overview: Microservices Architecture with Spring Boot, Kafka, Zookeeper, and Eureka",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@prettier/plugin-xml": "^3.4.1",
+        "prettier": "^3.4.2",
+        "prettier-plugin-java": "^2.6.7",
+        "prettier-plugin-sql": "^0.18.1"
+    }
 }

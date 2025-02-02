@@ -58,7 +58,9 @@ public class BorrowingController {
     }
 
     @GetMapping("/employee/{employeeId}")
-    public List<BorrowingDTO> getBorrowingByEmplId(@PathVariable String employeeId) {
+    public List<BorrowingDTO> getBorrowingByEmplId(
+        @PathVariable String employeeId
+    ) {
         System.out.println("employeeId: " + employeeId);
         return borrowingService
             .getByEmplId(employeeId)

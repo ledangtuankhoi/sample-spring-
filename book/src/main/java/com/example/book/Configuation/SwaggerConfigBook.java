@@ -15,52 +15,21 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class SwaggerConfigBook {
 
-    // @Bean
-    // public CorsWebFilter corsWebFilter() {
-    //     CorsConfiguration config = new CorsConfiguration();
-    //     config.addAllowedOrigin("*"); // Cho phép tất cả các domain
-    //     config.addAllowedMethod("*"); // Cho phép tất cả các HTTP methods (GET, POST, PUT, DELETE...)
-    //     config.addAllowedHeader("*"); // Cho phép tất cả các headers
-    //     config.setAllowCredentials(true); // Nếu bạn cần gửi cookie hoặc xác thực
-
-    //     UrlBasedCorsConfigurationSource source =
-    //         new UrlBasedCorsConfigurationSource();
-    //     source.registerCorsConfiguration("/**", config);
-
-    //     return new CorsWebFilter(source);
-    // }
-
-    // @Bean
-    // public GroupedOpenApi publicApi() {
-    //     return GroupedOpenApi.builder()
-    //         .group("book-service")
-    //         .pathsToMatch("/api/**")
-    //         .build();
-    // }
-
     @Bean
     public GroupedOpenApi groupedOpenApi() {
         return GroupedOpenApi.builder()
             .group("public-api") // Nhóm tên hiển thị trong Swagger UI
-            .pathsToMatch("book/api/v1/**") // Chỉ hiển thị path bắt đầu bằng "/special"
+            .pathsToMatch("/book/api/**") // Chỉ hiển thị path bắt đầu bằng "/special"
             .pathsToExclude("/bookEntities/**", "/profile/**")
             .build();
     }
-
-    // @PostConstruct
-    // public void logPaths() {
-    //     GroupedOpenApi.builder()
-    //         .build()
-    //         .getPathsToMatch()
-    //         .forEach(System.out::println);
-    // }
 
     @Bean
     public OpenAPI customOpenAPI() {
         return new OpenAPI()
             .info(
                 new Info()
-                    //   .title("Custom API Documentation") // Thay đổi tiêu đề
+                    // .title("Custom API Documentation") // Thay đổi tiêu đề
                     .version("v3") // Thay đổi phiên bản
                     .description(
                         "This is a custom OpenAPI documentation for our project"

@@ -21,7 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 // JPA
 @Entity
 @Table(name = "employee")
-public class    EmployeeEntity {
+public class EmployeeEntity {
 
     // CREATE TABLE employee (
     // id VARCHAR(255) NOT NULL,
@@ -62,12 +62,12 @@ public class    EmployeeEntity {
     @UpdateTimestamp
     private Instant updatedAt;
 
-    public EmployeeEntity( 
+    public EmployeeEntity(
         String firstName,
         String lastName,
         String KIN,
         Boolean isDiscipilined
-    ) { 
+    ) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.KIN = KIN;

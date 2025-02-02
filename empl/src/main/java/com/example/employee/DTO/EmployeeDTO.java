@@ -32,5 +32,5 @@ public class EmployeeDTO {
 
     private String id;
     private String firstName;
-    private String lastName; 
+    private String lastName;
 }

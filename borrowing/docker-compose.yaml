@@ -16,7 +16,7 @@ services:
             - JAVA_OPTS=-Dspring.devtools.restart.enabled=true
             - SPRING_PROFILES_ACTIVE=docker
             - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
-            
+
         depends_on:
             - mysqldb
 

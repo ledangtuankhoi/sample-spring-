@@ -82,8 +82,12 @@ public class SwaggerConfigEmployee {
                     )
             )
             .servers(
-                List.of(new Server().url(serverUrl).description("Local Server"),
-                new Server().url("http://localhost:8080").description("API Gateway"))
+                List.of(
+                    new Server().url(serverUrl).description("Local Server"),
+                    new Server()
+                        .url("http://localhost:8080")
+                        .description("API Gateway")
+                )
             );
     }
 }

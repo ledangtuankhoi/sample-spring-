@@ -1,31 +1,40 @@
 databaseChangeLog:
-  - changeSet:
-      id: 004-insert-sample-books
-      author: your_name
-      changes:
-        - insert:
-            tableName: book
-            columns:
-              - column: { name: id, value: "550e8400-e29b-41d4-a716-446655440000" }
-              - column: { name: name, value: "Spring Boot in Action" }
-              - column: { name: author, value: "Craig Walls" }
-              - column: { name: isReady, valueBoolean: true }
-              
+    - changeSet:
+          id: 004-insert-sample-books
+          author: your_name
+          changes:
+              - insert:
+                    tableName: book
+                    columns:
+                        - column:
+                              {
+                                  name: id,
+                                  value: '550e8400-e29b-41d4-a716-446655440000',
+                              }
+                        - column: { name: name, value: 'Spring Boot in Action' }
+                        - column: { name: author, value: 'Craig Walls' }
+                        - column: { name: isReady, valueBoolean: true }
 
-        - insert:
-            tableName: book
-            columns:
-              - column: { name: id, value: "660e8400-e29b-41d4-a716-446655440001" }
-              - column: { name: name, value: "Effective Java" }
-              - column: { name: author, value: "Joshua Bloch" }
-              - column: { name: isReady, valueBoolean: false }
-              
+              - insert:
+                    tableName: book
+                    columns:
+                        - column:
+                              {
+                                  name: id,
+                                  value: '660e8400-e29b-41d4-a716-446655440001',
+                              }
+                        - column: { name: name, value: 'Effective Java' }
+                        - column: { name: author, value: 'Joshua Bloch' }
+                        - column: { name: isReady, valueBoolean: false }
 
-        - insert:
-            tableName: book
-            columns:
-              - column: { name: id, value: "770e8400-e29b-41d4-a716-446655440002" }
-              - column: { name: name, value: "Clean Code" }
-              - column: { name: author, value: "Robert C. Martin" }
-              - column: { name: isReady, valueBoolean: true }
-              
+              - insert:
+                    tableName: book
+                    columns:
+                        - column:
+                              {
+                                  name: id,
+                                  value: '770e8400-e29b-41d4-a716-446655440002',
+                              }
+                        - column: { name: name, value: 'Clean Code' }
+                        - column: { name: author, value: 'Robert C. Martin' }
+                        - column: { name: isReady, valueBoolean: true }

@@ -46,7 +46,6 @@ public class BookEntity {
 
     @Column(name = "isReady")
     private Boolean isReady;
- 
 
     // @Column(name = "created_at")
     @Column(name = "createdAt")

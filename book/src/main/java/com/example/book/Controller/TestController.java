@@ -28,9 +28,9 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestClient;
 
 @RestController
-@RequestMapping("book/api/v2")
-@Tag(name = "Books with Kafka", description = "Kafka event")
-public class BookControllerWIthKafka {
+@RequestMapping("book/api/v3")
+@Tag(name = "HomeWork", description = "Homework api ")
+public class TestController {
 
     // @Autowired
     private BookRepository repository;
@@ -50,7 +50,7 @@ public class BookControllerWIthKafka {
     private RestClient restClient;
     private MessageProducer messageProducer;
 
-    public BookControllerWIthKafka(
+    public TestController(
         BookRepository repository,
         BookModelAssembler assembler,
         BookService service,
@@ -94,27 +94,6 @@ public class BookControllerWIthKafka {
     ) {
         System.out.println("getEmployee" + id);
         return employeeService.getEmployeeDetails(id);
-    }
-
-    @GetMapping("/employeewithapigetway/{id}")
-    public EmployeeEntity getEmployeewithapigateway(
-        @Parameter(
-            name = "id",
-            description = "id of empl",
-            example = "2"
-        ) long id
-    ) {
-        System.out.println("getEmployeewithapigateway: " + id);
-        return employeeService.getEmployeeDetailsWithApigetway(id);
-    }
-
-    @GetMapping("/all")
-    public List<BookDTO> all() {
-        return repository
-            .findAll()
-            .stream()
-            .map(book -> mapper.toDto(book))
-            .toList();
     }
     // -=======================
 
