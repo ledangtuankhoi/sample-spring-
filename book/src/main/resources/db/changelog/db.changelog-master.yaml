@@ -1,0 +1,13 @@
+databaseChangeLog:
+#   - include:
+#       file: classpath:/db/changelog/changelog-1.yaml
+  - include:
+      file: classpath:/db/changelog/001_create_book_table.yaml
+  - include:
+      file: classpath:/db/changelog/002_insert_sample_books.yaml 
+  - include:
+      file: classpath:/db/changelog/003_create_book_table.yaml
+  - include:
+      file: classpath:/db/changelog/004_insert_sample_books.yaml 
+  - include:
+      file: classpath:/db/changelog/005_insert_sample_books.yaml 

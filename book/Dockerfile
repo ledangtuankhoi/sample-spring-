@@ -62,19 +62,38 @@
 
 
 
+# # Sử dụng image Maven với JDK 17
+# FROM maven:3.9.9-eclipse-temurin-17 AS builder
+
+# # Đặt thư mục làm việc trong container
+# WORKDIR /app
+
+# # Sao chép file pom.xml để cài đặt dependencies
+# COPY pom.xml ./
+
+# # Chỉ cài đặt dependencies để tận dụng cache
+# RUN mvn dependency:go-offline
+
+# # Gắn volume src và pom.xml khi container chạy, không copy mã nguồn ở đây
+
+# # Chạy ứng dụng Spring Boot trực tiếp từ Maven
+# CMD ["mvn", "spring-boot:run"]
+
+
 # Sử dụng image Maven với JDK 17
-FROM maven:3.9.9-eclipse-temurin-17 AS builder
+FROM maven:3.9.9-eclipse-temurin-17
 
 # Đặt thư mục làm việc trong container
 WORKDIR /app
 
 # Sao chép file pom.xml để cài đặt dependencies
-COPY pom.xml ./
+COPY pom.xml .
 
-# Chỉ cài đặt dependencies để tận dụng cache
+# Cài đặt dependencies trước để tối ưu cache
 RUN mvn dependency:go-offline
 
-# Gắn volume src và pom.xml khi container chạy, không copy mã nguồn ở đây
+# Cài đặt trình gỡ lỗi Java
+RUN apt-get update && apt-get install -y openjdk-17-jdk
 
 # Chạy ứng dụng Spring Boot trực tiếp từ Maven
 CMD ["mvn", "spring-boot:run"]

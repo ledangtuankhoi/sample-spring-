@@ -1,0 +1,111 @@
+databaseChangeLog:
+  - changeSet:
+      id: "005-insert-book-data"
+      author: "your_name"
+      changes:
+        - insert:
+            tableName: "book"
+            columns:
+              - column:
+                  name: "id"
+                  value: "1"
+              - column:
+                  name: "name"
+                  value: "Búp sen xanh"
+              - column:
+                  name: "author"
+                  value: "son tung"
+              - column:
+                  name: "isReady"
+                  value: "0"
+              - column:
+                  name: "createdAt"
+                  valueDate: "2024-12-19 12:06:49"
+              - column:
+                  name: "updatedAt"
+                  valueDate: "2024-12-19 12:06:49"
+        - insert:
+            tableName: "book"
+            columns:
+              - column:
+                  name: "id"
+                  value: "168a8d64-d333-4eb8-8375-fee7569f0162"
+              - column:
+                  name: "name"
+                  value: "stringaaaaa    a"
+              - column:
+                  name: "author"
+                  value: "string"
+              - column:
+                  name: "isReady"
+                  value: "1"
+              - column:
+                  name: "createdAt"
+                  valueDate: "2024-12-19 12:06:49"
+              - column:
+                  name: "updatedAt"
+                  valueDate: "2024-12-19 12:06:49"
+        - insert:
+            tableName: "book"
+            columns:
+              - column:
+                  name: "id"
+                  value: "3"
+              - column:
+                  name: "name"
+                  value: "Tu?i th? d? d?i - T?p 1"
+              - column:
+                  name: "author"
+                  value: "Phùng Quán"
+              - column:
+                  name: "isReady"
+                  value: "1"
+              - column:
+                  name: "createdAt"
+                  valueDate: "2024-12-19 12:06:49"
+              - column:
+                  name: "updatedAt"
+                  valueDate: "2024-12-19 12:06:49"
+        - insert:
+            tableName: "book"
+            columns:
+              - column:
+                  name: "id"
+                  value: "3dab2b83-9d75-43f4-831e-c4235df4f4de"
+              - column:
+                  name: "name"
+                  value: "string"
+              - column:
+                  name: "author"
+                  value: "string"
+              - column:
+                  name: "isReady"
+                  value: "1"
+              - column:
+                  name: "createdAt"
+                  valueDate: "2024-12-19 12:06:49"
+              - column:
+                  name: "updatedAt"
+                  valueDate: "2024-12-19 12:06:49"
+        - insert:
+            tableName: "book"
+            columns:
+              - column:
+                  name: "id"
+                  value: "4"
+              - column:
+                  name: "name"
+                  value: "Astérix - Astérix và cái v?c"
+              - column:
+                  name: "author"
+                  value: "René Goscinny"
+              - column:
+                  name: "isReady"
+                  value: "1"
+              - column:
+                  name: "createdAt"
+                  valueDate: "2024-12-19 12:06:49"
+              - column:
+                  name: "updatedAt"
+                  valueDate: "2024-12-19 12:06:49"
+ 
