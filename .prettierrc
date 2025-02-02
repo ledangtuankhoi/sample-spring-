@@ -1,0 +1,12 @@
+{
+    "tabWidth": 4,
+    "useTabs": false,
+    "semi": false,
+    "singleQuote": true,
+    "arrowParens": "avoid",
+    "plugins": [
+        "@prettier/plugin-xml",
+        "prettier-plugin-java",
+        "prettier-plugin-sql"
+    ]
+}
