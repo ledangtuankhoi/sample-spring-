@@ -54,16 +54,7 @@ public class BorrowingEntity {
 
     @NotNull
     private String employeeId;
-
-    // @ManyToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name = "bookId", nullable = false)
-    // @JsonBackReference
-    // private BookEntity book;
-
-    // @ManyToOne(fetch = FetchType.EAGER)
-    // @JoinColumn(name = "employeeId", nullable = false)
-    // @JsonBackReference
-    // private EmployeeEntity employee;
+ 
 
     public enum Status {
         BORROWED,

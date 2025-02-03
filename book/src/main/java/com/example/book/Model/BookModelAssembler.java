@@ -18,9 +18,11 @@ public class BookModelAssembler
         return EntityModel.of(
             entity,
             linkTo(
-                methodOn(BookController.class).get(entity.getId())
+                methodOn(BookController.class).getBook(entity.getId())
             ).withSelfRel(),
-            linkTo(methodOn(BookController.class).all()).withRel("books")
+            linkTo(methodOn(BookController.class).getAllBooks()).withRel(
+                "books"
+            )
         );
     }
 }

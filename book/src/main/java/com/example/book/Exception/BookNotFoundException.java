@@ -8,5 +8,6 @@ public class BookNotFoundException extends RuntimeException {
 
     public BookNotFoundException(String id) {
         super("not found by: " + id);
+        System.err.println("not found by: " + id);
     }
 }
