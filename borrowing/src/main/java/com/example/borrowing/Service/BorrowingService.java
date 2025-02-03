@@ -1,5 +1,6 @@
 package com.example.borrowing.Service;
 
+import com.example.borrowing.Exception.BookServiceException;
 import com.example.borrowing.Model.BookEntity;
 import com.example.borrowing.Model.BorrowingEntity;
 import com.example.borrowing.Model.EmployeeEntity;
@@ -40,17 +41,25 @@ public class BorrowingService {
     //         .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
 
     public boolean isBook(String bookId) {
-        if (bookService.getBookById(bookId).getId().isEmpty()) {
+        try {
+            if (bookService.getBookById(bookId).getId().isEmpty() == false) {
+                return true;
+            }
             return false;
+        } catch (Exception e) {
+            throw e;
         }
-        return true;
     }
 
     public boolean isEmpl(String emplId) {
-        if (employeeService.getById(emplId).getId().isEmpty()) {
+        try {
+            if (employeeService.getById(emplId).getId().isEmpty() == false) {
+                return true;
+            }
             return false;
+        } catch (Exception e) {
+            throw e;
         }
-        return true;
     }
 
     //     BookEntity bookEntity = bookRepository

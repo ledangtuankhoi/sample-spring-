@@ -114,34 +114,41 @@ public class BorrowingController {
         System.err.println("book" + bookId + " empl" + emplId);
         System.err.println(request);
 
-        // Kiểm tra sách có tồn tại không
-        if (!borrowingService.isBook(bookId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                "Book with ID " + bookId + " not found"
+        try {
+            // Kiểm tra sách có tồn tại không
+            if (!borrowingService.isBook(bookId)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Book with ID " + bookId + " not found"
+                );
+            }
+
+            // Kiểm tra nhân viên có tồn tại không
+            if (!borrowingService.isEmpl(emplId)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Employee with ID " + emplId + " not found"
+                );
+            }
+
+            // Tạo bản ghi mượn sách
+            BorrowingEntity borrowing = new BorrowingEntity();
+            borrowing.setBookId(bookId);
+            borrowing.setEmployeeId(emplId);
+            borrowing.setStatus(BorrowingEntity.Status.BORROWED);
+            borrowing.setCreatedAt(Instant.now());
+            borrowing.setUpdatedAt(Instant.now());
+
+            borrowing = borrowingService.save(borrowing);
+
+            // Gửi sự kiện Kafka để thông báo cho các service khác
+            // kafkaProducer.sendBorrowingEvent(borrowing);
+
+            return ResponseEntity.status(HttpStatus.CREATED).body(borrowing);
+        } catch (Exception e) {
+            // TODO: handle exception
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                "An error occurred: " + e.getMessage()
             );
         }
-
-        // Kiểm tra nhân viên có tồn tại không
-        if (!borrowingService.isEmpl(emplId)) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                "Employee with ID " + emplId + " not found"
-            );
-        }
-
-        // Tạo bản ghi mượn sách
-        BorrowingEntity borrowing = new BorrowingEntity();
-        borrowing.setBookId(bookId);
-        borrowing.setEmployeeId(emplId);
-        borrowing.setStatus(BorrowingEntity.Status.BORROWED);
-        borrowing.setCreatedAt(Instant.now());
-        borrowing.setUpdatedAt(Instant.now());
-
-        borrowing = borrowingService.save(borrowing);
-
-        // Gửi sự kiện Kafka để thông báo cho các service khác
-        // kafkaProducer.sendBorrowingEvent(borrowing);
-
-        return ResponseEntity.status(HttpStatus.CREATED).body(borrowing);
     }
 
     // --------------------
