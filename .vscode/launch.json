@@ -1,0 +1,33 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "type": "java",
+            "request": "attach",
+            "name": "A- Gateway",
+            "hostName": "localhost",
+            "port": 5000
+        },
+        {
+            "type": "java",
+            "request": "attach",
+            "name": "A- Book",
+            "hostName": "localhost",
+            "port": 5005
+        },
+        {
+            "type": "java",
+            "request": "attach",
+            "name": "A- Empl",
+            "hostName": "localhost",
+            "port": 5006
+        },
+        {
+            "type": "java",
+            "request": "attach",
+            "name": "A- Borrowing",
+            "hostName": "localhost",
+            "port": 5007
+        }
+    ]
+}

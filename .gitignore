@@ -31,7 +31,7 @@ build/
 !**/src/test/**/build/
 
 ### VS Code ###
-.vscode/
+# .vscode/
 
 # MacOS
 .DS_Store
@@ -56,7 +56,7 @@ Thumbs.db
 # IDEs
 .idea/
 *.iml
-.vscode/
+# .vscode/
 
 # Maven
 /.mvn/

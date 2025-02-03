@@ -1,0 +1,264 @@
+services:
+    gateway:
+        build:
+            context: ./gateway
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - 8080:8080
+        networks:
+            - share-network
+        environment:
+            - SPRING_PROFILES_ACTIVE=docker
+            - SPRING_DEVTOOLS_REMOTE_DEBUG=true
+            - JAVA_OPTS=-Dspring.devtools.restart.enabled=true
+            # - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka-server:8761/eureka
+        volumes:
+            - .m2:/root/.m2
+            - ./gateway/src:/app/src
+            - ./gateway/pom.xml:/app/pom.xml
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007"
+        depends_on:
+            - eureka
+    eureka:
+        build:
+            context: ./eureka-server
+            dockerfile: Dockerfile
+        restart: always
+        ports:
+            - 8761:8761
+        networks:
+            - share-network
+        environment:
+            - SPRING_PROFILES_ACTIVE=docker
+            - EUREKA_INSTANCE_HOSTNAME=eureka-server
+            - EUREKA_CLIENT_REGISTER_WITH_EUREKA=false
+            - EUREKA_CLIENT_FETCH_REGISTRY=false
+
+        volumes:
+            - .m2:/root/.m2
+            - ./eureka-server/src:/app/src
+            - ./eureka-server/pom.xml:/app/pom.xml
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007"
+
+    zookeeper:
+        image: confluentinc/cp-zookeeper:latest
+        container_name: zookeeper
+        environment:
+            ZOOKEEPER_CLIENT_PORT: 2181
+            ZOOKEEPER_TICK_TIME: 2000
+        ports:
+            - '2181:2181'
+        networks:
+            - share-network
+
+    kafka:
+        image: confluentinc/cp-kafka:latest
+        container_name: kafka
+        depends_on:
+            - zookeeper
+        ports:
+            - '9092:9092'
+        restart: always
+        environment:
+            KAFKA_ZOOKEEPER_CONNECT: zookeeper:2181
+            KAFKA_ADVERTISED_LISTENERS: PLAINTEXT://kafka:9092
+            KAFKA_LISTENERS: PLAINTEXT://0.0.0.0:9092
+            KAFKA_OFFSETS_TOPIC_REPLICATION_FACTOR: 1
+            KAFKA_MAX_REQUEST_SIZE: 20971520 # 20MB
+            KAFKA_MESSAGE_MAX_BYTES: 20971520 #
+            # KAFKA_LOG4J_LOGGERS: "kafka=DEBUG,org.apache.kafka=DEBUG"
+
+        networks:
+            - share-network
+        links:
+            - zookeeper:zookeeper
+
+    # -----BOOK
+    book:
+        build:
+            context: ./book
+            dockerfile: Dockerfile
+        # restart: always
+        # deploy:
+        #   restart_policy:
+        #     condition: on-failure
+        #     max-attempts: 3
+        ports:
+            - 8081:8081
+            - 5005:5005 # Debug port
+
+        networks:
+            - book-net
+            - share-network
+        environment:
+            - JAVA_OPTS=-Dspring.devtools.restart.enabled=true
+            # - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+            - SPRING_PROFILES_ACTIVE=docker
+            - SPRING_DEVTOOLS_REMOTE_DEBUG=true
+        # - spring.datasource.url=jdbc:mysql://book-mysqldb:3306/book?allowPublicKeyRetrieval=true
+        # - SPRING_DEVTOOLS_REMOTE_DEBUG=true
+        # - SPRING_PROFILES_ACTIVE=docker
+        # - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka:8761/eureka
+        # - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+        volumes:
+            - .m2:/root/.m2
+            - ./book/src:/app/src # Đồng bộ mã nguồn
+            - ./book/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" # Chạy ứng dụng Spring Boot với Maven (hot reload)
+        depends_on:
+            - eureka
+            - book-mysqldb
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m' # Giới hạn kích thước log mỗi file
+                max-file: '6' # Lưu 6 file, tương đương với 1 giờ logs (nếu mỗi file chứa log 10 phút)
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 3s
+                max_attempts: 3
+                window: 60s
+    book-mysqldb:
+        image: 'mysql:8.0'
+        restart: always
+        # ports:
+        #   - 3306:3306
+        expose:
+            - 3306
+        networks:
+            - book-net
+        environment:
+            MYSQL_DATABASE: book
+            MYSQL_USER: user1
+            MYSQL_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: password
+
+    # -----END BOOK
+
+    # -----EMPL
+    empl:
+        build:
+            context: ./empl
+            dockerfile: Dockerfile
+        ports:
+            - 8082:8082
+            - 5006:5006 # Debug port
+        networks:
+            - empl-net
+            - share-network
+        environment:
+            - JAVA_OPTS=-Dspring.devtools.restart.enabled=true
+            # - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006
+            - SPRING_PROFILES_ACTIVE=docker
+            - SPRING_DEVTOOLS_REMOTE_DEBUG=true
+        # - spring.datasource.url=jdbc:mysql://empl-mysqldb:3306/empl?allowPublicKeyRetrieval=true
+        # - SPRING_DEVTOOLS_REMOTE_DEBUG=true
+        # - SPRING_PROFILES_ACTIVE=docker
+        # - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka:8761/eureka
+        # - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+        volumes:
+            - .m2:/root/.m2
+            - ./empl/src:/app/src # Đồng bộ mã nguồn
+            - ./empl/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006" # Chạy ứng dụng Spring Boot với Maven (hot reload)
+        depends_on:
+            - eureka
+            - empl-mysqldb
+        # restart: always
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m' # Giới hạn kích thước log mỗi file
+                max-file: '6' # Lưu 6 file, tương đương với 1 giờ logs (nếu mỗi file chứa log 10 phút)
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 3s
+                max_attempts: 3
+                window: 60s
+    empl-mysqldb:
+        container_name: 'empl-mysqldb'
+        image: 'mysql:8.0'
+        restart: always
+        # ports:
+        #   - 3306:3306
+        expose:
+            - 3306
+        networks:
+            - empl-net
+        environment:
+            MYSQL_DATABASE: empl
+            MYSQL_USER: user1
+            MYSQL_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: password
+
+    # -----END EMPL
+
+    # -----BORROWING
+    borrowing:
+        build:
+            context: ./borrowing
+            dockerfile: Dockerfile
+        # restart: always
+        ports:
+            - 8083:8083
+            - 5007:5007 # Debug port
+        networks:
+            - borrowing-net
+            - share-network
+        environment:
+            - JAVA_OPTS=-Dspring.devtools.restart.enabled=true
+            # - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007
+            - SPRING_PROFILES_ACTIVE=docker
+            - SPRING_DEVTOOLS_REMOTE_DEBUG=true
+        # - spring.datasource.url=jdbc:mysql://borrowing-mysqldb:3306/borrowing?allowPublicKeyRetrieval=true
+        # - SPRING_DEVTOOLS_REMOTE_DEBUG=true
+        # - SPRING_PROFILES_ACTIVE=docker
+        # - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka:8761/eureka
+        # - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+        volumes:
+            - .m2:/root/.m2
+            - ./borrowing/src:/app/src # Đồng bộ mã nguồn
+            - ./borrowing/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
+        # Chạy ứng dụng Spring Boot với Maven (hot reload)
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007" 
+
+        depends_on:
+            - eureka
+            - borrowing-mysqldb
+        logging:
+            driver: 'json-file'
+            options:
+                max-size: '10m' # Giới hạn kích thước log mỗi file
+                max-file: '6' # Lưu 6 file, tương đương với 1 giờ logs (nếu mỗi file chứa log 10 phút)
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 3s
+                max_attempts: 3
+                window: 60s
+    borrowing-mysqldb:
+        container_name: borrowing-mysqldb
+        image: 'mysql:8.0'
+        restart: always
+        # ports:
+        #   - 3306:3306
+        expose:
+            - 3306
+        networks:
+            - borrowing-net
+        environment:
+            MYSQL_DATABASE: borrowing
+            MYSQL_USER: user1
+            MYSQL_PASSWORD: password
+            MYSQL_ROOT_PASSWORD: password
+
+# -----END BORROWING
+
+networks:
+    book-net:
+    empl-net:
+    borrowing-net:
+    share-network:
