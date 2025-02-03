@@ -1,0 +1,132 @@
+databaseChangeLog:
+    - changeSet:
+          id: '1'
+          author: yourname
+          changes:
+              - createTable:
+                    tableName: borrowing
+                    columns:
+                        - column:
+                              name: id
+                              type: varchar(255)
+                              constraints:
+                                  primaryKey: true
+                                  nullable: false
+                        - column:
+                              name: bookId
+                              type: varchar(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: employeeId
+                              type: varchar(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: returnBorrowing
+                              type: timestamp
+                              constraints:
+                                  nullable: true
+                        - column:
+                              name: status
+                              type: varchar(32)
+                              defaultValue: 'BORROWED'
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: createdAt
+                              type: timestamp
+                              constraints:
+                                  nullable: true
+                        - column:
+                              name: updatedAt
+                              type: timestamp
+                              constraints:
+                                  nullable: true
+
+    - changeSet:
+          id: '2'
+          author: yourname
+          changes:
+              - insert:
+                    tableName: borrowing
+                    columns:
+                        - column:
+                              name: id
+                              value: '125e86b1-3860-4ef1-ad1f-8ba7b50bb9b7'
+                        - column:
+                              name: bookId
+                              value: '1'
+                        - column:
+                              name: employeeId
+                              value: '2'
+                        - column:
+                              name: status
+                              value: 'BORROWED'
+                        - column:
+                              name: returnBorrowing
+                              valueDate: '2024-12-20 09:52:04'
+                        - column:
+                              name: createdAt
+                              valueDate: '2024-12-20 09:53:27'
+                        - column:
+                              name: updatedAt
+                              valueDate: '2024-12-20 09:55:40'
+
+    - changeSet:
+          id: '3'
+          author: yourname
+          changes:
+              - insert:
+                    tableName: borrowing
+                    columns:
+                        - column:
+                              name: id
+                              value: '88f38aaa-b096-4e79-84e5-6761657e532e'
+                        - column:
+                              name: bookId
+                              value: '3'
+                        - column:
+                              name: employeeId
+                              value: '2'
+                        - column:
+                              name: status
+                              value: 'BORROWED'
+                        - column:
+                              name: returnBorrowing
+                              valueDate: '2024-12-20 09:52:04'
+                        - column:
+                              name: createdAt
+                              valueDate: '2024-12-20 09:53:27'
+                        - column:
+                              name: updatedAt
+                              valueDate: '2024-12-20 09:55:40'
+
+    - changeSet:
+          id: '4'
+          author: yourname
+          changes:
+              - insert:
+                    tableName: borrowing
+                    columns:
+                        - column:
+                              name: id
+                              value: 'cc6ab229-fc50-4877-8269-86e4afa7aa36'
+                        - column:
+                              name: bookId
+                              value: '5'
+                        - column:
+                              name: employeeId
+                              value: '2'
+                        - column:
+                              name: status
+                              value: 'CANCELED'
+                        - column:
+                              name: returnBorrowing
+                              valueDate: '2024-12-20 09:52:04'
+                        - column:
+                              name: createdAt
+                              valueDate: '2024-12-20 09:53:27'
+                        - column:
+                              name: updatedAt
+                              valueDate: '2024-12-20 09:55:40'

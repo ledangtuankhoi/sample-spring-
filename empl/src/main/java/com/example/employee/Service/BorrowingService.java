@@ -28,22 +28,7 @@ public class BorrowingService {
         this.serviceUrl = ServiceUrl;
         this.bookService = bookService;
     }
-
-    // public EmployeeEntity getEmployeeDetails(Long employeeId) {
-    //     // Dùng Eureka service discovery
-    //     String url =
-    //         emplyeeServiceUrl + "/employee/api/v1/employees/" + employeeId;
-    //     return restTemplate.getForObject(url, EmployeeEntity.class);
-    // }
-
-    // public EmployeeEntity getEmployeeDetailsWithApigetway(Long employeeId) {
-    //     // Dùng Eureka service discovery
-    //     String url =
-    //         emplyeeServiceUrlAPIGateway + "/api/v1/employees/" + employeeId;
-    //     System.out.println("url: " + url);
-    //     return restTemplate.getForObject(url, EmployeeEntity.class);
-    // }
-
+ 
     public List<BorrowingEntity> getBorrowingByEmplId(String id) {
         // http://localhost:8080/borrowing/api/v1/employee/{employeeId}?employeeId=
         String url = serviceUrl + "api/v1/employee/" + id;
