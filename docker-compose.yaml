@@ -170,6 +170,7 @@ services:
                 max_attempts: 3
                 window: 60s
     empl-mysqldb:
+        container_name: 'empl-mysqldb'
         image: 'mysql:8.0'
         restart: always
         # ports:
@@ -224,6 +225,7 @@ services:
                 max_attempts: 3
                 window: 60s
     borrowing-mysqldb:
+        container_name: borrowing-mysqldb
         image: 'mysql:8.0'
         restart: always
         # ports:

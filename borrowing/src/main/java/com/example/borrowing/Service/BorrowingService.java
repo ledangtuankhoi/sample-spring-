@@ -15,19 +15,43 @@ public class BorrowingService {
     @Autowired
     private BorrowingRepository borrowingRepository;
 
-    public BorrowingService(BorrowingRepository borrowingRepository) {
+    private BookService bookService;
+    private EmployeeService employeeService;
+
+    public BorrowingService(
+        BorrowingRepository borrowingRepository,
+        BookService bookService,
+        EmployeeService employeeService
+    ) {
         this.borrowingRepository = borrowingRepository;
+        this.bookService = bookService;
+        this.employeeService = employeeService;
     }
 
     public List<BorrowingEntity> getByEmplId(String id) {
         System.err.println("id: " + id);
         return borrowingRepository.findByEmployeeId(id);
     }
+
     // @Override
     // public BorrowingEntity updateBorrowing(String employeeId, String bookId) {
     //     EmployeeEntity employeeEntity = employeeRepository
     //         .findById(employeeId)
     //         .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
+
+    public boolean isBook(String bookId) {
+        if (bookService.getBookById(bookId).getId().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isEmpl(String emplId) {
+        if (employeeService.getById(emplId).getId().isEmpty()) {
+            return false;
+        }
+        return true;
+    }
 
     //     BookEntity bookEntity = bookRepository
     //         .findById(bookId)
@@ -36,6 +60,9 @@ public class BorrowingService {
     //         bookId
     //     );
 
+    public BorrowingEntity save(BorrowingEntity borrowing) {
+        return borrowingRepository.save(borrowing);
+    }
     //     // if (borrowingEntity.getBook().getId().equals(bookEntity.getId())) {
     //     //   System.err.println("\"borrorwing does not belongs to book\"");
     //     // }

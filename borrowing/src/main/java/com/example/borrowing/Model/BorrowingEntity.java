@@ -90,4 +90,9 @@ public class BorrowingEntity {
         this.bookId = bookId;
         this.employeeId = employeeId;
     }
+
+    public BorrowingEntity(String bookId, String employeeId) {
+        this.bookId = bookId;
+        this.employeeId = employeeId;
+    }
 }
