@@ -139,3 +139,15 @@ Each service supports environment variables for configuration. Example:
 ---
 
 Feel free to customize and extend this setup to fit your use case! 🎉
+
+Bạn muốn xem message của Producer gửi và các service đang trong group (Consumer Group đang lắng nghe message). Dưới đây là các cách thực hiện trong Docker với Kafka của Confluent.
+
+## ✅ **Tóm tắt các bước**
+
+| **Mục đích**                                                        | **Lệnh cần chạy trong Kafka Container**                                                        |
+| ------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------- |
+| **Xem message trong topic**                                         | `kafka-console-consumer --bootstrap-server localhost:9092 --topic book-topic --from-beginning` |
+| **Liệt kê tất cả Consumer Group**                                   | `kafka-consumer-groups --bootstrap-server localhost:9092 --list`                               |
+| **Xem chi tiết Consumer Group (các service đang tiêu thụ message)** | `kafka-consumer-groups --bootstrap-server localhost:9092 --group book-group --describe`        |
+
+Bạn thử làm theo và kiểm tra log nhé! 🚀

@@ -5,6 +5,7 @@ import com.example.borrowing.DTO.BorrowingRequestDTO;
 import com.example.borrowing.Mappers.BorrowingMapper;
 import com.example.borrowing.Model.BorrowingEntity;
 import com.example.borrowing.Model.BorrowingModelAssembler;
+import com.example.borrowing.Producer.BorrowingProducer;
 import com.example.borrowing.Repository.BorrowingRepository;
 import com.example.borrowing.Service.BorrowingService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -41,6 +42,9 @@ public class BorrowingController {
 
     @Autowired
     private BorrowingMapper mapper;
+
+    @Autowired
+    private BorrowingProducer borrowingProducer;
 
     public BorrowingController() {}
 
@@ -140,7 +144,7 @@ public class BorrowingController {
             borrowing = borrowingService.save(borrowing);
 
             // Gửi sự kiện Kafka để thông báo cho các service khác
-            // kafkaProducer.sendBorrowingEvent(borrowing);
+            borrowingProducer.sendBorrowingEvent(borrowing);
 
             return ResponseEntity.status(HttpStatus.CREATED).body(borrowing);
         } catch (Exception e) {

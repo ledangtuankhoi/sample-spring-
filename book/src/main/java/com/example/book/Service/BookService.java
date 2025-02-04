@@ -47,6 +47,11 @@ public class BookService {
         return entity;
     }
 
+    public BookDTO getById(String id) {
+        BookEntity book = repository.findById(id).orElse(null);
+        return mapper.toDto(book);
+    }
+
     public List<BookDTO> getAll() {
         List<BookEntity> books = repository.findAll();
 
