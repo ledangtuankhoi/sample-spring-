@@ -12,6 +12,7 @@ import com.example.borrowing.Service.BorrowingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import jakarta.validation.Valid;
 import java.time.Instant;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,7 @@ import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -30,6 +32,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/borrowing/api/v1")
+@Validated
 public class BorrowingController {
 
     @Autowired
@@ -112,7 +115,7 @@ public class BorrowingController {
     )
     @PostMapping("")
     public ResponseEntity<?> borrowingBook(
-        @RequestBody BorrowingRequestDTO request
+        @Valid @RequestBody BorrowingRequestDTO request
     ) {
         String bookId = request.getBookId();
         String emplId = request.getEmployeeId();
@@ -139,7 +142,7 @@ public class BorrowingController {
             BorrowingEntity borrowing = new BorrowingEntity();
             borrowing.setBookId(bookId);
             borrowing.setEmployeeId(emplId);
-            borrowing.setStatus(BorrowingEntity.Status.BORROWED); 
+            borrowing.setStatus(BorrowingEntity.Status.BORROWED);
 
             borrowingService.save(borrowing);
 
@@ -151,13 +154,15 @@ public class BorrowingController {
                 .body(borrowing);
             // .body(new BorrowingEntity(bookId, emplId));
         } catch (BookServiceException e) {
+            System.err.println(e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 "An error occurred: " + e.getMessage()
             );
         } catch (Exception e) {
             // TODO: handle exception
+            System.err.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                "An error occurred: " + e.getMessage()
+                "something went wrong"
             );
         }
     }
