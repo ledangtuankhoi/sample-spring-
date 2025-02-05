@@ -1,5 +1,6 @@
 package com.example.borrowing.Model;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -20,9 +21,6 @@ import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 // lombok
-@Data
-@NoArgsConstructor
-// JPA
 @Entity
 @Table(name = "borrowing")
 public class BorrowingEntity {
@@ -50,9 +48,11 @@ public class BorrowingEntity {
     private Status status = Status.BORROWED;
 
     @NotNull
+    @JsonProperty("bookId")
     private String bookId;
 
     @NotNull
+    @JsonProperty("employeeId")
     private String employeeId;
 
     // @ManyToOne(fetch = FetchType.EAGER)
@@ -94,5 +94,63 @@ public class BorrowingEntity {
     public BorrowingEntity(String bookId, String employeeId) {
         this.bookId = bookId;
         this.employeeId = employeeId;
+    }
+
+    public BorrowingEntity() {}
+
+    public String getId() {
+        return this.id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Instant getReturnBorrowing() {
+        return this.returnBorrowing;
+    }
+
+    public void setReturnBorrowing(Instant returnBorrowing) {
+        this.returnBorrowing = returnBorrowing;
+    }
+
+    public Status getStatus() {
+        return this.status;
+    }
+
+    public void setStatus(Status status) {
+        this.status = status;
+    }
+
+    public String getBookId() {
+        return this.bookId;
+    }
+
+    public void setBookId(String bookId) {
+        this.bookId = bookId;
+    }
+
+    public String getEmployeeId() {
+        return this.employeeId;
+    }
+
+    public void setEmployeeId(String employeeId) {
+        this.employeeId = employeeId;
+    }
+
+    public Instant getCreatedAt() {
+        return this.createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return this.updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
     }
 }
