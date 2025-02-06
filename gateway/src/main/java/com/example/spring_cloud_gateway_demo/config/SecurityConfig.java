@@ -45,19 +45,5 @@ public class SecurityConfig {
             .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
             .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
             .build();
-    }
-    // @Bean
-    // public CorsWebFilter corsWebFilter() {
-    //     CorsConfiguration corsConfig = new CorsConfiguration();
-    //     corsConfig.addAllowedOrigin("*"); // Cho phép mọi nguồn gốc
-    //     corsConfig.addAllowedMethod("*"); // Cho phép mọi phươSng thức HTTP
-    //     corsConfig.addAllowedHeader("*"); // Cho phép mọi header
-    //     corsConfig.setAllowCredentials(true);
-
-    //     UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-    //     source.registerCorsConfiguration("/**", corsConfig);
-
-    //     return new CorsWebFilter(source);
-    // }
-
+    } 
 }

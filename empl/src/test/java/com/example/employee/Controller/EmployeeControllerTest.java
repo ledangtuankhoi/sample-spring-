@@ -32,31 +32,5 @@ public class EmployeeControllerTest {
     private EmployeeController employeeController;
 
     @Test
-    void testGetBooksBorrowed() {
-        // String emplid = "2";
-
-        // BookEntity bookEntity = new BookEntity("asdf", "aasdfasd", true);
-
-        // EmployeeEntity employeeEntity = new EmployeeEntity(
-        //     "13",
-        //     "123",
-        //     "sdfa",
-        //     true
-        // );
-
-        // // BorrowingEntity borrowingEntity = new BorrowingEntity("2", );
-        // LocalDateTime localDateTime = LocalDateTime.now();
-        // Instant instant = localDateTime.toInstant(ZoneOffset.UTC);
-        // BorrowingEntity borrowingEntity = new BorrowingEntity(
-        //     instant,
-        //     Status.BORROWED,
-        //     "2",
-        //     "2"
-        // );
-
-        // List<BookEntity> result = employeeController.getBooksBorrowed(emplid);
-
-        // assertNotNull(result);
-        // assertEquals("2", result.get(0).getId());
-    }
+    void testGetBooksBorrowed() {}
 }

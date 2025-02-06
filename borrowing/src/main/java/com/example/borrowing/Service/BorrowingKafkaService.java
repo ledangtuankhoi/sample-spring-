@@ -37,15 +37,7 @@ public class BorrowingKafkaService {
         this.borrowingRepository = borrowingRepository;
         this.bookService = bookService;
         this.employeeService = employeeService;
-    }
-
-    // public boolean checkBookidAndEmplId(String bookId, String emplId) {
-    //     // send message to another serrice with kafka
-    //     borrowingProducer.sendBookCheck(bookId, emplId);
-    //     // check if bookId and emplId is valid
-    //     return true; // Assuming a return value is needed
-    // }
-
+    } 
     public void sendRequestBorrowBook(
         String requestId,
         String bookId,

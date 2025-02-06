@@ -33,33 +33,6 @@ public class EmployeeServiceTest {
     private EmployeeRepository employeeRepository;
 
     @Test
-    void testGetBooksBorrowed() throws Exception {
-        // // Mock data
-        // String employeeId = "123";
-        // List<BookEntity> mockBooks = Arrays.asList(
-        //     new BookEntity("book1", "Book 1", true),
-        //     new BookEntity("book2", "Book 2", true)
-        // );
-
-        // // Mock behavior of service
-        // when(employeeService.getBooksBorrowedByEmplId(employeeId)).thenReturn(
-        //     mockBooks
-        // );
-
-        // // Perform GET request and verify response
-        // mockMvc
-        //     .perform(
-        //         get(
-        //             "/api/v1/employees/{employeeId}/books",
-        //             employeeId
-        //         ).contentType(MediaType.APPLICATION_JSON)
-        //     )
-        //     .andExpect(status().isOk())
-        //     .andExpect(jsonPath("$.length()").value(2))
-        //     .andExpect(jsonPath("$[0].name").value("Book 1"))
-        //     .andExpect(jsonPath("$[1].name").value("Book 2"));
-
-        // // Verify service interaction
-        // verify(employeeService, times(1)).getBooksBorrowedByEmplId(employeeId);
+    void testGetBooksBorrowed() throws Exception { 
     }
 }

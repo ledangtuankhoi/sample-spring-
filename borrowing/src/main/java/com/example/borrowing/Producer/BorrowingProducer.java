@@ -60,45 +60,7 @@ public class BorrowingProducer {
         }
     }
 
-    // public void sendBookCheck(String bookId, String emplId) {
-    //     try {
-    //         BorrowingRequest borrowingRequest = new BorrowingRequest(
-    //             bookId,
-    //             emplId
-    //         );
-
-    //         kafkaTemplate.send(
-    //             KafkaConstants.BORROWING_REQUEST,
-    //             objecmapper.writeValueAsString(borrowingRequest)
-    //         );
-    //     } catch (Exception e) {
-    //         // TODO: handle exception
-    //         e.printStackTrace();
-    //     }
-    // }
-
-    // public void sendBorrowingBookValidationBook(String id) {
-    //     // TODO Auto-generated method stub
-    //     try {
-    //         BorrowingRequest borrowingRequest = new BorrowingRequest(
-    //             bookId,
-    //             emplId
-    //         );
-
-    //         kafkaTemplate.send(
-    //             KafkaConstants.BORROWING_REQUEST,
-    //             objecmapper.writeValueAsString(borrowingRequest)
-    //         );
-    //     } catch (Exception e) {
-    //         // TODO: handle exception
-    //         e.printStackTrace();
-    //     }
-    // }
-
     public void sendValidate(String requestId, String bookId, String emplId) {
-        // // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'sendValidate'");
-
         try {
             BorrowingRequest borrowingRequest = new BorrowingRequest(
                 requestId,
@@ -116,9 +78,6 @@ public class BorrowingProducer {
     }
 
     public void sendUpdateStatus(String bookId, String emplId, Status status) {
-        // // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'sendUpdateStatus'");
-
         try {
             BorrowingUpdateEvent event = new BorrowingUpdateEvent(
                 bookId,

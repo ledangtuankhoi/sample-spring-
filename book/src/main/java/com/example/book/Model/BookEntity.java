@@ -21,12 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "book")
-// id VARCHAR(255) NOT NULL,
-// name VARCHAR(255) NOT NULL,
-// author VARCHAR(255),
-// isReady BOOLEAN,
-// PRIMARY KEY (id, name)
+@Table(name = "book") 
 
 public class BookEntity {
 

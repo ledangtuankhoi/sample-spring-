@@ -11,10 +11,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 public class SpringCloudGatewayDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringCloudGatewayDemoApplication.class, args);
-        //     try (AnnotationConfigApplicationContext context
-        //     = new AnnotationConfigApplicationContext(SpringSecurity6Application.class)) {
-        //       context.getBean(NettyContext.class).onClose().block();
-        //   }
+        SpringApplication.run(SpringCloudGatewayDemoApplication.class, args); 
     }
 }

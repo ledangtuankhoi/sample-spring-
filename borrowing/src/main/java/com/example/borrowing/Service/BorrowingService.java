@@ -39,13 +39,7 @@ public class BorrowingService {
         System.err.println("id: " + id);
         return borrowingRepository.findByBookId(id);
     }
-
-    // @Override
-    // public BorrowingEntity updateBorrowing(String employeeId, String bookId) {
-    //     EmployeeEntity employeeEntity = employeeRepository
-    //         .findById(employeeId)
-    //         .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
-
+ 
     public boolean isBook(String bookId) {
         if (bookService.getBookById(bookId).getId().isEmpty() == false) {
             return true;
@@ -63,14 +57,7 @@ public class BorrowingService {
             throw e;
         }
     }
-
-    //     BookEntity bookEntity = bookRepository
-    //         .findById(bookId)
-    //         .orElseThrow(() -> new BookNotFoundException(bookId));
-    //     BorrowingEntity borrowingEntity = borrowingRepository.findByBookId(
-    //         bookId
-    //     );
-
+ 
     public BorrowingEntity save(BorrowingEntity borrowing) {
         BorrowingEntity entityOld =
             borrowingRepository.findByBookIdAndEmployeeId(
@@ -81,9 +68,7 @@ public class BorrowingService {
         // if (entityOld == null) {
         //     return borrowingRepository.save(borrowing);
         // }
-        if (entityOld == null) {
-            // return borrowingRepository.save(borrowing);
-            // borrowingProducer.sendUpdateStatus(bookId, emplId, Status.BORROWED);
+        if (entityOld == null) { 
             return borrowingRepository.save(borrowing);
         }
         // So sánh nếu có sự khác biệt
@@ -95,17 +80,10 @@ public class BorrowingService {
 
             return borrowingRepository.save(entityOld);
         }
-        return entityOld;
-        // throw new RuntimeException("Book is already borrowed");
-    }
+        return entityOld; 
+    } 
 
-    //     // if (borrowingEntity.getBook().getId().equals(bookEntity.getId())) {
-    //     //   System.err.println("\"borrorwing does not belongs to book\"");
-    //     // }
-
-    public void updateStatus(String borrwingId, Status status) {
-        // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'updateStatus'");
+    public void updateStatus(String borrwingId, Status status) { 
         borrowingRepository.updateStatusById(borrwingId, status);
     }
 
@@ -117,45 +95,5 @@ public class BorrowingService {
             bookId,
             employeeId
         );
-    }
-    //     if (borrowingEntity.getStatus() != BorrowingEntity.Status.BORROWED) {
-    //         BorrowingEntity old = borrowingEntity;
-    //         old.setStatus(BorrowingEntity.Status.RETURNED);
-    //         borrowingRepository.save(old);
-    //     }
-    //     BorrowingEntity newEn = borrowingEntity;
-    //     newEn.setStatus(BorrowingEntity.Status.BORROWED);
-    //     newEn.setEmployeeId(employeeEntity.getId());
-    //     borrowingRepository.save(newEn);
-
-    //     return newEn;
-    // }
-
-    // public BorrowingEntity updateStatusToBorrowing(
-    //     String employeeId,
-    //     String bookId,
-    //     BorrowingEntity entity
-    // ) {
-    //     employeeRepository
-    //         .findById(employeeId)
-    //         .orElseThrow(() -> new EmployeeNotFoundException(employeeId));
-
-    //     bookRepository
-    //         .findById(bookId)
-    //         .orElseThrow(() -> new BookNotFoundException(bookId));
-
-    //     BorrowingEntity borrowingEntity =
-    //         borrowingRepository.findByBookIdAndEmployeeId(bookId, employeeId);
-    //     if (borrowingEntity.getId() == null) {
-    //         throw new EntityNotFoundException(
-    //             "No borrowing record found for employee " +
-    //             employeeId +
-    //             " and book " +
-    //             bookId
-    //         );
-    //     }
-    //     borrowingEntity.setStatus(entity.getStatus());
-    //     borrowingEntity.setReturnBorrowing(entity.getReturnBorrowing());
-    //     return borrowingRepository.save(borrowingEntity);
-    // }
+    } 
 }

@@ -98,24 +98,7 @@ public class BorrowingConsumer {
             e.printStackTrace();
         }
     }
-
-    // @KafkaListener(
-    //     topics = KafkaConstants.EMPL_VALIDATION_TOPIC,
-    //     groupId = KafkaConstants.BORROWING_GROUP
-    // )
-    // public void listenEmplAppreval(String event) {
-    //     try {
-    //         BookEntity bookEntity = objectMapper.readValue(
-    //             event,
-    //             BookEntity.class
-    //         );
-    //         System.out.println(bookEntity.getName() + " book is OK.");
-    //         // update validation for borrowing book
-    //         // borrowingProducer.sendBorrowingBookValidationBook(bookEntity.getId());
-    //     } catch (Exception e) {
-    //         e.printStackTrace();
-    //     }
-    // }
+ 
     @KafkaListener(
         topics = KafkaConstants.BORROWING_UPDATE,
         groupId = KafkaConstants.BORROWING_GROUP

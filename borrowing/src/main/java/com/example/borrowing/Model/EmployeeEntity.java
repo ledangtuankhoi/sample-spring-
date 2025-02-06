@@ -21,16 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 // JPA
 @Entity
 @Table(name = "employee")
-public class EmployeeEntity {
-
-    // CREATE TABLE employee (
-    // id VARCHAR(255) NOT NULL,
-    // firstName VARCHAR(255) NOT NULL,
-    // lastName VARCHAR(255),
-    // KIN VARCHAR(255),
-    // isDiscipilined BOOLEAN,
-    // PRIMARY KEY (id)
-    // );
+public class EmployeeEntity { 
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -48,11 +39,7 @@ public class EmployeeEntity {
     private String KIN;
 
     @Column(name = "isDiscipilined")
-    private Boolean isDiscipilined;
-
-    // @OneToMany(mappedBy = "employee", cascade = CascadeType.ALL)
-    // @JsonIgnore
-    // private List<BorrowingEntity> borrowings;
+    private Boolean isDiscipilined; 
 
     @Column(name = "createdAt")
     @CreationTimestamp

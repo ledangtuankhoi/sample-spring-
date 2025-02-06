@@ -23,30 +23,7 @@ public class SwaggerConfigEmployee {
     public SwaggerConfigEmployee(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
     }
-
-    // @Bean
-    // public CorsWebFilter corsWebFilter() {
-    //     CorsConfiguration config = new CorsConfiguration();
-    //     config.addAllowedOrigin("*"); // Cho phép tất cả các domain
-    //     config.addAllowedMethod("*"); // Cho phép tất cả các HTTP methods (GET, POST, PUT, DELETE...)
-    //     config.addAllowedHeader("*"); // Cho phép tất cả các headers
-    //     config.setAllowCredentials(true); // Nếu bạn cần gửi cookie hoặc xác thực
-
-    //     UrlBasedCorsConfigurationSource source =
-    //         new UrlBasedCorsConfigurationSource();
-    //     source.registerCorsConfiguration("/**", config);
-
-    //     return new CorsWebFilter(source);
-    // }
-
-    // @Bean
-    // public GroupedOpenApi publicApi() {
-    //     return GroupedOpenApi.builder()
-    //         .group("book-service")
-    //         .pathsToMatch("/api/**")
-    //         .build();
-    // }
-
+ 
     @Bean
     public OpenAPI customOpenAPI() {
         // Lấy danh sách các instance của ứng dụng từ Eureka
