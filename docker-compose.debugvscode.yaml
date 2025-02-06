@@ -69,6 +69,10 @@ services:
             KAFKA_MESSAGE_MAX_BYTES: 20971520 #
             # KAFKA_LOG4J_LOGGERS: "kafka=DEBUG,org.apache.kafka=DEBUG"
 
+            # Chỉ định file cấu hình log4j tùy chỉnh, giả sử file log4j.properties nằm trong thư mục ./kafka-config
+            # KAFKA_LOG4J_OPTS: '-Dlog4j.configuration=file:/etc/kafka/log4j.properties'
+        volumes:
+            - ./kafka-config/log4j.properties:/etc/kafka/log4j.properties
         networks:
             - share-network
         links:
@@ -121,6 +125,7 @@ services:
                 max_attempts: 3
                 window: 60s
     book-mysqldb:
+        container_name: 'book-mysqldb'
         image: 'mysql:8.0'
         restart: always
         # ports:
@@ -223,7 +228,7 @@ services:
             - ./borrowing/src:/app/src # Đồng bộ mã nguồn
             - ./borrowing/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
         # Chạy ứng dụng Spring Boot với Maven (hot reload)
-        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007" 
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007"
 
         depends_on:
             - eureka

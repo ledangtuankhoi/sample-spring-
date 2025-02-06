@@ -5,9 +5,11 @@ import com.example.borrowing.DTO.BorrowingRequestDTO;
 import com.example.borrowing.Exception.BookServiceException;
 import com.example.borrowing.Mappers.BorrowingMapper;
 import com.example.borrowing.Model.BorrowingEntity;
+import com.example.borrowing.Model.BorrowingEntity.Status;
 import com.example.borrowing.Model.BorrowingModelAssembler;
 import com.example.borrowing.Producer.BorrowingProducer;
 import com.example.borrowing.Repository.BorrowingRepository;
+import com.example.borrowing.Service.BorrowingKafkaService;
 import com.example.borrowing.Service.BorrowingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,6 +45,9 @@ public class BorrowingController {
     private BorrowingService borrowingService;
 
     @Autowired
+    private BorrowingKafkaService borrowingKafkaService;
+
+    @Autowired
     private BorrowingModelAssembler borrowingModelAssembler;
 
     @Autowired
@@ -59,6 +64,71 @@ public class BorrowingController {
     // Add a new borrowing POST /api/v1/borrowing
     // Update a book return PUT /api/v1/borrowing/{employeeId}/{bookId}
     // --------------------
+
+    @Operation(summary = "Borrow Kafka", tags = { "Borrowing-homework" })
+    @PostMapping("/kafka")
+    public ResponseEntity<?> borrowingBookKafka(
+        @Valid @RequestBody BorrowingRequestDTO request
+    ) {
+        String bookId = request.getBookId();
+        String emplId = request.getEmployeeId();
+
+        System.err.println("book: " + bookId + " empl: " + emplId);
+        System.err.println(request);
+
+        try {
+            // TODO: create temp borrowing entity for return to id
+
+            if(borrowingService.findByBookIdAndEmployeeId(bookId, emplId) != null) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Book with ID " + bookId + " and Employee with ID " + emplId + " already borrowed"
+                );
+            }
+
+            // Kiểm tra sách có tồn tại không
+            if (!borrowingService.isBook(bookId)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Book with ID " + bookId + " not found"
+                );
+            }
+
+            // Kiểm tra nhân viên có tồn tại không
+            if (!borrowingService.isEmpl(emplId)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Employee with ID " + emplId + " not found"
+                );
+            }
+
+            BorrowingEntity borrowing = new BorrowingEntity(bookId, emplId);
+            borrowing.setStatus(Status.PENDING);
+            borrowing = borrowingService.save(borrowing);
+
+            // // send message to kaffka
+            // borrowingKafkaService.sendRequestBorrowBook(
+            //     borrowing.getId(),
+            //     bookId,
+            //     emplId
+            // );
+
+            borrowingKafkaService.sendBorrowingUpdateStatus(bookId, emplId);
+            // TODO: return to id borrowing
+            return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("request send success with ID: " + borrowing.getId());
+        } catch (BookServiceException e) {
+            System.err.println(e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                "An error occurred: " + e.getMessage()
+            );
+        } catch (Exception e) {
+            // System.err.println(new Throwable(e));
+            // e.getCause().printStackTrace();
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                "something went wrong"
+            );
+        }
+    }
 
     @Operation(
         summary = "Get borrowings by employee ID",
@@ -159,7 +229,6 @@ public class BorrowingController {
                 "An error occurred: " + e.getMessage()
             );
         } catch (Exception e) {
-            // TODO: handle exception
             System.err.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 "something went wrong"
@@ -233,7 +302,6 @@ public class BorrowingController {
     //         .findById(borrowingWithBookIdsDTO.getEmployeeId())
     //         .orElse(null);
 
-    //     // TODO: handle exception with null, return to message
     //     if (bookEntity == null && employeeEntity == null) return null;
 
     //     BorrowingEntity borrowingEntity = new BorrowingEntity();
@@ -250,7 +318,6 @@ public class BorrowingController {
     //     @PathVariable String bookId,
     //     @RequestBody BorrowingEntity entity
     // ) {
-    //     //TODO: process PUT request
     //     BorrowingEntity borrowingEntity =
     //         borrowingServiceImp.updateStatusToBorrowing(
     //             employeeId,
