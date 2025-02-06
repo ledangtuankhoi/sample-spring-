@@ -21,8 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Getter
 @NoArgsConstructor
 @Entity
-@Table(name = "book") 
-
+@Table(name = "book")
 public class BookEntity {
 
     @Id

@@ -37,21 +37,18 @@ public class BorrowingKafkaService {
         this.borrowingRepository = borrowingRepository;
         this.bookService = bookService;
         this.employeeService = employeeService;
-    } 
+    }
+
     public void sendRequestBorrowBook(
         String requestId,
         String bookId,
         String emplId
-    ) {
-        // // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'sendRequestBorrowBook'");
+    ) { 
 
         borrowingProducer.sendValidate(requestId, bookId, emplId);
     }
 
-    public void sendBorrowingUpdateStatus(String bookId, String emplId) {
-        // // TODO Auto-generated method stub
-        // throw new UnsupportedOperationException("Unimplemented method 'sendBorrowingUpdateStatus'");
+    public void sendBorrowingUpdateStatus(String bookId, String emplId) { 
 
         // check book not borrowing with empl
         BorrowingEntity entity = borrowingRepository.findByBookIdAndEmployeeId(

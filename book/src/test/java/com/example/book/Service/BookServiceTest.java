@@ -16,6 +16,5 @@ public class BookServiceTest {
     private BookService bookService;
 
     @Test
-    void testFakeBook() { 
-    }
+    void testFakeBook() {}
 }

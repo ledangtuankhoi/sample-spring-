@@ -40,5 +40,5 @@ class BookControllerTest {
     @MockBean
     private BookMapper bookMapper;
 
-    Logger logger = LoggerFactory.getLogger(BookControllerTest.class); 
+    Logger logger = LoggerFactory.getLogger(BookControllerTest.class);
 }

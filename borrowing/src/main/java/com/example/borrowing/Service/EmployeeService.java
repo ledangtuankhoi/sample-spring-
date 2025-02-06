@@ -41,7 +41,7 @@ public class EmployeeService {
                     EmployeeEntity.class
                 );
             return responseEntity.getBody();
-        } catch (HttpClientErrorException e) { 
+        } catch (HttpClientErrorException e) {
             // Lấy mã lỗi HTTP
             String statusCode = e.getStatusCode().toString();
 

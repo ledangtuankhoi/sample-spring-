@@ -39,7 +39,7 @@ public class BorrowingService {
         System.err.println("id: " + id);
         return borrowingRepository.findByBookId(id);
     }
- 
+
     public boolean isBook(String bookId) {
         if (bookService.getBookById(bookId).getId().isEmpty() == false) {
             return true;
@@ -57,7 +57,7 @@ public class BorrowingService {
             throw e;
         }
     }
- 
+
     public BorrowingEntity save(BorrowingEntity borrowing) {
         BorrowingEntity entityOld =
             borrowingRepository.findByBookIdAndEmployeeId(
@@ -68,7 +68,7 @@ public class BorrowingService {
         // if (entityOld == null) {
         //     return borrowingRepository.save(borrowing);
         // }
-        if (entityOld == null) { 
+        if (entityOld == null) {
             return borrowingRepository.save(borrowing);
         }
         // So sánh nếu có sự khác biệt
@@ -80,10 +80,10 @@ public class BorrowingService {
 
             return borrowingRepository.save(entityOld);
         }
-        return entityOld; 
-    } 
+        return entityOld;
+    }
 
-    public void updateStatus(String borrwingId, Status status) { 
+    public void updateStatus(String borrwingId, Status status) {
         borrowingRepository.updateStatusById(borrwingId, status);
     }
 
@@ -95,5 +95,5 @@ public class BorrowingService {
             bookId,
             employeeId
         );
-    } 
+    }
 }

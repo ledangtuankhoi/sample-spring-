@@ -33,6 +33,5 @@ public class EmployeeServiceTest {
     private EmployeeRepository employeeRepository;
 
     @Test
-    void testGetBooksBorrowed() throws Exception { 
-    }
+    void testGetBooksBorrowed() throws Exception {}
 }

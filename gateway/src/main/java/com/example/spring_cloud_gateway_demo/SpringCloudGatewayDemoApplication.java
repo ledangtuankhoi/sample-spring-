@@ -11,6 +11,6 @@ import org.springframework.web.reactive.config.EnableWebFlux;
 public class SpringCloudGatewayDemoApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(SpringCloudGatewayDemoApplication.class, args); 
+        SpringApplication.run(SpringCloudGatewayDemoApplication.class, args);
     }
 }

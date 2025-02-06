@@ -27,7 +27,6 @@ public class KafkaConfig {
 
     @Value(value = "${spring.kafka.consumer.group-id}")
     private String consumerGroupId;
- 
 
     @Bean
     public ProducerFactory<String, String> producerFactory() {

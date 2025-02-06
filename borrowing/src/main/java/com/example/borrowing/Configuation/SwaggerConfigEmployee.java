@@ -23,7 +23,7 @@ public class SwaggerConfigEmployee {
     public SwaggerConfigEmployee(DiscoveryClient discoveryClient) {
         this.discoveryClient = discoveryClient;
     }
- 
+
     @Bean
     public OpenAPI customOpenAPI() {
         // Lấy danh sách các instance của ứng dụng từ Eureka

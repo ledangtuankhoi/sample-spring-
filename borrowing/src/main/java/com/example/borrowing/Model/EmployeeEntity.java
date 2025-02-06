@@ -21,7 +21,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 // JPA
 @Entity
 @Table(name = "employee")
-public class EmployeeEntity { 
+public class EmployeeEntity {
 
     @Id
     @GeneratedValue(generator = "uuid")
@@ -39,7 +39,7 @@ public class EmployeeEntity {
     private String KIN;
 
     @Column(name = "isDiscipilined")
-    private Boolean isDiscipilined; 
+    private Boolean isDiscipilined;
 
     @Column(name = "createdAt")
     @CreationTimestamp

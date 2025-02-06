@@ -26,7 +26,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Entity
 @Table(name = "borrowing")
 public class BorrowingEntity {
- 
+
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")

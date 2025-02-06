@@ -98,7 +98,7 @@ public class BorrowingConsumer {
             e.printStackTrace();
         }
     }
- 
+
     @KafkaListener(
         topics = KafkaConstants.BORROWING_UPDATE,
         groupId = KafkaConstants.BORROWING_GROUP

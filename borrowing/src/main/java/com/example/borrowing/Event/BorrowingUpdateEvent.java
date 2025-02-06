@@ -42,14 +42,20 @@ public class BorrowingUpdateEvent {
         this.status = status;
     }
 
-
     @Override
     public String toString() {
-        return "{" +
-            " bookId='" + getBookId() + "'" +
-            ", employeeId='" + getEmployeeId() + "'" +
-            ", status='" + getStatus() + "'" +
-            "}";
+        return (
+            "{" +
+            " bookId='" +
+            getBookId() +
+            "'" +
+            ", employeeId='" +
+            getEmployeeId() +
+            "'" +
+            ", status='" +
+            getStatus() +
+            "'" +
+            "}"
+        );
     }
-
 }

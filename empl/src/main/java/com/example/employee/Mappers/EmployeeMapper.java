@@ -27,4 +27,4 @@ public interface EmployeeMapper {
         }
     )
     EmployeeDTO toDto(EmployeeEntity entity);
-} 
+}

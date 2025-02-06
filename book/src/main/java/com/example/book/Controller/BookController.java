@@ -325,11 +325,10 @@ public class BookController {
         if (book.isPresent()) {
             return ResponseEntity.ok(book.get());
         } else {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Book with ID " + id + " not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                "Book with ID " + id + " not found"
+            );
         }
-
         // return repository
         //     .findById(id)
         //     .orElseThrow(() -> new BookNotFoundException(id));

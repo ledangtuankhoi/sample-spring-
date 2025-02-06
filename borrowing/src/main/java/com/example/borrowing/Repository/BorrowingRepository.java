@@ -9,8 +9,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface BorrowingRepository
-    extends JpaRepository<BorrowingEntity, String> { 
-
+    extends JpaRepository<BorrowingEntity, String> {
     List<BorrowingEntity> findByBookId(String BookId);
     List<BorrowingEntity> findByEmployeeId(String employeeId);
     BorrowingEntity findByBookIdAndEmployeeId(String bookId, String employeeId);

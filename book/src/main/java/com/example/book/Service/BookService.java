@@ -61,5 +61,5 @@ public class BookService {
             .map(book -> mapper.toDto(book))
             .peek(System.out::println)
             .toList();
-    } 
+    }
 }

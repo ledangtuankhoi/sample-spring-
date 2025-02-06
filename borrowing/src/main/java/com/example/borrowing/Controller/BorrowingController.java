@@ -79,9 +79,16 @@ public class BorrowingController {
         try {
             // TODO: create temp borrowing entity for return to id
 
-            if(borrowingService.findByBookIdAndEmployeeId(bookId, emplId) != null) {
+            if (
+                borrowingService.findByBookIdAndEmployeeId(bookId, emplId) !=
+                null
+            ) {
                 return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
-                    "Book with ID " + bookId + " and Employee with ID " + emplId + " already borrowed"
+                    "Book with ID " +
+                    bookId +
+                    " and Employee with ID " +
+                    emplId +
+                    " already borrowed"
                 );
             }
 
@@ -270,5 +277,5 @@ public class BorrowingController {
         return repository
             .findById(borrowingId)
             .orElseThrow(() -> new RuntimeException("not found"));
-    } 
+    }
 }
