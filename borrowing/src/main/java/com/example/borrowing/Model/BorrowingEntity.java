@@ -9,10 +9,8 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Size;
-import java.sql.Timestamp;
+import jakarta.validation.constraints.Pattern;
 import java.time.Instant;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -23,6 +21,9 @@ import org.hibernate.annotations.UpdateTimestamp;
 // lombok
 @Entity
 @Table(name = "borrowing")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class BorrowingEntity {
 
     // // DROP TABLE borrowing;
@@ -42,9 +43,8 @@ public class BorrowingEntity {
 
     private Instant returnBorrowing;
 
-    @Column(length = 32, columnDefinition = "varchar(32) default 'BORROWED'")
+    @Column(length = 32, columnDefinition = "varchar(32) default 'CANCELED'")
     @Enumerated(value = EnumType.STRING)
-    @Size(max = 32)
     private Status status = Status.BORROWED;
 
     @NotNull
@@ -69,6 +69,7 @@ public class BorrowingEntity {
         BORROWED,
         CANCELED,
         RETURNED,
+        PENDING,
     }
 
     @Column(name = "createdAt")
@@ -94,9 +95,12 @@ public class BorrowingEntity {
     public BorrowingEntity(String bookId, String employeeId) {
         this.bookId = bookId;
         this.employeeId = employeeId;
-    }
 
-    public BorrowingEntity() {}
+        this.status = Status.CANCELED;
+        this.returnBorrowing = Instant.now();
+        this.createdAt = Instant.now();
+        this.updatedAt = Instant.now();
+    }
 
     public String getId() {
         return this.id;

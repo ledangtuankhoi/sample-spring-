@@ -124,7 +124,7 @@ public class BookController {
 
     // -=======================
     @Operation(
-        summary = "Send a Kafka message",
+        summary = "Send a Kafka message asd",
         description = "Publishes a message to a Kafka topic. This method is used for sending messages to the Kafka topic for processing.",
         tags = { "Messaging" }
     )
@@ -325,11 +325,10 @@ public class BookController {
         if (book.isPresent()) {
             return ResponseEntity.ok(book.get());
         } else {
-            return ResponseEntity
-                    .status(HttpStatus.NOT_FOUND)
-                    .body("Book with ID " + id + " not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                "Book with ID " + id + " not found"
+            );
         }
-
         // return repository
         //     .findById(id)
         //     .orElseThrow(() -> new BookNotFoundException(id));

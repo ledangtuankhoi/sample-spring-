@@ -5,9 +5,11 @@ import com.example.borrowing.DTO.BorrowingRequestDTO;
 import com.example.borrowing.Exception.BookServiceException;
 import com.example.borrowing.Mappers.BorrowingMapper;
 import com.example.borrowing.Model.BorrowingEntity;
+import com.example.borrowing.Model.BorrowingEntity.Status;
 import com.example.borrowing.Model.BorrowingModelAssembler;
 import com.example.borrowing.Producer.BorrowingProducer;
 import com.example.borrowing.Repository.BorrowingRepository;
+import com.example.borrowing.Service.BorrowingKafkaService;
 import com.example.borrowing.Service.BorrowingService;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -43,6 +45,9 @@ public class BorrowingController {
     private BorrowingService borrowingService;
 
     @Autowired
+    private BorrowingKafkaService borrowingKafkaService;
+
+    @Autowired
     private BorrowingModelAssembler borrowingModelAssembler;
 
     @Autowired
@@ -59,6 +64,74 @@ public class BorrowingController {
     // Add a new borrowing POST /api/v1/borrowing
     // Update a book return PUT /api/v1/borrowing/{employeeId}/{bookId}
     // --------------------
+    @Operation(summary = "Borrow Kafka", tags = { "Borrowing-homework" })
+    @PostMapping("/kafka")
+    public ResponseEntity<?> borrowingBookKafka(
+        @Valid @RequestBody BorrowingRequestDTO request
+    ) {
+        // Lấy bookId và employeeId từ yêu cầu
+        String bookId = request.getBookId();
+        String emplId = request.getEmployeeId();
+
+        // In ra thông tin để debug
+        System.err.println("book: " + bookId + " empl: " + emplId);
+        System.err.println(request);
+
+        try {
+            // Kiểm tra xem sách đã được mượn bởi nhân viên này chưa
+            if (
+                borrowingService.findByBookIdAndEmployeeId(bookId, emplId) !=
+                null
+            ) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(
+                    "Book with ID " +
+                    bookId +
+                    " and Employee with ID " +
+                    emplId +
+                    " already borrowed"
+                );
+            }
+
+            // Kiểm tra sự tồn tại của sách
+            if (!borrowingService.isBook(bookId)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Book with ID " + bookId + " not found"
+                );
+            }
+
+            // Kiểm tra sự tồn tại của nhân viên
+            if (!borrowingService.isEmpl(emplId)) {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Employee with ID " + emplId + " not found"
+                );
+            }
+
+            // Tạo một thực thể BorrowingEntity mới với trạng thái PENDING
+            BorrowingEntity borrowing = new BorrowingEntity(bookId, emplId);
+            borrowing.setStatus(Status.PENDING);
+            borrowing = borrowingService.save(borrowing);
+
+            // Gửi thông tin cập nhật trạng thái mượn sách qua Kafka
+            borrowingKafkaService.sendBorrowingUpdateStatus(bookId, emplId);
+
+            // Trả về phản hồi thành công với ID của borrowing
+            return ResponseEntity.status(HttpStatus.OK)
+                .contentType(MediaType.APPLICATION_JSON)
+                .body("request send success with ID: " + borrowing.getId());
+        } catch (BookServiceException e) {
+            // Xử lý ngoại lệ liên quan đến dịch vụ sách
+            System.err.println(e);
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                "An error occurred: " + e.getMessage()
+            );
+        } catch (Exception e) {
+            // Xử lý các ngoại lệ khác
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                "something went wrong"
+            );
+        }
+    }
 
     @Operation(
         summary = "Get borrowings by employee ID",
@@ -159,7 +232,6 @@ public class BorrowingController {
                 "An error occurred: " + e.getMessage()
             );
         } catch (Exception e) {
-            // TODO: handle exception
             System.err.println(e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 "something went wrong"
@@ -202,61 +274,4 @@ public class BorrowingController {
             .findById(borrowingId)
             .orElseThrow(() -> new RuntimeException("not found"));
     }
-    // // Get book borrowing by employee	GET	/api/v1/borrowing/{employeeId}
-    // @GetMapping("/{employeeId}")
-    // @Operation(summary = "Get book borrowing by employee from manager ")
-    // public CollectionModel<EntityModel<BookDTO>> getBookBorrowing(
-    //     @PathVariable String employeeId
-    // ) {
-    //     List<BookEntity> listBook = bookService.getBookBorrowingByEmployeeId(
-    //         employeeId
-    //     );
-
-    //     // return listBook;
-    //     return CollectionModel.of(
-    //         listBook.stream().map(borrowingModelAssembler::toBooks).toList()
-    //     );
-    // }
-    // // Add a new borrowing POST /api/v1/borrowing
-    // @PostMapping("")
-    // @Operation(
-    //     summary = "muon sach",
-    //     description = "muon sach voi id cua book, id cua employee"
-    // )
-    // BorrowingEntity newEntity(
-    //     @RequestBody BorrowingWithBookIdsDTO borrowingWithBookIdsDTO
-    // ) {
-    //     BookEntity bookEntity = bookRepository
-    //         .findById(borrowingWithBookIdsDTO.getBookId())
-    //         .orElse(null);
-    //     EmployeeEntity employeeEntity = employeeRepository
-    //         .findById(borrowingWithBookIdsDTO.getEmployeeId())
-    //         .orElse(null);
-
-    //     // TODO: handle exception with null, return to message
-    //     if (bookEntity == null && employeeEntity == null) return null;
-
-    //     BorrowingEntity borrowingEntity = new BorrowingEntity();
-    //     borrowingEntity.setBookId(bookEntity.getId());
-    //     borrowingEntity.setEmployeeId(employeeEntity.getId());
-
-    //     return repository.save(borrowingEntity);
-    // }
-
-    // //    Update a book return PUT	/api/v1/borrowing/{employeeId}/{bookId}
-    // @PutMapping("/{employeeId}/{bookId}")
-    // public ResponseEntity<BorrowingEntity> edit(
-    //     @PathVariable String employeeId,
-    //     @PathVariable String bookId,
-    //     @RequestBody BorrowingEntity entity
-    // ) {
-    //     //TODO: process PUT request
-    //     BorrowingEntity borrowingEntity =
-    //         borrowingServiceImp.updateStatusToBorrowing(
-    //             employeeId,
-    //             bookId,
-    //             entity
-    //         );
-    //     return new ResponseEntity<>(borrowingEntity, HttpStatus.OK);
-    // }
 }

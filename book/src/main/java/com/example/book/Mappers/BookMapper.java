@@ -27,11 +27,3 @@ public interface BookMapper {
     )
     BookDTO toDto(BookEntity bookEntity);
 }
-// @Mapper(componentModel = "spring")
-// public interface BookMapper {
-//     @Mapping(target = "name", expression = "java(mapName(bookDTO.getName()))")
-//     BookEntity toEntity(BookDTO bookDTO);
-//     default String mapName(String name) {
-//         return name != null ? name.trim().toUpperCase() : "UNKNOWN";
-//     }
-// }

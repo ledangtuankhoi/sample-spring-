@@ -21,10 +21,10 @@ services:
             - mysqldb
 
         volumes:
-            - .m2:/root/.m2               # Cache Maven dependencies
-            - ./src:/app/src              # Đồng bộ mã nguồn
-            - ./pom.xml:/app/pom.xml      # Đồng bộ file pom.xml
-        command: mvn spring-boot:run    # Chạy ứng dụng Spring Boot với Maven (hot reload)
+            - .m2:/root/.m2 # Cache Maven dependencies
+            - ./src:/app/src # Đồng bộ mã nguồn
+            - ./pom.xml:/app/pom.xml # Đồng bộ file pom.xml
+        command: mvn spring-boot:run # Chạy ứng dụng Spring Boot với Maven (hot reload)
     mysqldb:
         image: 'mysql:8.0'
         restart: always

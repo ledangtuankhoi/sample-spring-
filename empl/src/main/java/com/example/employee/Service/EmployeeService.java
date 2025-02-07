@@ -45,22 +45,6 @@ public class EmployeeService {
         this.bookService = bookService;
     }
 
-    // public List<BookEntity> getBookBorrowingByEmployeeId(String employeeId) {
-    //     return repository.findBooksToBorrowingByEmployeeId(employeeId);
-    // }
-
-    // public List<BookEntity> getBookBorrowedByEmployeeId(String employeeId) {
-    //     return repository.findBooksToBorrowedByEmployeeId(employeeId);
-    // }
-
-    // public BookEntity toEntityWithTimelamp(EmployeeDTO dto) {
-    //     BookEntity entity = repository.findByIdAndName(
-    //         dto.getId(),
-    //         dto.getName()
-    //     );
-    //     return entity;
-    // }
-
     public EmployeeDTO getById(String id) {
         return repository
             .findById(id)

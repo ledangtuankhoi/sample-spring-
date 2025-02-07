@@ -1,4 +1,3 @@
-
 ---
 
 # Microservices Architecture with Spring Boot, Kafka, Zookeeper, and Eureka
@@ -191,4 +190,3 @@ To interact with Kafka during development or troubleshooting, here are some usef
 Kafka empowers this project with event-driven architecture, decoupling microservices and enabling real-time communication through message queuing. Each Kafka-related file has a clear purpose, from producing messages to consuming them, and the configuration ensures smooth communication across services. By utilizing Kafka, the project maintains scalability and flexibility, which are crucial for a robust microservices architecture.
 
 ---
- 

@@ -23,18 +23,8 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "employee")
 public class EmployeeEntity {
 
-    // CREATE TABLE employee (
-    // id VARCHAR(255) NOT NULL,
-    // firstName VARCHAR(255) NOT NULL,
-    // lastName VARCHAR(255),
-    // KIN VARCHAR(255),
-    // isDiscipilined BOOLEAN,
-    // PRIMARY KEY (id)
-    // );
-
     @Id
     @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "id")
     private String id;
 

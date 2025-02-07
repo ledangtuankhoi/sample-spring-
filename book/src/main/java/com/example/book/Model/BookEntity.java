@@ -22,18 +22,11 @@ import org.hibernate.annotations.UpdateTimestamp;
 @NoArgsConstructor
 @Entity
 @Table(name = "book")
-// id VARCHAR(255) NOT NULL,
-// name VARCHAR(255) NOT NULL,
-// author VARCHAR(255),
-// isReady BOOLEAN,
-// PRIMARY KEY (id, name)
-
 public class BookEntity {
 
     @Id
     // @GeneratedValue(strategy = GenerationType.AUTO)
     @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "id")
     private String id;
 

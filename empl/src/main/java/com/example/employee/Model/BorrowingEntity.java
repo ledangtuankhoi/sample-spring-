@@ -27,15 +27,6 @@ import org.hibernate.annotations.UpdateTimestamp;
 @Table(name = "borrowing")
 public class BorrowingEntity {
 
-    // // DROP TABLE borrowing;
-    // CREATE TABLE borrowing (
-    //  id VARCHAR(255) NOT NULL,
-    // bookId VARCHAR(255) NOT NULL,
-    // employeeId VARCHAR(255) NOT NULL,
-    // borrowingDate DATE,
-    // returnBorrowing DATE,
-    // status ENUM('BORROWED', 'CANCELED', 'RETURNED') NOT NULL)
-
     @Id
     @GeneratedValue(generator = "uuid")
     @GenericGenerator(name = "uuid", strategy = "uuid2")

@@ -42,11 +42,6 @@ public class EmployeeService {
                 );
             return responseEntity.getBody();
         } catch (HttpClientErrorException e) {
-            // throw new BookServiceException(
-            //     "Book not found with id: " + id,
-            //     HttpStatus.valueOf(e.getStatusCode().value()),
-            //     e.getResponseBodyAsString()
-            // );
             // Lấy mã lỗi HTTP
             String statusCode = e.getStatusCode().toString();
 

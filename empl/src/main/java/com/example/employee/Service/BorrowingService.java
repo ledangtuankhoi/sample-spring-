@@ -28,7 +28,7 @@ public class BorrowingService {
         this.serviceUrl = ServiceUrl;
         this.bookService = bookService;
     }
- 
+
     public List<BorrowingEntity> getBorrowingByEmplId(String id) {
         // http://localhost:8080/borrowing/api/v1/employee/{employeeId}?employeeId=
         String url = serviceUrl + "api/v1/employee/" + id;

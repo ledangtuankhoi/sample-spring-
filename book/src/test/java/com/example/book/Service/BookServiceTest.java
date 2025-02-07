@@ -16,14 +16,5 @@ public class BookServiceTest {
     private BookService bookService;
 
     @Test
-    void testFakeBook() {
-        // BookEntity bookEntity = new BookEntity();
-        // bookEntity.setName("fake");
-        // bookEntity.setAuthor("fake");
-        // bookEntity.setIsReady(true);
-
-        // bookService.fakeBook(bookEntity);
-        // assertNotNull(bookEntity);
-        // assertEquals("fake - update", bookEntity.getName());
-    }
+    void testFakeBook() {}
 }

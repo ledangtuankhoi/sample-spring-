@@ -9,16 +9,16 @@ import org.springframework.web.client.RestTemplate;
 @Service
 public class BookService {
 
-    private final RestTemplate restTemplate; 
+    private final RestTemplate restTemplate;
     private final String bookServiceUrl;
 
     public BookService(
-        RestTemplate restTemplate, 
+        RestTemplate restTemplate,
         @Value("${api-gateway.book.service.url}") String bookServiceUrl
     ) {
-        this.restTemplate = restTemplate; 
+        this.restTemplate = restTemplate;
         this.bookServiceUrl = bookServiceUrl;
-    } 
+    }
 
     public BookEntity getBookById(String id) {
         String url = bookServiceUrl + "/api/v1/" + id;
