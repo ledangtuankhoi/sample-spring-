@@ -101,7 +101,8 @@ public class BorrowingConsumer {
 
     @KafkaListener(
         topics = KafkaConstants.BORROWING_UPDATE,
-        groupId = KafkaConstants.BORROWING_GROUP
+        groupId = KafkaConstants.BORROWING_GROUP,
+        containerFactory = "kafkaListenerContainerFactory"
     )
     public void ListenUpdateBorrowing(String event) {
         try {
@@ -123,6 +124,13 @@ public class BorrowingConsumer {
 
             entity.setStatus(responce.getStatus());
             borrowingService.save(entity);
+
+            // send notification to book service and employee service
+            borrowingProducer.sendNotification(
+                responce.getBookId(),
+                responce.getEmployeeId(),
+                responce.getStatus()
+            );
         } catch (Exception e) {
             e.printStackTrace();
         }

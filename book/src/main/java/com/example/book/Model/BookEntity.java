@@ -27,7 +27,6 @@ public class BookEntity {
     @Id
     // @GeneratedValue(strategy = GenerationType.AUTO)
     @GeneratedValue(generator = "uuid")
-    @GenericGenerator(name = "uuid", strategy = "uuid2")
     @Column(name = "id")
     private String id;
 

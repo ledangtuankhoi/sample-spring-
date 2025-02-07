@@ -4,13 +4,6 @@
         {
             "type": "java",
             "request": "attach",
-            "name": "A- Gateway",
-            "hostName": "localhost",
-            "port": 5000
-        },
-        {
-            "type": "java",
-            "request": "attach",
             "name": "A- Book",
             "hostName": "localhost",
             "port": 5005
@@ -28,6 +21,20 @@
             "name": "A- Borrowing",
             "hostName": "localhost",
             "port": 5007
-        }
+        },
+        {
+            "type": "java",
+            "request": "attach",
+            "name": "A- Gateway",
+            "hostName": "localhost",
+            "port": 5008
+        },
+        {
+            "type": "java",
+            "request": "attach",
+            "name": "A- Eureka",
+            "hostName": "localhost",
+            "port": 5009
+        },
     ]
 }

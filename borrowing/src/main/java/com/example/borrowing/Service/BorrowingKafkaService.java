@@ -43,20 +43,23 @@ public class BorrowingKafkaService {
         String requestId,
         String bookId,
         String emplId
-    ) { 
-
+    ) {
         borrowingProducer.sendValidate(requestId, bookId, emplId);
     }
 
-    public void sendBorrowingUpdateStatus(String bookId, String emplId) { 
-
+    public void sendBorrowingUpdateStatus(String bookId, String emplId) {
         // check book not borrowing with empl
         BorrowingEntity entity = borrowingRepository.findByBookIdAndEmployeeId(
             bookId,
             emplId
         );
         if (entity.getStatus() != Status.BORROWED) {
-            borrowingProducer.sendUpdateStatus(bookId, emplId, Status.BORROWED);
+            borrowingProducer.sendUpdateStatus(
+                entity.getId(),
+                bookId,
+                emplId,
+                Status.BORROWED
+            );
         }
     }
 }

@@ -124,7 +124,7 @@ public class BookController {
 
     // -=======================
     @Operation(
-        summary = "Send a Kafka message",
+        summary = "Send a Kafka message asd",
         description = "Publishes a message to a Kafka topic. This method is used for sending messages to the Kafka topic for processing.",
         tags = { "Messaging" }
     )

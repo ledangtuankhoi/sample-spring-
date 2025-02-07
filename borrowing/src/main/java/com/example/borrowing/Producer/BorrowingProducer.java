@@ -77,7 +77,12 @@ public class BorrowingProducer {
         }
     }
 
-    public void sendUpdateStatus(String bookId, String emplId, Status status) {
+    public void sendUpdateStatus(
+        String borrowingId,
+        String bookId,
+        String emplId,
+        Status status
+    ) {
         try {
             BorrowingUpdateEvent event = new BorrowingUpdateEvent(
                 bookId,
@@ -86,6 +91,7 @@ public class BorrowingProducer {
             );
             kafkaTemplate.send(
                 KafkaConstants.BORROWING_UPDATE,
+                String.valueOf(borrowingId),
                 objecmapper.writeValueAsString(event)
             );
             System.out.println(
@@ -97,6 +103,39 @@ public class BorrowingProducer {
         } catch (Exception e) {
             // TODO: handle exception
             e.getStackTrace();
+        }
+    }
+
+    public void sendNotification(
+        String bookId,
+        String employeeId,
+        Status status
+    ) {
+        try {
+            BorrowingEvent event = new BorrowingEvent(
+                status,
+                bookId,
+                employeeId,
+                "Borrow a book",
+                "borrowed"
+            );
+
+            String topic = KafkaConstants.BORROWED_BOOK;
+            kafkaTemplate
+                .send(topic, event.toJson())
+                .whenComplete((result, ex) -> {
+                    if (ex == null) {
+                        logger.info("Sent event to {}: {}", topic, event);
+                    } else {
+                        logger.error(
+                            "Failed to send event to {}: {}",
+                            topic,
+                            ex.getMessage()
+                        );
+                    }
+                });
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

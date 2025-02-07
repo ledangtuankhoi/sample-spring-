@@ -7,6 +7,7 @@ import com.example.borrowing.Model.BorrowingEntity.Status;
 import com.example.borrowing.Model.EmployeeEntity;
 import com.example.borrowing.Repository.BorrowingRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -58,6 +59,7 @@ public class BorrowingService {
         }
     }
 
+    @Transactional
     public BorrowingEntity save(BorrowingEntity borrowing) {
         BorrowingEntity entityOld =
             borrowingRepository.findByBookIdAndEmployeeId(

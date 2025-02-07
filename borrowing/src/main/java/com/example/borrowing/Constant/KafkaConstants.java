@@ -23,4 +23,6 @@ public class KafkaConstants {
         "borrowing-validation-topic";
 
     public static final String BORROWING_UPDATE = "borrowing-updated-topic";
+
+    public static final String BORROWED_BOOK = "borrowed-book-topic";
 }

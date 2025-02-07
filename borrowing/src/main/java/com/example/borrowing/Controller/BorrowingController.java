@@ -64,21 +64,21 @@ public class BorrowingController {
     // Add a new borrowing POST /api/v1/borrowing
     // Update a book return PUT /api/v1/borrowing/{employeeId}/{bookId}
     // --------------------
-
     @Operation(summary = "Borrow Kafka", tags = { "Borrowing-homework" })
     @PostMapping("/kafka")
     public ResponseEntity<?> borrowingBookKafka(
         @Valid @RequestBody BorrowingRequestDTO request
     ) {
+        // Lấy bookId và employeeId từ yêu cầu
         String bookId = request.getBookId();
         String emplId = request.getEmployeeId();
 
+        // In ra thông tin để debug
         System.err.println("book: " + bookId + " empl: " + emplId);
         System.err.println(request);
 
         try {
-            // TODO: create temp borrowing entity for return to id
-
+            // Kiểm tra xem sách đã được mượn bởi nhân viên này chưa
             if (
                 borrowingService.findByBookIdAndEmployeeId(bookId, emplId) !=
                 null
@@ -92,44 +92,40 @@ public class BorrowingController {
                 );
             }
 
-            // Kiểm tra sách có tồn tại không
+            // Kiểm tra sự tồn tại của sách
             if (!borrowingService.isBook(bookId)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     "Book with ID " + bookId + " not found"
                 );
             }
 
-            // Kiểm tra nhân viên có tồn tại không
+            // Kiểm tra sự tồn tại của nhân viên
             if (!borrowingService.isEmpl(emplId)) {
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                     "Employee with ID " + emplId + " not found"
                 );
             }
 
+            // Tạo một thực thể BorrowingEntity mới với trạng thái PENDING
             BorrowingEntity borrowing = new BorrowingEntity(bookId, emplId);
             borrowing.setStatus(Status.PENDING);
             borrowing = borrowingService.save(borrowing);
 
-            // // send message to kaffka
-            // borrowingKafkaService.sendRequestBorrowBook(
-            //     borrowing.getId(),
-            //     bookId,
-            //     emplId
-            // );
-
+            // Gửi thông tin cập nhật trạng thái mượn sách qua Kafka
             borrowingKafkaService.sendBorrowingUpdateStatus(bookId, emplId);
-            // TODO: return to id borrowing
+
+            // Trả về phản hồi thành công với ID của borrowing
             return ResponseEntity.status(HttpStatus.OK)
                 .contentType(MediaType.APPLICATION_JSON)
                 .body("request send success with ID: " + borrowing.getId());
         } catch (BookServiceException e) {
+            // Xử lý ngoại lệ liên quan đến dịch vụ sách
             System.err.println(e);
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 "An error occurred: " + e.getMessage()
             );
         } catch (Exception e) {
-            // System.err.println(new Throwable(e));
-            // e.getCause().printStackTrace();
+            // Xử lý các ngoại lệ khác
             e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 "something went wrong"

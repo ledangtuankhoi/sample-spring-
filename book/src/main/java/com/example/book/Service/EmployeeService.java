@@ -27,8 +27,7 @@ public class EmployeeService {
 
     public EmployeeEntity getEmployeeDetails(Long employeeId) {
         // Dùng Eureka service discovery
-        String url =
-            emplyeeServiceUrl + "/employee/api/v1/employees/" + employeeId;
+        String url = emplyeeServiceUrl + "/employee/api/v1/" + employeeId;
         // return restTemplate.getForObject(url, EmployeeEntity.class);
         ResponseEntity<EmployeeEntity> responseEntity =
             restTemplate.getForEntity(url, EmployeeEntity.class);
@@ -37,7 +36,7 @@ public class EmployeeService {
 
     public EmployeeEntity getEmployeeDetailsWithApigetway(Long employeeId) {
         // Dùng Eureka service discovery
-        String url = emplyeeServiceUrlAPIGateway + "/api/v1/" + employeeId;
+        String url = emplyeeServiceUrlAPIGateway + "api/v1/" + employeeId;
         System.out.println("url: " + url);
         return restTemplate.getForObject(url, EmployeeEntity.class);
     }
