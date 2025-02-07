@@ -19,8 +19,10 @@ services:
             - ./gateway/pom.xml:/app/pom.xml
         command: mvn spring-boot:run
         depends_on:
-            - eureka
-    eureka:
+            eureka:
+                condition: service_started  # Chỉ yêu cầu eureka khởi động
+            book-mysqldb:
+                condition: service_healthy
         build:
             context: ./eureka-server
             dockerfile: Dockerfile
@@ -102,8 +104,10 @@ services:
             - ./book/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
         command: mvn spring-boot:run # Chạy ứng dụng Spring Boot với Maven (hot reload)
         depends_on:
-            - eureka
-            - book-mysqldb
+            eureka:
+                condition: service_started  # Chỉ yêu cầu eureka khởi động
+            book-mysqldb:
+                condition: service_healthy
         logging:
             driver: 'json-file'
             options:
@@ -129,6 +133,11 @@ services:
             MYSQL_USER: user1
             MYSQL_PASSWORD: password
             MYSQL_ROOT_PASSWORD: password
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            retries: 5
+            start_period: 30s   
 
     # -----END BOOK
 
@@ -155,8 +164,10 @@ services:
             - ./empl/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
         command: mvn spring-boot:run # Chạy ứng dụng Spring Boot với Maven (hot reload)
         depends_on:
-            - eureka
-            - empl-mysqldb
+            eureka:
+                condition: service_started  # Chỉ yêu cầu eureka khởi động
+            book-mysqldb:
+                condition: service_healthy
         # restart: always
         logging:
             driver: 'json-file'
@@ -184,6 +195,11 @@ services:
             MYSQL_USER: user1
             MYSQL_PASSWORD: password
             MYSQL_ROOT_PASSWORD: password
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            retries: 5
+            start_period: 30s   
 
     # -----END EMPL
 
@@ -211,8 +227,10 @@ services:
             - ./borrowing/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
         command: mvn spring-boot:run # Chạy ứng dụng Spring Boot với Maven (hot reload)
         depends_on:
-            - eureka
-            - borrowing-mysqldb
+            eureka:
+                condition: service_started  # Chỉ yêu cầu eureka khởi động
+            book-mysqldb:
+                condition: service_healthy
         logging:
             driver: 'json-file'
             options:
@@ -239,6 +257,11 @@ services:
             MYSQL_USER: user1
             MYSQL_PASSWORD: password
             MYSQL_ROOT_PASSWORD: password
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            retries: 5
+            start_period: 30s   
 
 # -----END BORROWING
 

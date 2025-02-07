@@ -111,8 +111,10 @@ services:
             - ./book/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
         command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" # Chạy ứng dụng Spring Boot với Maven (hot reload)
         depends_on:
-            - eureka
-            - book-mysqldb
+            eureka:
+                condition: service_started  # Chỉ yêu cầu eureka khởi động
+            book-mysqldb:
+                condition: service_healthy
         logging:
             driver: 'json-file'
             options:
@@ -139,6 +141,11 @@ services:
             MYSQL_USER: user1
             MYSQL_PASSWORD: password
             MYSQL_ROOT_PASSWORD: password
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            retries: 5
+            start_period: 30s
 
     # -----END BOOK
 
@@ -169,8 +176,10 @@ services:
             - ./empl/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
         command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5006" # Chạy ứng dụng Spring Boot với Maven (hot reload)
         depends_on:
-            - eureka
-            - empl-mysqldb
+            eureka:
+                condition: service_started  # Chỉ yêu cầu eureka khởi động
+            book-mysqldb:
+                condition: service_healthy
         # restart: always
         logging:
             driver: 'json-file'
@@ -198,7 +207,11 @@ services:
             MYSQL_USER: user1
             MYSQL_PASSWORD: password
             MYSQL_ROOT_PASSWORD: password
-
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            retries: 5
+            start_period: 30s   
     # -----END EMPL
 
     # -----BORROWING
@@ -231,8 +244,10 @@ services:
         command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007"
 
         depends_on:
-            - eureka
-            - borrowing-mysqldb
+            eureka:
+                condition: service_started  # Chỉ yêu cầu eureka khởi động
+            book-mysqldb:
+                condition: service_healthy
         logging:
             driver: 'json-file'
             options:
@@ -259,7 +274,11 @@ services:
             MYSQL_USER: user1
             MYSQL_PASSWORD: password
             MYSQL_ROOT_PASSWORD: password
-
+        healthcheck:
+            test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+            interval: 5s
+            retries: 5
+            start_period: 30s   
 # -----END BORROWING
 
 networks:
