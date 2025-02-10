@@ -6,6 +6,7 @@ services:
         restart: always
         ports:
             - 8080:8080
+            - 5008:5008
         networks:
             - share-network
         environment:
@@ -17,7 +18,7 @@ services:
             - .m2:/root/.m2
             - ./gateway/src:/app/src
             - ./gateway/pom.xml:/app/pom.xml
-        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007"
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5008"
         depends_on:
             - eureka
     eureka:
@@ -27,6 +28,7 @@ services:
         restart: always
         ports:
             - 8761:8761
+            - 5009:5009
         networks:
             - share-network
         environment:
@@ -39,7 +41,7 @@ services:
             - .m2:/root/.m2
             - ./eureka-server/src:/app/src
             - ./eureka-server/pom.xml:/app/pom.xml
-        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5007"
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5009"
 
     zookeeper:
         image: confluentinc/cp-zookeeper:latest
@@ -82,7 +84,7 @@ services:
     book:
         build:
             context: ./book
-            dockerfile: Dockerfile
+            dockerfile: Dockerfile.dev
         # restart: always
         # deploy:
         #   restart_policy:
@@ -94,17 +96,11 @@ services:
 
         networks:
             - book-net
-            - share-network
+            - share-network 
         environment:
-            - JAVA_OPTS=-Dspring.devtools.restart.enabled=true
-            # - JAVA_OPTS=-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005
+            # - JAVA_OPTS=-Dspring.devtools.restart.enabled=true -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"  
             - SPRING_PROFILES_ACTIVE=docker
-            - SPRING_DEVTOOLS_REMOTE_DEBUG=true
-        # - spring.datasource.url=jdbc:mysql://book-mysqldb:3306/book?allowPublicKeyRetrieval=true
-        # - SPRING_DEVTOOLS_REMOTE_DEBUG=true
-        # - SPRING_PROFILES_ACTIVE=docker
-        # - EUREKA_CLIENT_SERVICE_URL_DEFAULTZONE=http://eureka:8761/eureka
-        # - SPRING_KAFKA_BOOTSTRAP_SERVERS=kafka:9092
+            - SPRING_DEVTOOLS_REMOTE_DEBUG=true 
         volumes:
             - .m2:/root/.m2
             - ./book/src:/app/src # Đồng bộ mã nguồn

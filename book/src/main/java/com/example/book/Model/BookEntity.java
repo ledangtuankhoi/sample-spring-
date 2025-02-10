@@ -14,6 +14,7 @@ import lombok.Setter;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
+import org.hibernate.annotations.UuidGenerator;
 
 // lombok
 // JPA
@@ -25,6 +26,7 @@ import org.hibernate.annotations.UpdateTimestamp;
 public class BookEntity {
 
     @Id
+    @UuidGenerator
     // @GeneratedValue(strategy = GenerationType.AUTO)
     @GeneratedValue(generator = "uuid")
     @Column(name = "id")
@@ -38,7 +40,7 @@ public class BookEntity {
     private String author;
 
     @Column(name = "isReady")
-    private Boolean isReady;
+    private Boolean isReady = false;
 
     // @Column(name = "created_at")
     @Column(name = "createdAt")

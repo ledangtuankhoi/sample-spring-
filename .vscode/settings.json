@@ -1,4 +1,8 @@
 {
     "java.compile.nullAnalysis.mode": "automatic",
     "editor.tabSize": 4,
+    "github.copilot.advanced.debug.useElectronFetcher": true,
+    "github.copilot.advanced.debug.useNodeFetcher": false,
+    "github.copilot.advanced.debug.useNodeFetchFetcher": true,
+    "http.proxyStrictSSL": false
 }

@@ -104,4 +104,9 @@ public class EmplConsumer {
             e.printStackTrace();
         }
     }
+
+    @KafkaListener(topics = "my-topic", groupId = "empl-group")
+    public void listenmess(String event) {
+        System.out.println("enpl ---- Received message: " + event);
+    }
 }

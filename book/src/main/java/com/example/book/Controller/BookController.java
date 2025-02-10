@@ -18,12 +18,14 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import io.swagger.v3.oas.models.OpenAPI;
+import jakarta.validation.Valid;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
 import org.apache.commons.collections4.Get;
 import org.hibernate.sql.Delete;
 import org.mapstruct.control.MappingControl.Use;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
@@ -45,7 +47,6 @@ import org.springframework.web.client.RestClient;
 public class BookController {
 
     // @Autowired
-    private BookRepository repository;
 
     // @Autowired
     private BookModelAssembler assembler;
@@ -62,8 +63,8 @@ public class BookController {
     private RestClient restClient;
     private MessageProducer messageProducer;
 
+    @Autowired
     public BookController(
-        BookRepository repository,
         BookModelAssembler assembler,
         BookService service,
         BookMapper mapper,
@@ -73,7 +74,6 @@ public class BookController {
         RestClient.Builder restClientBuilder,
         MessageProducer messageProducer
     ) {
-        this.repository = repository;
         this.assembler = assembler;
         this.service = service;
         this.mapper = mapper;
@@ -157,8 +157,7 @@ public class BookController {
 
     @Operation(
         summary = "Retrieve employee details",
-        description = "Fetches the details of an employee by their unique employee ID.",
-        tags = { "Employee" }
+        description = "Fetches the details of an employee by their unique employee ID."
     )
     @ApiResponses(
         value = {
@@ -252,11 +251,7 @@ public class BookController {
     )
     @GetMapping("/all")
     public List<BookDTO> getAllBooks() {
-        return repository
-            .findAll()
-            .stream()
-            .map(book -> mapper.toDto(book))
-            .toList();
+        return service.findAll();
     }
 
     @Operation(
@@ -282,14 +277,7 @@ public class BookController {
     )
     @GetMapping("/allWithAssembler")
     public CollectionModel<EntityModel<BookDTO>> getAllBooksWithAssembler() {
-        return CollectionModel.of(
-            repository
-                .findAll()
-                .stream()
-                .map(book -> mapper.toDto(book))
-                .map(e -> assembler.toModel(e))
-                .collect(Collectors.toList())
-        );
+        return service.findAllWithAssembler();
     }
 
     @Operation(
@@ -320,7 +308,7 @@ public class BookController {
     )
     @GetMapping("/{id}")
     public ResponseEntity<?> getBook(@PathVariable String id) {
-        Optional<BookEntity> book = repository.findById(id);
+        Optional<BookEntity> book = service.findById(id);
 
         if (book.isPresent()) {
             return ResponseEntity.ok(book.get());
@@ -356,8 +344,20 @@ public class BookController {
         }
     )
     @PostMapping("")
-    public BookEntity createBook(@RequestBody BookEntity entity) {
-        return repository.save(entity);
+    public ResponseEntity<?> createBook(@Valid @RequestBody BookDTO request) {
+        try {
+            Optional<BookEntity> entity = service.save(request);
+            if (entity.isPresent()) {
+                return ResponseEntity.ok(entity.get());
+            }
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                "Not create book"
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                e.getMessage()
+            );
+        }
     }
 
     @Operation(
@@ -387,18 +387,28 @@ public class BookController {
         }
     )
     @PutMapping("/{id}")
-    public BookEntity updateBook(
+    public ResponseEntity<?> updateBook(
         @RequestBody BookEntity request,
         @PathVariable String id
     ) {
-        return repository
-            .findById(id)
-            .map(book -> {
-                book.setName(request.getName());
-                book.setAuthor(request.getAuthor());
-                return repository.save(book);
-            })
-            .orElseGet(() -> repository.save(request));
+        try {
+            Optional<BookEntity> updatedBook = service.updateBook(id, request);
+            if (updatedBook.isPresent()) {
+                return ResponseEntity.ok(updatedBook.get());
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                    "Book with ID " + id + " not found"
+                );
+            }
+        } catch (BookNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                e.getMessage()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                "An error occurred while updating the book: " + e.getMessage()
+            );
+        }
     }
 
     @Operation(
@@ -424,13 +434,26 @@ public class BookController {
         }
     )
     @DeleteMapping("/{id}")
-    public void deleteBook(@PathVariable String id) {
-        repository.deleteById(id);
+    public ResponseEntity<?> deleteBook(
+        @Parameter(
+            name = "id",
+            description = "The ID of the book",
+            example = "1"
+        ) @PathVariable String id
+    ) {
+        try {
+            service.deleteBook(id);
+            return ResponseEntity.noContent().build();
+        } catch (BookNotFoundException e) {
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
+                e.getMessage()
+            );
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+                "An error occurred while deleting the book: " + e.getMessage()
+            );
+        }
     }
-
-    // -=======================
-
-    // -=======================
 
     @GetMapping("/all2")
     public CollectionModel<EntityModel<BookDTO>> all2() {

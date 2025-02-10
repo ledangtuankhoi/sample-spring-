@@ -1,5 +1,6 @@
 package com.example.book.DTO;
 
+import io.micrometer.common.lang.NonNull;
 import java.util.Objects;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -32,9 +33,12 @@ public class BookDTO {
 
     private String id;
 
+    @NonNull
     private String name;
 
+    @NonNull
     private String author;
 
+    @NonNull
     private Boolean isReady;
 }
