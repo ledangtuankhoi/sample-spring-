@@ -1,10 +1,13 @@
 package com.example.book.Repository;
 
 import com.example.book.Model.BookEntity;
+import java.lang.StackWalker.Option;
 // import org.hibernate.mapping.List;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.CrudRepository;
 
 public interface BookRepository extends JpaRepository<BookEntity, String> {
     @Query(
@@ -21,4 +24,10 @@ public interface BookRepository extends JpaRepository<BookEntity, String> {
 
     BookEntity findByIdAndName(String id, String name);
     // Option findByIdAndName(String id, String name);
+
+    Optional<BookEntity> findByName(String name);
+
+    Optional<BookEntity> findByAuthor(String author);
+
+    Optional<BookEntity> findByNameAndAuthor(String name, String author);
 }

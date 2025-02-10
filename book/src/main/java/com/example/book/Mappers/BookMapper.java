@@ -15,7 +15,7 @@ public interface BookMapper {
             @Mapping(target = "updatedAt", ignore = true),
         }
     )
-    BookEntity toEntity(BookDTO bookDTOss);
+    BookEntity toEntity(BookDTO bookDTO);
 
     @Mappings(
         {

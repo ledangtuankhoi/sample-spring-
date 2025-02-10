@@ -64,7 +64,25 @@ public class BorrowingController {
     // Add a new borrowing POST /api/v1/borrowing
     // Update a book return PUT /api/v1/borrowing/{employeeId}/{bookId}
     // --------------------
-    @Operation(summary = "Borrow Kafka", tags = { "Borrowing-homework" })
+    @Operation(
+        summary = "Borrow a book via Kafka",
+        description = "Creates a borrowing record for an employee and sends a Kafka message. Returns 200 OK if successful, or 404 Not Found if book/employee does not exist.",
+        tags = { "Borrowing-homework" },
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully borrowed book via Kafka"
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Book or employee not found"
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
+    )
     @PostMapping("/kafka")
     public ResponseEntity<?> borrowingBookKafka(
         @Valid @RequestBody BorrowingRequestDTO request
@@ -241,11 +259,22 @@ public class BorrowingController {
 
     // --------------------
 
-    @GetMapping("/all2")
     @Operation(
-        summary = "danh sach da muon sach",
-        description = "lay tat ca danh sach da muon"
+        summary = "Get all employees",
+        description = "Retrieve a list of all employees.",
+        tags = { "Employee" },
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved list of employees"
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
     )
+    @GetMapping("/all2")
     public @ResponseBody CollectionModel<
         EntityModel<BorrowingEntity>
     > GetAll() {
@@ -259,11 +288,23 @@ public class BorrowingController {
     }
 
     // --------------------
-    @GetMapping("/all")
+
     @Operation(
-        summary = "danh sach da muon sach",
-        description = "lay tat ca danh sach da muon"
+        summary = "Get all employees",
+        description = "Retrieve a list of all employees.",
+        tags = { "Employee" },
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved list of employees"
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
     )
+    @GetMapping("/all")
     public @ResponseBody List<BorrowingEntity> GetAll2() {
         return repository.findAll();
     }

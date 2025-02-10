@@ -135,4 +135,9 @@ public class BorrowingConsumer {
             e.printStackTrace();
         }
     }
+    
+    @KafkaListener(topics = "my-topic", groupId = "borrowing-group")
+    public void listenmess(String event) {
+        System.out.println("borrowing ---- Received message: " + event);
+    }
 }

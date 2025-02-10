@@ -98,14 +98,14 @@ services:
             - book-net
             - share-network 
         environment:
-            - JAVA_OPTS=-Dspring.devtools.restart.enabled=true -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" 
+            # - JAVA_OPTS=-Dspring.devtools.restart.enabled=true -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005"  
             - SPRING_PROFILES_ACTIVE=docker
             - SPRING_DEVTOOLS_REMOTE_DEBUG=true 
         volumes:
             - .m2:/root/.m2
             - ./book/src:/app/src # Đồng bộ mã nguồn
             - ./book/pom.xml:/app/pom.xml # Đồng bộ file pom.xml
-        command: mvn spring-boot:run   
+        command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5005" # Chạy ứng dụng Spring Boot với Maven (hot reload)
         depends_on:
             eureka:
                 condition: service_started  # Chỉ yêu cầu eureka khởi động

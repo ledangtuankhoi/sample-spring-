@@ -36,6 +36,7 @@ public class EmployeeController {
     private BorrowingService borrowingService;
     private EmployeeModelAssembler assembler;
 
+    @Autowired
     public EmployeeController(
         EmployeeRepository repository,
         EmployeeService employeeService,
@@ -49,12 +50,57 @@ public class EmployeeController {
     }
 
     // Get employee details GET /api /v1/employees/{employeeId}
+    @Operation(
+        summary = "Get employee details",
+        description = "Retrieve details of an employee by ID."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved employee details",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = EmployeeEntity.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Employee not found",
+                content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
+    )
     @GetMapping("/{id}")
     public Optional<EmployeeEntity> get(@PathVariable String id) {
         return repository.findById(id);
     }
 
     @KafkaListener(topics = "my-topic", groupId = "book-group")
+    @Operation(
+        summary = "Get all employees",
+        description = "Retrieve a list of all employees."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved list of employees",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = EmployeeEntity.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
+    )
     @GetMapping("/all2")
     public @ResponseBody List<EmployeeEntity> getAll12() {
         // return repository.findAll();
@@ -64,6 +110,31 @@ public class EmployeeController {
     // ---------------------------------
 
     // Get borrowed books for employee GET /api /v1/employees/{employeeId}/books
+    @Operation(
+        summary = "Get borrowed books for an employee",
+        description = "Retrieve a list of books borrowed by a specific employee using their employeeId. Returns 404 if the employee is not found."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved the list of borrowed books",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = BookEntity.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Employee not found",
+                content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
+    )
     @GetMapping("/{employeeId}/books-sample")
     public List<BookEntity> getBooksBorrowed_sample(
         @RequestParam String employeeId
@@ -132,6 +203,26 @@ public class EmployeeController {
     }
 
     // Add new employee POST /api/v1/employees
+    @Operation(
+        summary = "Add new employee",
+        description = "Create a new employee record."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "201",
+                description = "Successfully created new employee",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = EmployeeEntity.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
+    )
     @PostMapping("")
     EmployeeEntity newEntity(@RequestBody EmployeeEntity entity) {
         // return entity.getName();
@@ -139,6 +230,31 @@ public class EmployeeController {
     }
 
     // Update book PUT /api/v1/books/{bookId}
+    @Operation(
+        summary = "Update employee details",
+        description = "Update the details of an existing employee."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully updated employee details",
+                content = @Content(
+                    mediaType = "application/json",
+                    schema = @Schema(implementation = EmployeeEntity.class)
+                )
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Employee not found",
+                content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
+    )
     @PutMapping("/{id}")
     EmployeeEntity editEntity(
         @RequestBody EmployeeEntity request,
@@ -161,6 +277,27 @@ public class EmployeeController {
     }
 
     // Remove employee DELETE /api/v1/employees/{employeeId}
+    @Operation(
+        summary = "Delete employee",
+        description = "Delete an employee record by ID."
+    )
+    @ApiResponses(
+        value = {
+            @ApiResponse(
+                responseCode = "204",
+                description = "Successfully deleted employee"
+            ),
+            @ApiResponse(
+                responseCode = "404",
+                description = "Employee not found",
+                content = @Content(mediaType = "application/json")
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
+    )
     @DeleteMapping("/{id}")
     void deleteEntity(@PathVariable String id) {
         repository.deleteById(id);
