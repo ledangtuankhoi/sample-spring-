@@ -7,7 +7,6 @@ import org.mapstruct.Mapping;
 import org.mapstruct.Mappings;
 
 @Mapper(componentModel = "spring")
-// @Mapper(componentModel = "spring")
 public interface BookMapper {
     @Mappings(
         {

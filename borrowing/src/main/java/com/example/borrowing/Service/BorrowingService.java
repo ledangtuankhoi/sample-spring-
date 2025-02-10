@@ -1,6 +1,7 @@
 package com.example.borrowing.Service;
 
 import com.example.borrowing.Exception.BookServiceException;
+import com.example.borrowing.Exception.BorrowingNotFoundException;
 import com.example.borrowing.Model.BookEntity;
 import com.example.borrowing.Model.BorrowingEntity;
 import com.example.borrowing.Model.BorrowingEntity.Status;
@@ -9,6 +10,7 @@ import com.example.borrowing.Repository.BorrowingRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -97,5 +99,16 @@ public class BorrowingService {
             bookId,
             employeeId
         );
+    }
+
+    public List<BorrowingEntity> findAll() {
+        return borrowingRepository.findAll();
+    }
+
+    public Optional<BorrowingEntity> findById(String id) {
+        if (borrowingRepository.findById(id).isPresent() == false) {
+            throw new BorrowingNotFoundException(id);
+        }
+        return borrowingRepository.findById(id);
     }
 }

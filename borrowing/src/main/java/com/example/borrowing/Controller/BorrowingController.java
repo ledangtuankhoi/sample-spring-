@@ -37,8 +37,8 @@ import org.springframework.web.bind.annotation.RestController;
 @Validated
 public class BorrowingController {
 
-    @Autowired
-    private BorrowingRepository repository;
+    // @Autowired
+    // private BorrowingRepository repository;
 
     // private BorrowingService borrowingService;
     @Autowired
@@ -262,7 +262,7 @@ public class BorrowingController {
     @Operation(
         summary = "Get all employees",
         description = "Retrieve a list of all employees.",
-        tags = { "Employee" },
+        // tags = { "Employee" },
         responses = {
             @ApiResponse(
                 responseCode = "200",
@@ -279,7 +279,7 @@ public class BorrowingController {
         EntityModel<BorrowingEntity>
     > GetAll() {
         return CollectionModel.of(
-            repository
+            borrowingService
                 .findAll()
                 .stream()
                 .map(borrowingModelAssembler::toModel)
@@ -306,12 +306,27 @@ public class BorrowingController {
     )
     @GetMapping("/all")
     public @ResponseBody List<BorrowingEntity> GetAll2() {
-        return repository.findAll();
+        return borrowingService.findAll();
     }
 
+    @Operation(
+        summary = "Get all employees",
+        description = "Retrieve a list of all employees.",
+        tags = { "Borrowing-homework" },
+        responses = {
+            @ApiResponse(
+                responseCode = "200",
+                description = "Successfully retrieved list of employees"
+            ),
+            @ApiResponse(
+                responseCode = "500",
+                description = "Internal server error"
+            ),
+        }
+    )
     @GetMapping("/{borrowingId}")
     public BorrowingEntity getById(String borrowingId) {
-        return repository
+        return borrowingService
             .findById(borrowingId)
             .orElseThrow(() -> new RuntimeException("not found"));
     }

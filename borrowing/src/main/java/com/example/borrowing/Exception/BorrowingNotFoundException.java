@@ -1,20 +1,13 @@
 package com.example.borrowing.Exception;
 
 import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "No such Order") // 404
 public class BorrowingNotFoundException extends RuntimeException {
 
-    private HttpStatus status;
-    private String message;
-
-    public BorrowingNotFoundException(String id) {}
-
-    public HttpStatus getStatus() {
-        return status;
-    }
-
-    @Override
-    public String getMessage() {
-        return message;
+    public BorrowingNotFoundException(String id) {
+        super("not found by: " + id);
+        System.err.println("not found by: " + id);
     }
 }
