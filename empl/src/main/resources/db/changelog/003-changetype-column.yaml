@@ -1,0 +1,20 @@
+databaseChangeLog:
+    - changeSet:
+          id: update-users
+          author: liquibase-docs
+          changes:
+              - update:
+                    columns:
+                        - column:
+                              name: id
+                              value: '9'
+                    tableName: users
+                    where: id='AAA'
+    - changeSet:
+          id: modifyDataType-users-2
+          author: liquibase-docs
+          changes:
+              - modifyDataType:
+                    columnName: id
+                    newDataType: BIGINT
+                    tableName: users

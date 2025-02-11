@@ -1,9 +1,13 @@
 package com.example.employee.Configuation;
 
+import com.example.employee.Constant.AppContants;
+import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
+import io.swagger.v3.oas.models.security.SecurityRequirement;
+import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
 import java.util.List;
 import org.springdoc.core.models.GroupedOpenApi;
@@ -19,23 +23,25 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 public class SwaggerConfigEmployee {
 
     private final DiscoveryClient discoveryClient;
+    private final AppContants appContants;
 
-    public SwaggerConfigEmployee(DiscoveryClient discoveryClient) {
+    public SwaggerConfigEmployee(
+        DiscoveryClient discoveryClient,
+        AppContants appContants
+    ) {
         this.discoveryClient = discoveryClient;
+        this.appContants = appContants;
+    }
+
+    private SecurityScheme createAPIKeyScheme() {
+        return new SecurityScheme()
+            .type(SecurityScheme.Type.HTTP)
+            .bearerFormat("JWT")
+            .scheme("bearer");
     }
 
     @Bean
     public OpenAPI customOpenAPI() {
-        // Lấy danh sách các instance của ứng dụng từ Eureka
-        List<ServiceInstance> instances = discoveryClient.getInstances(
-            "app-name"
-        ); // Thay "app-name" bằng tên ứng dụng của bạn
-
-        // Lấy URL từ instance đầu tiên (nếu có)
-        String serverUrl = instances.isEmpty()
-            ? "http://localhost:8082" // Giá trị mặc định nếu không tìm thấy
-            : instances.get(0).getUri().toString();
-
         return new OpenAPI()
             .info(
                 new Info()
@@ -60,11 +66,23 @@ public class SwaggerConfigEmployee {
             )
             .servers(
                 List.of(
-                    new Server().url(serverUrl).description("Local Server"),
                     new Server()
-                        .url("http://localhost:8080")
+                        .url(appContants.getServiceUrl())
+                        .description("Local Server"),
+                    new Server()
+                        .url(appContants.getApiGatewayUrl())
                         .description("API Gateway")
                 )
+            )
+            .addSecurityItem(
+                new SecurityRequirement().addList("Bearer Authentication")
+            )
+            .components(
+                new Components()
+                    .addSecuritySchemes(
+                        "Bearer Authentication",
+                        createAPIKeyScheme()
+                    )
             );
     }
 }

@@ -1,0 +1,85 @@
+databaseChangeLog:
+    - changeSet:
+          id: '2-1'
+          author: yournames
+          changes:
+              - createTable:
+                    tableName: users
+                    columns:
+                        - column:
+                              name: id
+                              type: BIGINT
+                              autoIncrement: true
+                              constraints:
+                                  primaryKey: true
+                                  nullable: false
+                        - column:
+                              name: firstName
+                              type: varchar(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: lastName
+                              type: varchar(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: email
+                              type: varchar(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: password
+                              type: varchar(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: emplId
+                              type: varchar(255)
+                              constraints:
+                                  nullable: false
+                        - column:
+                              name: createdAt
+                              type: timestamp
+                              constraints:
+                                  nullable: true
+                        - column:
+                              name: updatedAt
+                              type: timestamp
+                              constraints:
+                                  nullable: true
+
+    - changeSet:
+          id: '2'
+          author: yourname
+          changes:
+              - insert:
+                    tableName: users
+                    columns:
+                        - column:
+                              name: id
+                              value: '9'
+                        - column:
+                              name: firstName
+                              value: 'A'
+                        - column:
+                              name: lastName
+                              value: 'Le van'
+
+                        - column:
+                              name: email
+                              value: 'user@gmail.com'
+
+                        - column:
+                              name: password
+                              value: 'password'
+
+                        - column:
+                              name: emplId
+                              value: '2'
+                        - column:
+                              name: createdAt
+                              valueDate: '2024-12-20 09:55:24'
+                        - column:
+                              name: updatedAt
+                              valueDate: '2024-12-20 09:55:24'

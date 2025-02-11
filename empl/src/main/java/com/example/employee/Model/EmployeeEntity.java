@@ -44,9 +44,11 @@ public class EmployeeEntity {
     @Column(name = "lastName")
     private String lastName;
 
+    // Ý nghĩa: Đây là một mã nhận dạng riêng (có thể là mã nhân viên hoặc mã số khác liên quan đến nhân viên).
     @Column(name = "KIN")
     private String KIN;
 
+    // Ý nghĩa: Đây là trạng thái kỷ luật của nhân viên. Nếu true, nhân viên đang bị kỷ luật; nếu false, không bị kỷ luật.
     @Column(name = "isDiscipilined")
     private Boolean isDiscipilined;
 

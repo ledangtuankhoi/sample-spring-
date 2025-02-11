@@ -73,4 +73,15 @@ public class EmployeeService {
             .toList();
         return bookEntities;
     }
+
+    public EmployeeDTO save(EmployeeDTO employeeDTO) {
+        EmployeeEntity employeeEntity = new EmployeeEntity(
+            employeeDTO.getFirstName(),
+            employeeDTO.getLastName(),
+            null,
+            true
+        );
+        EmployeeEntity savedEmployee = repository.save(employeeEntity);
+        return mapper.toDto(savedEmployee);
+    }
 }
