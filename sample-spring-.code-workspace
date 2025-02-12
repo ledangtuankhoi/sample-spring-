@@ -13,6 +13,10 @@
             "path": "./borrowing",
         },
         {
+            "name": " GATEWAY ",
+            "path": "./gateway",
+        },
+        {
             "path": "./",
         },
     ],
@@ -21,7 +25,9 @@
         "java.format.settings.url": ".vscode/java-formatter.xml",
         "java.compile.nullAnalysis.mode": "automatic",
         "java.configuration.updateBuildConfiguration": "automatic",
-        "java.completion.importOrder": ["#"],
+        "java.completion.importOrder": [
+            "#"
+        ],
         "workbench.colorCustomizations": {
             "activityBar.background": "#4d2300",
             "activityBar.activeBackground": "#be6319",
@@ -70,5 +76,8 @@
         "yaml.schemas": {
             "https://json.schemastore.org/liquibase-3.2.json": "file:///home/lg/java/sample-spring-/book/db.changelog-master.yaml",
         },
+        "git.openDiffOnClick": false,
+        "breadcrumbs.symbolPath": "off",
+        "breadcrumbs.symbolSortOrder": "position",
     },
 }

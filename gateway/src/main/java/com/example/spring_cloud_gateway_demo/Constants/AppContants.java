@@ -1,13 +1,11 @@
-package com.example.employee.Constant;
+package com.example.spring_cloud_gateway_demo.Constants;
 
 import java.util.List;
-import org.slf4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.stereotype.Component;
 
 @Configuration
 public class AppContants {
@@ -17,6 +15,8 @@ public class AppContants {
 
     @Value("${service.url}")
     private String serviceUrl;
+
+    public static final String LOADBLANCE_EMPLOYE_SERVICE = "lb://employee-service";
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -32,11 +32,10 @@ public class AppContants {
         //     ? "http://localhost:8080" // Giá trị mặc định nếu không tìm thấy
         //     : instances.get(0).getUri().toString();
 
-        if (instances.isEmpty() == false) {
-            String serverUrl = "http://localhost:" + instances.get(0).getPort();
-            return serverUrl;
-        }
-        return "";
+        String serverUrl = "http://localhost:" + instances.get(0).getPort();
+        System.out.println("instancessdfasdfasdf");
+        System.out.println(instances);
+        return serverUrl;
     }
 
     public String getApiDocPath() {

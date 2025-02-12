@@ -1,0 +1,75 @@
+
+@hostname = 127.0.0.1
+@port = 8080
+@host = {{hostname}}:{{port}}
+ 
+ 
+###
+POST http://{{host}}/auth/signup HTTP/1.1
+Content-Type: application/json
+
+{ 
+    "firstName": "firstName",
+    "lastName": "lastName",
+    "email": "email@gmail.com",
+    "password": "password"
+}
+
+
+###
+###
+# @name tokenAPI
+# POST http://{{host}}/auth/login HTTP/1.1
+POST http://localhost:8082/employee/auth/login HTTP/1.1
+Content-Type: application/json
+
+{  
+    "email": "email@gmail.com",
+    "password": "password"
+}
+
+
+###
+
+###
+@authToken = {{tokenAPI.response.body.token}}
+
+GET http://{{host}}/users/me HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+
+###
+
+
+###
+@authToken = {{tokenAPI.response.body.token}}
+GET http://{{host}}/users HTTP/1.1
+Authorization: Bearer {{authToken}}
+
+
+###
+
+
+###
+@authToken = {{tokenAPI.response.body.token}}
+GET http://{{host}}/employee/v3/api-docs HTTP/1.1
+Authorization: Bearer {{authToken}} 
+
+
+###
+###
+
+
+#   'http://localhost:8080/employee/auth/login' \
+  
+###
+###
+# @name tokenAPI_12
+POST http://localhost:8080/login HTTP/1.1
+Content-Type: application/json
+
+{  
+    "username": "user",
+    "password": "password"
+}
+###

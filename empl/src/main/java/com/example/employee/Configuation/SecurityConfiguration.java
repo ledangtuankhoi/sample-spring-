@@ -2,14 +2,16 @@ package com.example.employee.Configuation;
 
 import com.example.employee.Constant.AppContants;
 import com.example.employee.Service.EmployeeService;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.ServiceInstance;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -27,9 +29,7 @@ public class SecurityConfiguration {
 
     private final AuthenticationProvider authenticationProvider;
     private final JwtAuthenticationFilter jwtAuthenticationFilter;
-    private final EmployeeService employeeService;
-    private final DiscoveryClient discoveryClient;
-    private AppContants appContants;
+    private final AppContants appContants;
     private static final Logger logger = LoggerFactory.getLogger(
         SecurityConfiguration.class
     );
@@ -37,15 +37,11 @@ public class SecurityConfiguration {
     @Autowired
     public SecurityConfiguration(
         JwtAuthenticationFilter jwtAuthenticationFilter,
-        DiscoveryClient discoveryClient,
         AuthenticationProvider authenticationProvider,
-        EmployeeService employeeService,
         AppContants appContants
     ) {
         this.authenticationProvider = authenticationProvider;
         this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-        this.discoveryClient = discoveryClient;
-        this.employeeService = employeeService;
         this.appContants = appContants;
     }
 
@@ -54,28 +50,24 @@ public class SecurityConfiguration {
         throws Exception {
         http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(requests ->
-                requests
-                    .requestMatchers(
-                        "/employee/auth/**",
-                        appContants.getApiDocPath() + "/**",
-                        "/swagger-ui/**",
-                        "/swagger-resources/**"
-                    )
-                    .permitAll()
-                    .anyRequest()
-                    .authenticated()
+            .authorizeHttpRequests(
+                requests ->
+                    requests
+                        .requestMatchers("/employee/auth/**")
+                        .permitAll() // Cho phép truy cập không cần xác thực
+                        .requestMatchers(HttpMethod.OPTIONS, "/**")
+                        .permitAll() // Cho phép OPTIONS request
+                        .anyRequest()
+                        .authenticated() // Các request còn lại yêu cầu xác thực
             )
-            .sessionManagement(management ->
-                management.sessionCreationPolicy(
-                    SessionCreationPolicy.STATELESS
-                )
-            )
-            .authenticationProvider(authenticationProvider)
+            .cors(cors -> cors.configurationSource(corsConfigurationSource())) // Đảm bảo cấu hình CORS
             .addFilterBefore(
                 jwtAuthenticationFilter,
                 UsernamePasswordAuthenticationFilter.class
-            );
+            ); // Cấu hình JWT filter
+        logger.info(
+            "Security Configuration: OPTIONS requests allowed without authentication."
+        );
 
         return http.build();
     }
@@ -83,37 +75,34 @@ public class SecurityConfiguration {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-
         configuration.setAllowedOrigins(
-            List.of("http://localhost:8080", appContants.getApiGatewayUrl())
+            Arrays.asList(
+                "http://localhost:8082",
+                "http://localhost:3000",
+                "http://localhost:8080"
+            )
         );
-        configuration.setAllowedMethods(List.of("GET", "POST"));
+        configuration.setAllowedMethods(
+            Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS")
+        );
         configuration.setAllowedHeaders(
-            List.of("Authorization", "Content-Type")
+            Arrays.asList("Authorization", "Content-Type")
+        );
+        configuration.setExposedHeaders(Arrays.asList("Authorization"));
+        configuration.setAllowCredentials(true);
+
+        // Log ra cấu hình CORS
+        logger.info(
+            "CORS Configuration for Employee Service: Allowed Origins - http://localhost:8082, http://localhost:3000, http://localhost:8080"
+        );
+        logger.info(
+            "CORS Configuration for Employee Service: Allowed Methods - GET, POST, PUT, DELETE, OPTIONS"
         );
 
         UrlBasedCorsConfigurationSource source =
             new UrlBasedCorsConfigurationSource();
-
         source.registerCorsConfiguration("/**", configuration);
 
-        logger.info("CorsConfigurationSource: ");
-        logger.info(configuration.getAllowedOrigins().toString()); 
-        logger.info(configuration.getAllowedHeaders().toString()); 
-        logger.info(configuration.getAllowedMethods().toString());  
-
         return source;
-    }
-
-    @Bean
-    public WebSecurityCustomizer webSecurityCustomizer() {
-        return web ->
-            web
-                .ignoring()
-                .requestMatchers(
-                    appContants.getApiDocPath() + "/**",
-                    "/swagger-ui/**",
-                    "/swagger-resources/**"
-                );
     }
 }

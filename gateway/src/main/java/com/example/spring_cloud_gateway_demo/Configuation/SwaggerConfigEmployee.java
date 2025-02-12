@@ -1,6 +1,6 @@
-package com.example.employee.Configuation;
+package com.example.spring_cloud_gateway_demo.Configuation;
 
-import com.example.employee.Constant.AppContants;
+import com.example.spring_cloud_gateway_demo.Constants.AppContants;
 import io.swagger.v3.oas.models.Components;
 import io.swagger.v3.oas.models.OpenAPI;
 import io.swagger.v3.oas.models.info.Contact;
@@ -9,7 +9,6 @@ import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.security.SecurityRequirement;
 import io.swagger.v3.oas.models.security.SecurityScheme;
 import io.swagger.v3.oas.models.servers.Server;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.cloud.client.discovery.DiscoveryClient;
 import org.springframework.context.annotation.Bean;
@@ -38,20 +37,7 @@ public class SwaggerConfigEmployee {
 
     @Bean
     public OpenAPI customOpenAPI() {
-        List<Server> servers = new ArrayList<>();
-        servers.add(
-            new Server()
-                .url(appContants.getServiceUrl())
-                .description("Local server")
-        );
-        if (appContants.getApiGatewayUrl().isEmpty() == false) {
-            servers.add(
-                new Server()
-                    .url(appContants.getApiGatewayUrl())
-                    .description("API Gateway")
-            );
-        }
-        OpenAPI openAPI = new OpenAPI()
+        return new OpenAPI()
             .info(
                 new Info()
                     //   .title("Custom API Documentation") // Thay đổi tiêu đề
@@ -73,7 +59,13 @@ public class SwaggerConfigEmployee {
                             )
                     )
             )
-            .servers(servers)
+            .servers(
+                List.of(
+                    new Server()
+                        .url(appContants.getServiceUrl())
+                        .description("Local Server")
+                )
+            )
             .addSecurityItem(
                 new SecurityRequirement().addList("Bearer Authentication")
             )
@@ -84,6 +76,5 @@ public class SwaggerConfigEmployee {
                         createAPIKeyScheme()
                     )
             );
-        return openAPI;
     }
 }

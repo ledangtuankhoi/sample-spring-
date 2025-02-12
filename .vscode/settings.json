@@ -4,5 +4,6 @@
     "github.copilot.advanced.debug.useElectronFetcher": true,
     "github.copilot.advanced.debug.useNodeFetcher": false,
     "github.copilot.advanced.debug.useNodeFetchFetcher": true,
-    "http.proxyStrictSSL": false
+    "http.proxyStrictSSL": false,
+    "git.openDiffOnClick": false
 }

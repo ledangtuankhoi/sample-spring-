@@ -7,6 +7,8 @@ import com.example.employee.Responses.LoginResponse;
 import com.example.employee.Service.AuthenticationService;
 import com.example.employee.Service.JwtService;
 import io.swagger.v3.oas.annotations.Operation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -19,6 +21,9 @@ public class AuthenticationController {
 
     private final JwtService jwtService;
     private final AuthenticationService authenticationService;
+    private Logger logger = LoggerFactory.getLogger(
+        AuthenticationController.class
+    );
 
     public AuthenticationController(
         JwtService jwtService,
@@ -41,6 +46,7 @@ public class AuthenticationController {
     public ResponseEntity<LoginResponse> authenticate(
         @RequestBody LoginUserDto loginUserDto
     ) {
+        logger.debug(loginUserDto.toString());
         User authenticatedUser = authenticationService.authenticate(
             loginUserDto
         );
@@ -51,6 +57,7 @@ public class AuthenticationController {
             .setToken(jwtToken)
             .setExpiresIn(jwtService.getExpirationTime());
 
+        logger.debug(ResponseEntity.ok(loginResponse).toString());
         return ResponseEntity.ok(loginResponse);
     }
 }

@@ -2,8 +2,7 @@ services:
     gateway:
         build:
             context: ./gateway
-            dockerfile: Dockerfile
-        restart: always
+            dockerfile: Dockerfile 
         ports:
             - 8080:8080
             - 5008:5008
@@ -21,6 +20,12 @@ services:
         command: mvn spring-boot:run -Dspring-boot.run.jvmArguments="-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=*:5008"
         depends_on:
             - eureka
+        deploy:
+            restart_policy:
+                condition: on-failure
+                delay: 3s
+                max_attempts: 3
+                window: 60s
     eureka:
         build:
             context: ./eureka-server
