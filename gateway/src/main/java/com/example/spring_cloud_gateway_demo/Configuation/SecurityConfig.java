@@ -1,10 +1,13 @@
 package com.example.spring_cloud_gateway_demo.Configuation;
 
+import com.example.spring_cloud_gateway_demo.Constants.AppContants;
+import com.example.spring_cloud_gateway_demo.Filters.JwtWebFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
+import org.springframework.security.config.web.server.SecurityWebFiltersOrder;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
@@ -15,11 +18,11 @@ import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 @EnableWebFluxSecurity
 public class SecurityConfig {
 
-    private final JwtAuthenticationFilter authenticationFilter;
+    private final JwtWebFilter jwtWebFilter;
 
     @Autowired
-    public SecurityConfig(JwtAuthenticationFilter authenticationFilter) {
-        this.authenticationFilter = authenticationFilter;
+    public SecurityConfig(JwtWebFilter jwtWebFilter) {
+        this.jwtWebFilter = jwtWebFilter;
     }
 
     @Bean
@@ -30,21 +33,8 @@ public class SecurityConfig {
             .csrf(ServerHttpSecurity.CsrfSpec::disable)
             .authorizeExchange(exchanges ->
                 exchanges
-                    // .pathMatchers("/webjars/**", "/swagger-ui.html", "/swagger-ui/**","/v3/api-docs/**").permitAll()
                     .pathMatchers(
-                        "/webjars/**",
-                        "/swagger-ui.html",
-                        "/swagger-ui/**",
-                        "/v3/api-docs/**",
-                        "/book/v3/api-docs/**",
-                        "/book/api/**",
-                        "/borrowing/v3/api-docs",
-                        "/borrowing/api/**",
-                        "/employee/v3/api-docs",
-                        "/employee/api/**",
-                        "/employee/auth/**",
-                        "/auth/login",
-                        "/auth/signup"
+                        AppContants.PUBLIC_PATHS.toArray(new String[0])
                     )
                     .permitAll()
                     .pathMatchers("/admin/**")
@@ -52,7 +42,7 @@ public class SecurityConfig {
                     .anyExchange()
                     .authenticated()
             )
-            .authenticationManager(authenticationFilter)
+            .addFilterAt(jwtWebFilter, SecurityWebFiltersOrder.AUTHENTICATION)
             .httpBasic(ServerHttpSecurity.HttpBasicSpec::disable)
             .formLogin(ServerHttpSecurity.FormLoginSpec::disable)
             .build();

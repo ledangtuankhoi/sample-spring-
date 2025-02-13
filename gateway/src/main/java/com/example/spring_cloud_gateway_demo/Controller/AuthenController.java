@@ -2,9 +2,11 @@ package com.example.spring_cloud_gateway_demo.Controller;
 
 import com.example.spring_cloud_gateway_demo.Configuation.JWTUtil;
 import com.example.spring_cloud_gateway_demo.DTO.LoginUserDto;
+import com.example.spring_cloud_gateway_demo.DTO.RegisterUserDto;
 import com.example.spring_cloud_gateway_demo.Model.User;
 import com.example.spring_cloud_gateway_demo.Responses.LoginResponse;
 import com.example.spring_cloud_gateway_demo.Services.EmployeeService;
+import org.mapstruct.control.MappingControl.Use;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -16,7 +18,7 @@ import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
 @RestController
-@RequestMapping("/auth")
+@RequestMapping("/api/v1/auth")
 public class AuthenController {
 
     @Autowired
@@ -36,11 +38,19 @@ public class AuthenController {
             .login(loginRequest.getEmail(), loginRequest.getPassword())
             .map(token -> ResponseEntity.ok(token))
             .onErrorResume(e ->
-                Mono.just(
-                    ResponseEntity.status(401).body(
-                        new LoginResponse("Unauthorized")
-                    )
-                )
+                Mono.just(ResponseEntity.status(401).body((LoginResponse) null))
+            );
+    }
+
+    @PostMapping("/signup")
+    public Mono<ResponseEntity<User>> register(
+        @RequestBody RegisterUserDto registerUserDto
+    ) {
+        return employeeService
+            .resgister(registerUserDto)
+            .map(token -> ResponseEntity.ok(token))
+            .onErrorResume(e ->
+                Mono.just(ResponseEntity.status(401).body((User) null))
             );
     }
 }

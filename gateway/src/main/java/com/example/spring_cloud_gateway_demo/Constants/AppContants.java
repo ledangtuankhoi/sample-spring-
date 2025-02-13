@@ -16,7 +16,25 @@ public class AppContants {
     @Value("${service.url}")
     private String serviceUrl;
 
-    public static final String LOADBLANCE_EMPLOYE_SERVICE = "lb://employee-service";
+    // Danh sách path được phép truy cập mà không cần JWT
+    public static final List<String> PUBLIC_PATHS = List.of(
+        "/book/v3/api-docs/**",
+        "/book/api/**",
+        "/borrowing/v3/api-docs",
+        "/borrowing/api/**",
+        "/employee/v3/api-docs",
+        "/employee/api/**",
+        "/employee/auth/**",
+        "/api/v1/auth/**",
+        "/api/v1/users/me",
+        "/webjars/**",
+        "/swagger-ui.html",
+        "/swagger-ui/**",
+        "/v3/api-docs/**"
+    );
+    public static final String LOADBLANCE_EMPLOYE_SERVICE =
+        "lb://employee-service";
+    public static final String LOADBLANCE_GATEWAY_SERVICE = "lb://api-gateway";
 
     @Autowired
     private DiscoveryClient discoveryClient;
@@ -25,16 +43,9 @@ public class AppContants {
         // Lấy danh sách các instance của ứng dụng từ Eureka
         List<ServiceInstance> instances = discoveryClient.getInstances(
             "api-gateway"
-        ); // Thay "app-name" bằng tên ứng dụng của bạn
-
-        // Lấy URL từ instance đầu tiên (nếu có)
-        // String serverUrl = instances.isEmpty()
-        //     ? "http://localhost:8080" // Giá trị mặc định nếu không tìm thấy
-        //     : instances.get(0).getUri().toString();
+        );
 
         String serverUrl = "http://localhost:" + instances.get(0).getPort();
-        System.out.println("instancessdfasdfasdf");
-        System.out.println(instances);
         return serverUrl;
     }
 

@@ -1,45 +1,31 @@
 package com.example.spring_cloud_gateway_demo.DTO;
 
+import io.swagger.v3.oas.annotations.media.Schema;
+import java.util.Date;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
+@Getter
+@Setter
 public class RegisterUserDto {
-
+ 
+    @Schema(example = "email@gmail.com")
     private String email;
+
+    @Schema(example = "password")
     private String password;
+
+    @Schema(example = "firstName")
     private String firstName;
+
+    @Schema(example = "lastName")
     private String lastName;
-
-    public String getEmail() {
-        return email;
-    }
-
-    public RegisterUserDto setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public RegisterUserDto setPassword(String password) {
-        this.password = password;
-        return this;
-    }
-
-    public String getFirstName() {
-        return this.firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
-    }
-
-    public String getLastName() {
-        return this.lastName;
-    }
-
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
-    }
 
     @Override
     public String toString() {

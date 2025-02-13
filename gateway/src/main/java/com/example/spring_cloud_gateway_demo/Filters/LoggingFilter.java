@@ -1,4 +1,4 @@
-package com.example.spring_cloud_gateway_demo.filters;
+package com.example.spring_cloud_gateway_demo.Filters;
 
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_ORIGINAL_REQUEST_URL_ATTR;
 import static org.springframework.cloud.gateway.support.ServerWebExchangeUtils.GATEWAY_REQUEST_URL_ATTR;
@@ -12,6 +12,8 @@ import org.apache.commons.logging.LogFactory;
 import org.springframework.cloud.gateway.filter.GatewayFilterChain;
 import org.springframework.cloud.gateway.filter.GlobalFilter;
 import org.springframework.cloud.gateway.route.Route;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.server.reactive.ServerHttpRequest;
 import org.springframework.stereotype.Component;
 import org.springframework.web.server.ServerWebExchange;
 import reactor.core.publisher.Mono;
@@ -43,6 +45,21 @@ public class LoggingFilter implements GlobalFilter {
             ", uri:" +
             routeUri
         );
+
+        ServerHttpRequest request = exchange.getRequest();
+
+        if (request.getHeaders().containsKey(HttpHeaders.AUTHORIZATION)) {
+            String authHeader = request
+                .getHeaders()
+                .getFirst(HttpHeaders.AUTHORIZATION);
+            System.out.println(
+                "🔹 [API Gateway] Forwarding Authorization Header: " +
+                authHeader
+            );
+        } else {
+            System.out.println("[API Gateway] Missing Authorization Header");
+        }
+
         return chain.filter(exchange);
     }
 }

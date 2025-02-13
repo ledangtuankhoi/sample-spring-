@@ -3,6 +3,7 @@ package com.example.spring_cloud_gateway_demo.Configuation;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import jakarta.annotation.PostConstruct;
 import java.security.Key;
@@ -10,16 +11,25 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
 public class JWTUtil {
 
+    @Value("${security.jwt.secret-key}")
+    private String secretKey; // Lấy secret key từ cấu hình
+
     private Key key;
 
     @PostConstruct
     public void init() {
-        this.key = Keys.secretKeyFor(SignatureAlgorithm.HS256); // Creates a secure key
+        this.key = getSignInKey();
+    }
+
+    private Key getSignInKey() {
+        byte[] keyBytes = Decoders.BASE64.decode(secretKey); // BASE64 decode the key
+        return Keys.hmacShaKeyFor(keyBytes); // Create the key from decoded bytes
     }
 
     public String extractUsername(String token) {
@@ -50,25 +60,12 @@ public class JWTUtil {
         return extractExpiration(token).before(new Date());
     }
 
-    public String generateToken(String username) {
-        Map<String, Object> claims = new HashMap<>();
-        return createToken(claims, username);
-    }
-
-    private String createToken(Map<String, Object> claims, String subject) {
-        return Jwts.builder()
-            .setClaims(claims)
-            .setSubject(subject)
-            .setIssuedAt(new Date(System.currentTimeMillis()))
-            .setExpiration(
-                new Date(System.currentTimeMillis() + 1000 * 60 * 60 * 10)
-            )
-            .signWith(key)
-            .compact();
-    }
-
-    public Boolean validateToken(String token, String username) {
-        final String extractedUsername = extractUsername(token);
-        return (extractedUsername.equals(username) && !isTokenExpired(token));
+    public Boolean validateToken(String token) {
+        try {
+            extractAllClaims(token); // Kiểm tra chữ ký JWT
+            return !isTokenExpired(token); // Token chưa hết hạn
+        } catch (Exception e) {
+            return false; // Token không hợp lệ
+        }
     }
 }

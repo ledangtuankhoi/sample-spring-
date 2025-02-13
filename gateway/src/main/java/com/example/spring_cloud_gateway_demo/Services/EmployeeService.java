@@ -2,16 +2,16 @@ package com.example.spring_cloud_gateway_demo.Services;
 
 import com.example.spring_cloud_gateway_demo.Constants.AppContants;
 import com.example.spring_cloud_gateway_demo.DTO.LoginUserDto;
-import com.example.spring_cloud_gateway_demo.Model.EmployeeEntity;
+import com.example.spring_cloud_gateway_demo.DTO.RegisterUserDto;
+import com.example.spring_cloud_gateway_demo.Model.User;
 import com.example.spring_cloud_gateway_demo.Responses.LoginResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 import org.springframework.web.reactive.function.client.WebClient;
 import reactor.core.publisher.Mono;
 
@@ -39,7 +39,8 @@ public class EmployeeService {
     public Mono<LoginResponse> login(String username, String password) {
         // String url = "http://localhost:8080/employee/auth/login";
         String url =
-            AppContants.LOADBLANCE_EMPLOYE_SERVICE + "/employee/auth/login";
+            AppContants.LOADBLANCE_EMPLOYE_SERVICE +
+            "/employee/api/v1/auth/login";
 
         LoginUserDto loginUserDto = new LoginUserDto(username, password);
         logger.debug("LoginUserDto: {}", loginUserDto);
@@ -68,12 +69,18 @@ public class EmployeeService {
             });
     }
 
-    public Mono<LoginResponse> sigup(String username, String password) {
+    public Mono<User> resgister(RegisterUserDto register) {
         // String url = "http://localhost:8080/employee/auth/login";
-        String url = "lb://employee-service/employee/auth/signup";
+        String url =
+            AppContants.LOADBLANCE_EMPLOYE_SERVICE +
+            "/employee/api/v1/auth/signup";
 
-        LoginUserDto loginUserDto = new LoginUserDto(username, password);
-        logger.debug("LoginUserDto: {}", loginUserDto);
+        RegisterUserDto registerUserDto = new RegisterUserDto(
+            register.getEmail(),
+            register.getPassword(),
+            register.getFirstName(),
+            register.getLastName()
+        );
 
         return webClientBuilder
             .build()
@@ -81,12 +88,12 @@ public class EmployeeService {
             .uri(url)
             .accept(MediaType.APPLICATION_JSON)
             .contentType(MediaType.APPLICATION_JSON)
-            .bodyValue(loginUserDto)
+            .bodyValue(registerUserDto)
             .retrieve()
-            .bodyToMono(LoginResponse.class)
+            .bodyToMono(User.class)
             .doOnNext(response -> {
                 logger.debug("Sending login request to URL: {}", url);
-                logger.debug("LoginUserDto: {}", loginUserDto);
+                logger.debug("LoginUserDto: {}", registerUserDto);
 
                 logger.debug("Login response received: {}", response);
             })
@@ -97,5 +104,62 @@ public class EmployeeService {
                 logger.error("Handling login error: {}", error.getMessage());
                 return Mono.error(new RuntimeException("Unauthorized"));
             });
+    }
+
+    public Mono<User> me(String authHeader) {
+        String url =
+            AppContants.LOADBLANCE_EMPLOYE_SERVICE +
+            "/employee/api/v1/users/me";
+
+        return Mono.deferContextual(ctx -> {
+            String token = authHeader.replace("Bearer ", "");
+            if (token == null) {
+                logger.warn("Not found the Authorization Header!");
+            } else {
+                logger.debug("Authorization Header: {}", token);
+            }
+            return webClientBuilder
+                .build()
+                .get()
+                .uri(url)
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + token) // Thêm Authorization Header
+                .accept(MediaType.APPLICATION_JSON)
+                .exchangeToMono(response -> {
+                    logger.debug(" [REQUEST] GET {}", url);
+                    logger.debug(
+                        " [REQUEST] Headers: {}",
+                        response.headers().asHttpHeaders()
+                    );
+
+                    if (response.statusCode().is2xxSuccessful()) {
+                        return response.bodyToMono(User.class);
+                    } else {
+                        return response
+                            .createException()
+                            .flatMap(error -> {
+                                logger.error(
+                                    " [RESPONSE] HTTP {} - {}",
+                                    response.statusCode(),
+                                    error.getMessage()
+                                );
+                                return Mono.error(
+                                    new RuntimeException("Unauthorized")
+                                );
+                            });
+                    }
+                })
+                .doOnSubscribe(sub ->
+                    logger.debug(" [SUBSCRIBE] Sending request to {}", url)
+                )
+                .doOnSuccess(user ->
+                    logger.debug("[RESPONSE] Received user: {}", user)
+                )
+                .doOnError(error ->
+                    logger.error(
+                        " [ERROR] Request failed: {}",
+                        error.getMessage()
+                    )
+                );
+        });
     }
 }
