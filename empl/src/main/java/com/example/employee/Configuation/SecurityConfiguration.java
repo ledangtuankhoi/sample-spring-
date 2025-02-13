@@ -53,7 +53,12 @@ public class SecurityConfiguration {
             .authorizeHttpRequests(
                 requests ->
                     requests
-                        .requestMatchers("/employee/auth/**")
+                        .requestMatchers(
+                            "/employee/api/v1/auth/**",
+                            appContants.getApiDocPath() + "/**",
+                            "/swagger-ui/**",
+                            "/swagger-resources/**"
+                        )
                         .permitAll() // Cho phép truy cập không cần xác thực
                         .requestMatchers(HttpMethod.OPTIONS, "/**")
                         .permitAll() // Cho phép OPTIONS request

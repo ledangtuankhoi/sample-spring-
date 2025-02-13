@@ -195,7 +195,6 @@ public class EmployeeController {
 
     // ---------------------------------
 
-    // TODO: create mapper
     @GetMapping("/")
     public List<EmployeeEntity> getAll() {
         // return new String();
