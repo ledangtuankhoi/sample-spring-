@@ -178,60 +178,6 @@
 			<scope>provided</scope>
 		</dependency>
 
-
-		<!-- AZURE MYSQL  -->
-		<!-- <dependency>
-			<groupId>com.azure.spring</groupId>
-			<artifactId>spring-cloud-azure-dependencies</artifactId>
-			<version>6.0.0-beta.4</version>
-			<type>pom</type> -->
-		<!-- <scope>import</scope> -->
-		<!-- </dependency>
-		<dependency>
-			<groupId>com.azure.spring</groupId>
-			<artifactId>spring-cloud-azure-starter-jdbc-mysql</artifactId>
-			<version>6.0.0-beta.4</version>
-		</dependency> -->
-		<!-- END AZURE MYSQL  -->
-
-		<!-- Drools  -->
-		<!-- https://mvnrepository.com/artifact/org.kie/kie-spring-boot -->
-		<!-- kie-spring cung cấp các lớp hỗ trợ tích hợp Drools vào ứng dụng Spring. Đây là một phần của bộ công cụ Drools dành riêng cho Spring, giúp dễ dàng quản lý các đối tượng liên quan đến Drools như KieSession, KieContainer thông qua Spring IoC container.
-		Lý do sử dụng: Giúp giảm thiểu công việc cấu hình Drools bằng cách tận dụng các tính năng Spring để tự động quản lý vòng đời của các đối tượng này. Nó giúp đơn giản hóa việc tạo và cấu hình các session và container của Drools trong Spring Boot. -->
-		<!-- <dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-spring</artifactId>
-			<version>7.74.1.Final</version>
-			<type>bundle</type>
-		</dependency> -->
-		<!-- https://mvnrepository.com/artifact/org.kie/kie-api -->
-		<!-- kie-api cung cấp các API cơ bản của Drools, bao gồm các lớp chính để tương tác với hệ thống quy tắc của Drools như KieSession, KieContainer, và KieServices.
-		Lý do sử dụng: Cung cấp các API cần thiết để tương tác với các đối tượng như KieSession, KieContainer và các đối tượng khác trong Drools mà không cần phụ thuộc vào framework cụ thể như Spring. Đây là thư viện cốt lõi giúp thực thi và quản lý các quy tắc. -->
-		<!-- <dependency>
-			<groupId>org.kie</groupId>
-			<artifactId>kie-api</artifactId>
-			<version>10.0.0</version>
-		</dependency> -->
-		<!-- drools-core là thư viện chính của Drools, cung cấp các tính năng xử lý quy tắc, bao gồm các công cụ để biên dịch và thực thi các quy tắc (tệp .drl).
-		Lý do sử dụng: Đây là thư viện cốt lõi giúp Drools có thể hoạt động, bao gồm khả năng xử lý các quy tắc kinh doanh và thực thi các quyết định dựa trên các tệp quy tắc được tải vào KieSession. -->
-		<!-- <dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-core</artifactId>
-			<version>10.0.0</version>
-		</dependency> -->
-		<!-- drools-compiler cung cấp khả năng biên dịch các tệp quy tắc .drl thành các tệp bytecode để thực thi.
-		Lý do sử dụng: Cung cấp bộ biên dịch để Drools có thể chuyển đổi các tệp .drl thành các biểu diễn mà Drools có thể thực thi, giúp quy tắc của bạn có thể chạy hiệu quả và tối ưu. -->
-		<!-- <dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-compiler</artifactId>
-			<version>10.0.0</version>
-		</dependency>
-		<dependency>
-			<groupId>org.drools</groupId>
-			<artifactId>drools-mvel</artifactId>
-			<version>10.0.0</version>
-		</dependency> -->
-		<!-- END Drools  -->
 	</dependencies>
 
 	<dependencyManagement>

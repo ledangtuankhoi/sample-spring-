@@ -157,6 +157,16 @@ To interact with Kafka during development or troubleshooting, here are some usef
 | **List all Kafka topics**                                   | `kafka-topics --list --bootstrap-server localhost:9092`                                                                 |
 | **Delete a Kafka topic**                                    | `kafka-topics --delete --bootstrap-server localhost:9092 --topic borrowing-topic`                                       |
 
+### Common MYSQL Commands
+
+-import database to mysqldb
+docker exec -i one-book-mysqldb-1 mysql -uroot -ppassword book < book/db-sql/book.sql
+
+-export database to mysqldb
+docker exec -i one-book-mysqldb-1 mysqldump -uroot -ppassword book > book/db-sql/book.sql
+
+
+
 ### Key Kafka-Related Files and Their Role
 
 1. **`BorrowingProducer.java`**:
