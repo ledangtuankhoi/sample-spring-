@@ -38,8 +38,8 @@ public class BookControllerWIthKafkaTest {
     }
 
     @KafkaListener(topics = "my-topic")
-    public void listen(ConsumerRecord<String, String> record) {
-        records.add(record);
+    public void listen(ConsumerRecord<String, String> message) {
+        records.add(message);
     }
 
     @Test
@@ -50,7 +50,7 @@ public class BookControllerWIthKafkaTest {
         kafkaTemplate.send("my-topic", testMessage);
 
         // Verify message received
-        ConsumerRecord<String, String> record = records.take(); // Blocking until message received
-        assertEquals(testMessage, record.value());
+        ConsumerRecord<String, String> message = records.take(); // Blocking until message received
+        assertEquals(testMessage, message.value());
     }
 }

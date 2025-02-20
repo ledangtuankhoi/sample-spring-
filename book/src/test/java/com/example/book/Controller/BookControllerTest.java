@@ -5,11 +5,11 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import com.example.book.Controller.BookController;
-import com.example.book.Mappers.BookMapper;
-import com.example.book.Model.BookEntity;
-import com.example.book.Model.BookModelAssembler;
-import com.example.book.Repository.BookRepository;
+import com.example.book.controller.BookController;
+import com.example.book.mappers.BookMapper;
+import com.example.book.model.BookEntity;
+import com.example.book.model.BookModelAssembler;
+import com.example.book.repository.BookRepository;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
