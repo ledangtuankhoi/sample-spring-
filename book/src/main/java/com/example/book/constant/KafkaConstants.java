@@ -1,7 +1,8 @@
 package com.example.book.constant;
- 
-import org.springframework.beans.factory.annotation.Value;
 
+import lombok.AllArgsConstructor;
+
+@AllArgsConstructor
 public class KafkaConstants {
 
     public static final String BORROWING_GROUP = "borrowing-group";

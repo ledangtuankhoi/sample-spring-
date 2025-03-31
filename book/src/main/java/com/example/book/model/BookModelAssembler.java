@@ -6,6 +6,7 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 import com.example.book.controller.BookController;
 import com.example.book.dtos.BookDTO;
 import org.springframework.hateoas.EntityModel;
+import org.springframework.lang.NonNull;
 import org.springframework.hateoas.server.RepresentationModelAssembler;
 import org.springframework.stereotype.Component;
 
@@ -14,7 +15,7 @@ public class BookModelAssembler
     implements RepresentationModelAssembler<BookDTO, EntityModel<BookDTO>> {
 
     @Override
-    public EntityModel<BookDTO> toModel(BookDTO entity) {
+    public @NonNull EntityModel<BookDTO> toModel(@NonNull BookDTO entity) {
         return EntityModel.of(
             entity,
             linkTo(

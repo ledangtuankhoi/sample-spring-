@@ -1,0 +1,250 @@
+package com.example.book;
+
+import java.util.Arrays;
+import java.util.List;
+import java.util.Map;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.Consumer;
+import java.util.function.Function;
+
+// copilot: disable
+public class HomeworkCompletablefuture {
+
+    // Tóm tắt cách dùng CompletableFuture
+    // Method	Mô tả
+    // runAsync()	Chạy tác vụ bất đồng bộ (không có kết quả trả về)
+    // supplyAsync()	Chạy tác vụ bất đồng bộ (có kết quả trả về)
+    // thenApply()	Chuyển đổi kết quả sau khi hoàn thành
+    // thenAccept()	Thực hiện hành động với kết quả, không trả về giá trị
+    // thenRun()	Chạy một hành động khi hoàn thành, không cần kết quả
+    // thenCombine()	Kết hợp hai CompletableFuture có kết quả
+    // thenCompose()	Chuỗi hai CompletableFuture liên tiếp
+    // allOf()	Chạy nhiều CompletableFuture song song
+    // exceptionally()	Xử lý lỗi và trả về giá trị thay thế
+    // handle()	Xử lý cả lỗi và kết quả thành công
+    // join()	Đợi CompletableFuture hoàn thành (không cần try-catch)
+    // get()	Đợi và lấy kết quả của CompletableFuture
+
+    // 1. Create a new method in BookService that returns a CompletableFuture<List<BookDTO>>.
+    // 2. The method should return all books asynchronously.
+    // 3. Use the method findAll() to get all books.
+    // 4. Use the method toList() to convert the Stream to a List.
+    // 5. Use the method supplyAsync() to return the List.
+    // 6. Use the method completedFuture() to return the List.
+    // 7. Use the method exceptionally() to handle exceptions.
+    // 8. Use the method whenComplete() to log the result.
+    // 9. Use the method thenApply() to convert the List<BookEntity> to List<BookDTO>.
+    // 10. Use the method thenApplyAsync() to convert the List<BookEntity> to List<BookDTO>.
+    // 11. Use the method thenCompose() to convert the List<BookEntity> to List<BookDTO>.
+    // 12. Use the method thenComposeAsync() to convert the List<BookEntity> to List<BookDTO>.
+    // 13. Use the method thenCombine() to combine two CompletableFutures.
+    // 14. Use the method thenCombineAsync() to combine two CompletableFutures.
+    // 15. Use the method thenAcceptBoth() to accept the results of two CompletableFutures.
+    // 16. Use the method thenAcceptBothAsync() to accept the results of two CompletableFutures.
+    // 17. Use the method runAfterBoth() to run after both CompletableFutures are completed.
+    // 18. Use the method runAfterBothAsync() to run after both CompletableFutures are completed.
+    // 19. Use the method applyToEither() to apply the result of the first CompletableFuture that completes.
+    // 20. Use the method applyToEitherAsync() to apply the result of the first CompletableFuture that completes.
+    // 21. Use the method acceptEither() to accept the result of the first CompletableFuture that completes.
+    // 22. Use the method acceptEitherAsync() to accept the result of the first CompletableFuture that completes.
+    // 23. Use the method runAfterEither() to run after the first CompletableFuture that completes.
+    // 24. Use the method runAfterEitherAsync() to run after the first CompletableFuture that completes.
+    // 25. Use the
+    //     method allOf() to wait for all CompletableFutures to complete.
+    // 26. Use the method anyOf() to wait for any CompletableFuture to complete.
+    // 27. Use the method delay() to delay the completion of a CompletableFuture.
+    // 28. Use the method delayAsync() to delay the completion of a CompletableFuture.
+    // 29. Use the method handle() to handle the result of a CompletableFuture.
+    // 30. Use the method handleAsync() to handle the result of a CompletableFuture.
+    // 31. Use the method thenAccept() to accept the result of a CompletableFuture.
+    // 32. Use the method thenAcceptAsync() to accept the result of a CompletableFuture.
+    // 33. Use the method thenRun() to run after a CompletableFuture is completed.
+    // 34. Use the method thenRunAsync() to run after a CompletableFuture is completed.
+    // 35. Use the method exceptionally() to handle exceptions.
+    // 36. Use the method exceptionallyAsync() to handle exceptions.
+    // 37. Use the method exceptionallyCompose() to handle exceptions.
+    // 38. Use the method exceptionallyComposeAsync() to handle exceptions.
+    // 39. Use the method whenComplete() to log the result.
+    // 40. Use the method whenCompleteAsync() to log the result.
+    // 41. Use the method thenApply() to convert the result of a CompletableFuture.
+    // 42. Use the method thenApplyAsync() to convert the result of a CompletableFuture.
+    // 43. Use the method thenCompose() to convert the result of a CompletableFuture.
+    // 44. Use the method thenComposeAsync() to convert the result of a CompletableFuture.
+
+    public static void main(String[] args) {
+        System.out.println("Hello, world!");
+
+        List<Customer> customers = Arrays.asList(
+            new Customer(1, "Nguyễn Văn A"),
+            new Customer(2, "Trần Thị B"),
+            new Customer(3, "Lê Văn C")
+        );
+        Map<Integer, List<Order>> ordersMap = Map.of(
+            1,
+            Arrays.asList(new Order(101, 100.0), new Order(102, 200.0)),
+            2,
+            Arrays.asList(new Order(103, 300.0), new Order(104, 400.0)),
+            3,
+            Arrays.asList(new Order(105, 500.0))
+        );
+
+        System.out.println(
+            "\n\n" +
+            customers.toString() +
+            "\n\n" +
+            ordersMap.toString() +
+            "\n\n-------------------\n\n"
+        );
+        // * Bài toán: Xử lý dữ liệu khách hàng và đơn hàng trong hệ thống E-Commerce
+        // Công ty bạn có một hệ thống thương mại điện tử cần xử lý các tác vụ sau:
+
+        // Lấy thông tin khách hàng theo ID.
+        // Lấy danh sách đơn hàng của khách hàng.
+        // Tính tổng số tiền của tất cả các đơn hàng.
+        // Gửi email thông báo nếu tổng số tiền vượt quá một mức nào đó.
+        // Ghi log kết quả xử lý.
+        // Bạn cần thực hiện các tác vụ này một cách bất đồng bộ và tối ưu hiệu suất.
+
+        // 10 câu hỏi thực hành
+        // 1️⃣ Câu 1
+        // 🔹 Yêu cầu: Viết một chương trình để lấy thông tin khách hàng dựa trên ID của họ từ cơ sở dữ liệu. Việc lấy dữ liệu này có thể mất thời gian, vì vậy chương trình cần thực hiện tác vụ này một cách không chặn (non-blocking).
+        // 💡 Gợi ý: Làm thế nào để yêu cầu lấy thông tin khách hàng mà không làm chương trình bị dừng?
+        System.out.println("\n\n---------Cau 1:----------\n\n");
+        Function<Integer, Customer> findCustomer = id ->
+            customers
+                .stream()
+                .filter(c -> c.getId() == id)
+                .findFirst()
+                .orElse(null);
+        CompletableFuture<Customer> infoCus = CompletableFuture.supplyAsync(
+            () -> findCustomer.apply(1)
+        );
+
+        System.out.println(infoCus.join());
+        // System.out.println();
+        // CompletableFuture.supplyAsync(() ->
+        //     customers
+        //         .stream()
+        //         .filter(c -> c.getId() == 1)
+        //         .findFirst()
+        //         .orElse(null)
+        // ).thenAccept(System.out::println);
+        // 2️⃣ Câu 2
+        // 🔹 Yêu cầu: Sau khi lấy được thông tin khách hàng, chương trình cần tự động ghi lại lịch sử truy vấn vào hệ thống log, nhưng không cần đợi việc ghi log hoàn thành mới tiếp tục xử lý các tác vụ khác.
+
+        // 💡 Gợi ý: Làm sao để ghi log mà không làm chậm chương trình chính?
+        System.out.println("\n\n---------Cau 1:----------\n\n");
+        Consumer<Customer> wireLog = cus -> {
+            try {
+                System.out.println("wire file log: ", cus.toString());
+            } catch (Exception e) {
+                // TODO: handle exception
+            }
+        };
+        CompletableFuture<Void> que2 = CompletableFuture.runAsync(() ->
+            findCustomer.apply(1)
+        ).runAsync(wireLog);
+        // 3️⃣ Câu 3
+        // 🔹 Yêu cầu: Khi có thông tin khách hàng, chương trình cần tiếp tục lấy danh sách đơn hàng của họ từ cơ sở dữ liệu. Điều này cần thực hiện một cách tuần tự nhưng vẫn không làm chậm chương trình chính.
+
+        // 💡 Gợi ý: Làm sao để thực hiện một tác vụ tiếp theo ngay khi tác vụ trước đó hoàn tất?
+
+        // 4️⃣ Câu 4
+        // 🔹 Yêu cầu: Sau khi có danh sách đơn hàng, hiển thị tất cả đơn hàng của khách hàng lên màn hình. Vì đây là một tác vụ chỉ hiển thị dữ liệu mà không cần xử lý thêm, chương trình không cần chặn các tác vụ khác để thực hiện điều này.
+
+        // 💡 Gợi ý: Làm sao để hiển thị danh sách đơn hàng ngay khi có dữ liệu mà không ảnh hưởng đến các tác vụ khác?
+
+        // 5️⃣ Câu 5
+        // 🔹 Yêu cầu: Khi đã lấy được danh sách đơn hàng của khách hàng, hãy tính tổng số tiền của tất cả đơn hàng. Trong khi đó, chương trình cần lấy tỷ giá USD/VND từ một API bên ngoài và sử dụng tỷ giá này để quy đổi tổng tiền sang VND. Cả hai công việc này có thể thực hiện song song để tiết kiệm thời gian.
+
+        // 💡 Gợi ý: Làm thế nào để thực hiện hai tác vụ riêng biệt cùng lúc và kết hợp kết quả của chúng?
+
+        // 6️⃣ Câu 6
+        // 🔹 Yêu cầu: Sau khi lấy được thông tin khách hàng, cần gọi một API bên ngoài để lấy đánh giá (review) của khách hàng đó. Việc này có thể mất thời gian, nhưng cần thực hiện ngay sau khi có thông tin khách hàng.
+
+        // 💡 Gợi ý: Làm sao để xử lý một tác vụ tiếp theo ngay khi có kết quả từ một tác vụ trước đó?
+
+        // 7️⃣ Câu 7
+        // 🔹 Yêu cầu: Chương trình cần thực hiện nhiều tác vụ bất đồng bộ cùng lúc, bao gồm lấy danh sách đơn hàng, lấy tỷ giá, và lấy đánh giá khách hàng. Chỉ khi tất cả các tác vụ này hoàn thành, chương trình mới tiếp tục xử lý bước tiếp theo.
+
+        // 💡 Gợi ý: Làm sao để chờ cho đến khi tất cả tác vụ hoàn thành mà không cần chờ từng tác vụ một theo cách tuần tự?
+
+        // 8️⃣ Câu 8
+        // 🔹 Yêu cầu: Trong quá trình lấy thông tin khách hàng, có thể xảy ra lỗi (ví dụ: khách hàng không tồn tại, lỗi kết nối cơ sở dữ liệu). Chương trình cần có cách xử lý lỗi và thay thế bằng dữ liệu mặc định để tránh làm gián đoạn các bước tiếp theo.
+
+        // 💡 Gợi ý: Làm sao để xử lý lỗi khi lấy dữ liệu mà vẫn đảm bảo chương trình không bị gián đoạn?
+
+        // 9️⃣ Câu 9
+        // 🔹 Yêu cầu: Khi lấy danh sách đơn hàng, nếu gặp lỗi thì cần xử lý linh hoạt: nếu lỗi nhẹ (ví dụ: timeout tạm thời), thử lấy lại dữ liệu; nếu lỗi nghiêm trọng (ví dụ: không có kết nối), trả về danh sách rỗng thay vì làm sập chương trình.
+
+        // 💡 Gợi ý: Làm sao để xử lý lỗi một cách mềm dẻo, không làm gián đoạn toàn bộ hệ thống?
+
+        // 🔟 Câu 10
+        // 🔹 Yêu cầu: Khi đã tính toán xong tổng tiền đơn hàng của khách hàng, hiển thị tổng số tiền đó ra màn hình. Vì đây là bước cuối cùng, chương trình cần đợi cho đến khi tính toán xong mới hiển thị kết quả.
+
+        // 💡 Gợi ý: Làm sao để lấy kết quả cuối cùng từ một tác vụ bất đồng bộ?
+
+        // private static final Logger logger = LoggerFactory.getLogger(
+        //     HomeworkCompletablefuture.class
+        // );
+    }
+}
+
+class Customer {
+
+    private int id;
+    private String name;
+
+    public Customer(int id, String name) {
+        this.id = id;
+        this.name = name;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    @Override
+    public String toString() {
+        return (
+            "{" + " id='" + getId() + "'" + ", name='" + getName() + "'" + "}"
+        );
+    }
+}
+
+class Order {
+
+    private int orderId;
+    private double price;
+
+    public Order(int orderId, double price) {
+        this.orderId = orderId;
+        this.price = price;
+    }
+
+    public int getOrderId() {
+        return orderId;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    @Override
+    public String toString() {
+        return (
+            "{" +
+            " orderId='" +
+            getOrderId() +
+            "'" +
+            ", price='" +
+            getPrice() +
+            "'" +
+            "}"
+        );
+    }
+}

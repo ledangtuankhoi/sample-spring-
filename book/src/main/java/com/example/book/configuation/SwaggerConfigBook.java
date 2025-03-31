@@ -5,7 +5,6 @@ import io.swagger.v3.oas.models.info.Contact;
 import io.swagger.v3.oas.models.info.Info;
 import io.swagger.v3.oas.models.info.License;
 import io.swagger.v3.oas.models.servers.Server;
-import jakarta.annotation.PostConstruct;
 import java.util.List;
 import org.springdoc.core.models.GroupedOpenApi;
 // import org.springdoc.core.models.GroupedOpenApi;s
@@ -25,7 +24,7 @@ public class SwaggerConfigBook {
     }
 
     @Bean
-    public GroupedOpenApi AllGroupedOpenApi() {
+    public GroupedOpenApi allGroupedOpenApi() {
         return GroupedOpenApi.builder()
             .group("all-api")
             .pathsToMatch("/**")

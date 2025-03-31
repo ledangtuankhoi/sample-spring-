@@ -1,6 +1,8 @@
 package com.example.book.service;
 
 import com.example.book.model.EmployeeEntity;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -12,6 +14,7 @@ public class EmployeeService {
     private final RestTemplate restTemplate;
     private final String emplyeeServiceUrl;
     private final String emplyeeServiceUrlAPIGateway;
+    private Logger logger = LoggerFactory.getLogger(getClass());
 
     public EmployeeService(
         RestTemplate restTemplate,
@@ -28,7 +31,6 @@ public class EmployeeService {
     public EmployeeEntity getEmployeeDetails(Long employeeId) {
         // Dùng Eureka service discovery
         String url = emplyeeServiceUrl + "/employee/api/v1/" + employeeId;
-        // return restTemplate.getForObject(url, EmployeeEntity.class);
         ResponseEntity<EmployeeEntity> responseEntity =
             restTemplate.getForEntity(url, EmployeeEntity.class);
         return responseEntity.getBody();
@@ -37,7 +39,7 @@ public class EmployeeService {
     public EmployeeEntity getEmployeeDetailsWithApigetway(Long employeeId) {
         // Dùng Eureka service discovery
         String url = emplyeeServiceUrlAPIGateway + "api/v1/" + employeeId;
-        System.out.println("url: " + url);
+        logger.info("url: " + url);
         return restTemplate.getForObject(url, EmployeeEntity.class);
     }
 }

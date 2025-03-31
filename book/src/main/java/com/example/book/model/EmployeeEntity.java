@@ -6,12 +6,10 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import java.time.Instant;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
-import org.hibernate.annotations.GenericGenerator;
 import org.hibernate.annotations.UpdateTimestamp;
 
 // lombok
@@ -35,7 +33,7 @@ public class EmployeeEntity {
     private String lastName;
 
     @Column(name = "KIN")
-    private String KIN;
+    private String kin;
 
     @Column(name = "isDiscipilined")
     private Boolean isDiscipilined;
@@ -52,13 +50,13 @@ public class EmployeeEntity {
         String id,
         String firstName,
         String lastName,
-        String KIN,
+        String kin,
         Boolean isDiscipilined
     ) {
         this.id = id;
         this.firstName = firstName;
         this.lastName = lastName;
-        this.KIN = KIN;
+        this.kin = kin;
         this.isDiscipilined = isDiscipilined;
     }
 }

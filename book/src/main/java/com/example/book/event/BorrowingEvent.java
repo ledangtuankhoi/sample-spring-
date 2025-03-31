@@ -24,7 +24,7 @@ public class BorrowingEvent {
         try {
             return objectMapper.writeValueAsString(this);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(
+            throw new IllegalStateException (
                 "Failed to convert BorrowingEvent to JSON",
                 e
             );
@@ -36,7 +36,7 @@ public class BorrowingEvent {
         try {
             return objectMapper.readValue(json, BorrowingEvent.class);
         } catch (JsonProcessingException e) {
-            throw new RuntimeException(
+            throw new IllegalStateException(
                 "Failed to convert BorrowingEvent to JSON",
                 e
             );

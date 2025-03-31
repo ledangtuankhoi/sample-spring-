@@ -32,6 +32,13 @@ public class GlobalControllerException extends ResponseEntityExceptionHandler {
         return new ResponseEntity<>(errorDetails, HttpStatus.NOT_FOUND);
     }
 
+    @ExceptionHandler(Exception.class)
+    public ResponseEntity<String> handleGenericException(Exception ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
+            "An error occurred: " + ex.getMessage()
+        );
+    }
+
     // Handles exceptions for request parameter that are incorrectly formated or invalid, and return a list parameter along with corresponding error message
     protected ResponseEntity<Object> handleMethodArgumentNotValid(
         MethodArgumentNotValidException ex,

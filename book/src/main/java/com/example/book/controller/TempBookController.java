@@ -2,11 +2,8 @@ package com.example.book.controller;
 
 import com.example.book.dtos.BookDTO;
 import com.example.book.exception.BookNotFoundException;
-import com.example.book.mappers.BookMapper;
-import com.example.book.model.BookEntity;
 import com.example.book.model.BookModelAssembler;
 import com.example.book.model.EmployeeEntity;
-import com.example.book.repository.BookRepository;
 import com.example.book.service.BookService;
 import com.example.book.service.EmployeeService;
 import com.example.book.service.MessageProducer;
@@ -19,16 +16,9 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import io.swagger.v3.oas.models.OpenAPI;
-import jakarta.validation.Valid;
 import java.util.List;
-import java.util.Optional;
-import java.util.stream.Collectors;
-import org.apache.commons.collections4.Get;
-import org.hibernate.sql.Delete;
-import org.mapstruct.control.MappingControl.Use;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.HttpStatus;
@@ -36,12 +26,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestClient;
 
 @OpenAPIDefinition(info = @Info(title = "Book API", version = "1.0"))
 @RestController
@@ -49,81 +35,23 @@ import org.springframework.web.client.RestClient;
 @Tag(name = "Temp-Books", description = "API cho quản lý sách")
 public class TempBookController {
 
-    // @Autowired
-
-    // @Autowired
     private BookModelAssembler assembler;
-
-    // @Autowired
     private BookService service;
-
-    // @Autowired
-    private BookMapper mapper;
-
     private EmployeeService employeeService;
-    // private EurekaClient eurekaClient;
-    private DiscoveryClient discoveryClient;
-    private RestClient restClient;
     private MessageProducer messageProducer;
+    Logger logger = LoggerFactory.getLogger(TempBookController.class);
 
-    @Autowired
     public TempBookController(
         BookModelAssembler assembler,
         BookService service,
-        BookMapper mapper,
-        // EurekaClient eurekaClient,
-        DiscoveryClient discoveryClient,
         EmployeeService employeeService,
-        RestClient.Builder restClientBuilder,
         MessageProducer messageProducer
     ) {
         this.assembler = assembler;
         this.service = service;
-        this.mapper = mapper;
-        // this.eurekaClient = eurekaClient;
-        this.discoveryClient = discoveryClient;
-        this.restClient = restClientBuilder.build();
         this.employeeService = employeeService;
         this.messageProducer = messageProducer;
-
-        System.out.println(
-            "Controller Loaded: BookController with path /book/api/v1"
-        );
     }
-
-    // -=======================
-
-    // i. Book Service API
-    // Functionality Method Path
-    // Get book details GET /api /v1/books/{bookId}
-    // Add book POST /api/v1/books
-    // Update book PUT /api/v1/books/{bookId}
-    // Delete book DELETE /api/v1/books/{bookId}
-
-    // ii. Book Borrowing Service API
-    // Functionality Method Path
-    // Get book borrowing by employee GET /api /v1/borrowing/{employeeId}
-    // Add a new borrowing POST /api/v1/borrowing
-    // Update a book return PUT /api/v1/borrowing/{employeeId}/{bookId}
-
-    // iii. Employee Service API
-    // Functionality Method Path
-    // Get employee details GET /api /v1/employees/{employeeId}
-    // Get borrowed books for employee GET /api /v1/employees/{employeeId}/books
-    // Add new employee POST /api/v1/employees
-    // Remove employee DELETE /api/v1/employees/{employeeId}
-
-    // - Create a comprehensive sample application integrating all learned technologies.
-    // - Use Spring Boot / OpenAPI as the core framework.
-    // - Implement database operations with JPA and Azure SQL.
-    // - Manage database changes with LiquiBase.
-    // - Use Docker for containerization.
-    // - Implement object mapping with MapStruct.
-    // - Document APIs using OpenAPI.
-    // - Integrate business rules with Drools.
-    // - Use Kafka for messaging.
-    // - Implement webhooks for external event handling.
-    // - Manage APIs using APIM.
 
     // -=======================
     @Operation(
@@ -277,134 +205,6 @@ public class TempBookController {
     @GetMapping("/allWithAssembler")
     public CollectionModel<EntityModel<BookDTO>> getAllBooksWithAssembler() {
         return service.findAllWithAssembler();
-    }
-
-    @Operation(
-        summary = "Retrieve book details",
-        description = "Fetches details of a book based on its ID."
-    )
-    @ApiResponses(
-        value = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Successfully retrieved the book details",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = BookEntity.class)
-                )
-            ),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Book not found",
-                content = @Content(mediaType = "application/json")
-            ),
-            @ApiResponse(
-                responseCode = "500",
-                description = "Internal server error"
-            ),
-        }
-    )
-    @GetMapping("/{id}")
-    public ResponseEntity<?> getBook(@PathVariable String id) {
-        Optional<BookEntity> book = service.findById(id);
-
-        if (book.isPresent()) {
-            return ResponseEntity.ok(book.get());
-        } else {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                "Book with ID " + id + " not found"
-            );
-        }
-        // return repository
-        //     .findById(id)
-        //     .orElseThrow(() -> new BookNotFoundException(id));
-    }
-
-    @Operation(
-        summary = "Add a new book",
-        description = "Creates and stores a new book record in the system."
-    )
-    @ApiResponses(
-        value = {
-            @ApiResponse(
-                responseCode = "201",
-                description = "Book successfully created",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = BookEntity.class)
-                )
-            ),
-            @ApiResponse(
-                responseCode = "500",
-                description = "Internal server error"
-            ),
-        }
-    )
-    @PostMapping("")
-    public ResponseEntity<?> createBook(@Valid @RequestBody BookDTO request) {
-        try {
-            Optional<BookEntity> entity = service.save(request);
-            if (entity.isPresent()) {
-                return ResponseEntity.ok(entity.get());
-            }
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                "Not create book"
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                e.getMessage()
-            );
-        }
-    }
-
-    @Operation(
-        summary = "Update an existing book",
-        description = "Updates the details of an existing book based on its ID."
-    )
-    @ApiResponses(
-        value = {
-            @ApiResponse(
-                responseCode = "200",
-                description = "Book successfully updated",
-                content = @Content(
-                    mediaType = "application/json",
-                    schema = @Schema(implementation = BookEntity.class)
-                )
-            ),
-            @ApiResponse(
-                responseCode = "404",
-                description = "Book not found",
-                content = @Content(mediaType = "application/json")
-            ),
-            @ApiResponse(
-                responseCode = "500",
-                description = "Internal server error"
-            ),
-        }
-    )
-    @PutMapping("/{id}")
-    public ResponseEntity<?> updateBook(
-        @RequestBody BookEntity request,
-        @PathVariable String id
-    ) {
-        try {
-            Optional<BookEntity> updatedBook = service.updateBook(id, request);
-            if (updatedBook.isPresent()) {
-                return ResponseEntity.ok(updatedBook.get());
-            } else {
-                return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                    "Book with ID " + id + " not found"
-                );
-            }
-        } catch (BookNotFoundException e) {
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                e.getMessage()
-            );
-        } catch (Exception e) {
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                "An error occurred while updating the book: " + e.getMessage()
-            );
-        }
     }
 
     @Operation(

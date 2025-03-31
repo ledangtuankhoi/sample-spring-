@@ -1,21 +1,17 @@
 package com.example.book.service;
 
 import com.example.book.dtos.BookDTO;
+import com.example.book.exception.BookAlreadyExistsException;
 import com.example.book.exception.BookNotFoundException;
 import com.example.book.mappers.BookMapper;
 import com.example.book.model.BookEntity;
 import com.example.book.model.BookModelAssembler;
 import com.example.book.repository.BookRepository;
-import java.util.Collection;
 import java.util.List;
 import java.util.Optional;
-import java.util.concurrent.CompletableFuture;
-import java.util.stream.Collectors;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.hateoas.CollectionModel;
 import org.springframework.hateoas.EntityModel;
-import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -27,16 +23,9 @@ public class BookService {
     @Autowired
     private BookModelAssembler assembler;
 
-    // @Autowired
-    // private KafkaTemplate<String, String> kafkaTemplate;
-
-    // @Autowired
+    @Autowired
     private BookMapper mapper;
-
-    public BookService(BookRepository repository, BookMapper mapper) {
-        this.repository = repository;
-        this.mapper = mapper;
-    }
+ 
 
     public List<BookEntity> getBookBorrowingByEmployeeId(String employeeId) {
         return repository.findBooksToBorrowingByEmployeeId(employeeId);
@@ -44,14 +33,6 @@ public class BookService {
 
     public List<BookEntity> getBookBorrowedByEmployeeId(String employeeId) {
         return repository.findBooksToBorrowedByEmployeeId(employeeId);
-    }
-
-    public BookEntity toEntityWithTimelamp(BookDTO dto) {
-        BookEntity entity = repository.findByIdAndName(
-            dto.getId(),
-            dto.getName()
-        );
-        return entity;
     }
 
     public BookDTO getById(String id) {
@@ -62,12 +43,7 @@ public class BookService {
     public List<BookDTO> getAll() {
         List<BookEntity> books = repository.findAll();
 
-        return books
-            .stream()
-            .peek(System.out::println)
-            .map(book -> mapper.toDto(book))
-            .peek(System.out::println)
-            .toList();
+        return books.stream().map(book -> mapper.toDto(book)).toList();
     }
 
     public List<BookDTO> findAll() {
@@ -81,34 +57,62 @@ public class BookService {
                 .stream()
                 .map(book -> mapper.toDto(book))
                 .map(e -> assembler.toModel(e))
-                .collect(Collectors.toList())
+                .toList()
         );
     }
 
-    public Optional<BookEntity> findById(String id) {
-        if (repository.findById(id).isPresent() == false) {
-            throw new BookNotFoundException(id);
-        }
-        return repository.findById(id);
+    public BookEntity findById(String id) {
+        return repository
+            .findById(id)
+            .orElseThrow(() -> new BookNotFoundException(id));
     }
 
-    public Optional<BookEntity> save(BookDTO entityDto) {
+    public BookEntity save(BookDTO entityDto) {
+        // Chuyển đổi từ DTO sang Entity
         BookEntity entity = mapper.toEntity(entityDto);
-        // repository.findByName(entity).count()
-        if (
-            repository
-                .findByNameAndAuthor(entity.getName(), entity.getAuthor())
-                .isPresent() ==
-            false
-        ) {
-            return Optional.of(repository.save(entity));
-        } else {
-            throw new RuntimeException("duplicate entity");
+
+        // Kiểm tra các điều kiện cần thiết trước khi lưu
+        if (entity.getName() == null || entity.getName().isEmpty()) {
+            throw new IllegalArgumentException(
+                "Book name cannot be null or empty"
+            );
+        }
+
+        if (entity.getAuthor() == null || entity.getAuthor().isEmpty()) {
+            throw new IllegalArgumentException(
+                "Book author cannot be null or empty"
+            );
+        }
+
+        if (entity.getIsReady() == null) {
+            throw new IllegalArgumentException(
+                "Book readiness status cannot be null"
+            );
+        }
+
+        try {
+            // Kiểm tra xem sách đã tồn tại với cùng tên và tác giả chưa
+            if (
+                repository
+                    .findByNameAndAuthor(entity.getName(), entity.getAuthor())
+                    .isPresent()
+            ) {
+                throw new BookAlreadyExistsException(
+                    "A book with the same name and author already exists"
+                );
+            }
+
+            // Lưu sách vào cơ sở dữ liệu
+            return repository.save(entity);
+        } catch (BookAlreadyExistsException e) {
+            throw e;
+        } catch (Exception e) {
+            throw new IllegalArgumentException("Error saving book", e);
         }
     }
 
-    public Optional<BookEntity> updateBook(String id, BookEntity request) {
-        BookEntity entity = this.findById(id).get();
+    public BookEntity updateBook(String id, BookEntity request) {
+        BookEntity entity = this.findById(id);
         if (request.getIsReady() != null) {
             entity.setIsReady(request.getIsReady());
         }
@@ -120,7 +124,7 @@ public class BookService {
         if (request.getAuthor() != null) {
             entity.setAuthor(request.getAuthor());
         }
-        return Optional.of(repository.save(entity));
+        return repository.save(entity);
     }
 
     public void deleteBook(String id) {

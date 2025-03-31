@@ -1,7 +1,7 @@
 package com.example.book.dtos;
 
 import io.micrometer.common.lang.NonNull;
-import java.util.Objects;
+import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -29,14 +29,18 @@ Web client cần BookWebDTO.
 Mobile client cần BookMobileDTO.
  */
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class BookDTO {
 
     private String id;
 
     @NonNull
+    @Size(min = 1, max = 60)
     private String name;
 
     @NonNull
+    @Size(min = 1, max = 60)
     private String author;
 
     @NonNull
