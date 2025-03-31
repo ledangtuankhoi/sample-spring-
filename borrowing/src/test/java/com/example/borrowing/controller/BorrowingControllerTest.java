@@ -1,4 +1,4 @@
-package com.example.borrowing.Controller;
+package com.example.borrowing.controller;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.borrowing.Controller.BorrowingController;
 import com.example.borrowing.DTO.BorrowingRequestDTO;
 import com.example.borrowing.Exception.BookServiceException;
 import com.example.borrowing.Mappers.BorrowingMapper;

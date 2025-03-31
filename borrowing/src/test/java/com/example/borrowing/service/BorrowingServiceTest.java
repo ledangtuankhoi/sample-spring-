@@ -1,4 +1,4 @@
-package com.example.borrowing.Service;
+package com.example.borrowing.service;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;

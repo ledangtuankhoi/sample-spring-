@@ -1,4 +1,4 @@
-services:
+services: 
     gateway:
         build:
             context: ./gateway
@@ -286,4 +286,4 @@ networks:
     book-net:
     empl-net:
     borrowing-net:
-    share-network:
+    share-network: 

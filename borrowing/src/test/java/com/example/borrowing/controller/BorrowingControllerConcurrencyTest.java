@@ -1,4 +1,4 @@
-package com.example.borrowing.Controller;
+package com.example.borrowing.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -10,6 +10,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.borrowing.Controller.BorrowingController;
 import com.example.borrowing.Event.BorrowingUpdateEvent;
 import com.example.borrowing.Model.BorrowingEntity;
 import com.example.borrowing.Model.BorrowingEntity.Status;
@@ -37,7 +38,7 @@ import org.springframework.test.web.servlet.ResultActions;
 @SpringBootTest
 @AutoConfigureMockMvc
 @EmbeddedKafka(partitions = 1, topics = { "borrowing-topic" })
-@Execution(ExecutionMode.CONCURRENT)  
+@Execution(ExecutionMode.CONCURRENT)
 @EnableKafka
 @TestPropertySource(locations = "classpath:application.test.properties")
 public class BorrowingControllerConcurrencyTest {

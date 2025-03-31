@@ -1,10 +1,8 @@
 package com.example.spring_cloud_gateway_demo.Model;
 
 import java.time.Instant;
-import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
 @Data
 @AllArgsConstructor

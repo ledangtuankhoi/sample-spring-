@@ -1,4 +1,4 @@
-package com.example.borrowing.Consumer;
+package com.example.borrowing.consumer;
 
 public class BorrowingConsumerTest {
     

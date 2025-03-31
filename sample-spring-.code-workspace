@@ -79,5 +79,8 @@
         "git.openDiffOnClick": false,
         "breadcrumbs.symbolPath": "off",
         "breadcrumbs.symbolSortOrder": "position",
+        "files.exclude": {
+            "": true
+        },
     },
 }
